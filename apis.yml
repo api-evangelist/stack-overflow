@@ -1,0 +1,74 @@
+aid: stack-overflow
+url: https://raw.githubusercontent.com/api-evangelist/stack-overflow/refs/heads/main/apis.yml
+apis:
+- aid: stack-overflow:stack-exchange-api
+  name: Stack Exchange API
+  tags:
+  - Q&A
+  - Developer Community
+  - Knowledge
+  humanURL: https://api.stackexchange.com/
+  properties:
+  - url: https://api.stackexchange.com/docs
+    type: Documentation
+  - url: https://api.stackexchange.com/docs/authentication
+    type: Authentication
+  - url: https://api.stackexchange.com/docs/throttle
+    type: RateLimits
+  - url: https://api.stackexchange.com/docs/js-lib
+    type: SDKs
+  description: The Stack Exchange API provides programmatic access to Stack Overflow and other Stack Exchange network sites, allowing you to query questions, answers, users, tags, and other community content.
+name: Stack Overflow
+tags:
+- Developer Community
+- Q&A
+- Knowledge Base
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+common:
+- url: https://stackoverflow.com/
+  name: Stack Overflow Website
+  type: Website
+- url: https://stackoverflow.com/users/signup
+  name: Sign Up
+  type: SignUp
+- url: https://stackoverflow.com/users/login
+  name: Login
+  type: Login
+- url: https://stackoverflow.com/pricing
+  name: Pricing
+  type: Pricing
+- url: https://stackoverflow.com/help
+  name: Help Center
+  type: Support
+- url: https://stackoverflow.com/contact
+  name: Contact
+  type: Contact
+- url: https://stackoverflow.com/legal/terms-of-service/public
+  name: Terms of Service
+  type: TermsOfService
+- url: https://stackoverflow.com/legal/privacy-policy
+  name: Privacy Policy
+  type: PrivacyPolicy
+- url: https://stackoverflow.blog/
+  name: Stack Overflow Blog
+  type: Blog
+- url: https://stackoverflow.com/newsletter
+  name: Newsletter
+  type: Newsletter
+- url: https://twitter.com/StackOverflow
+  name: Stack Overflow on X (Twitter)
+  type: X
+- url: https://www.linkedin.com/company/stack-overflow
+  name: Stack Overflow on LinkedIn
+  type: LinkedIn
+- url: https://www.facebook.com/officialstackoverflow
+  name: Stack Overflow on Facebook
+  type: Facebook
+- url: https://www.youtube.com/stackoverflow
+  name: Stack Overflow on YouTube
+  type: YouTube
+- url: https://github.com/StackExchange
+  name: Stack Exchange on GitHub
+  type: GitHub
