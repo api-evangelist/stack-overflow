@@ -1,0 +1,940 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow API
+  description: >-
+    The Stack Overflow API v2.3 provides programmatic read and write access to
+    Stack Overflow questions, answers, comments, users, tags, and badges.
+    Authentication is via OAuth 2.0. Register an application at
+    http://stackapps.com/apps/oauth to obtain OAuth credentials. All responses
+    are JSON-encoded and support GZIP compression with field-level filtering.
+  version: '2.3'
+  contact:
+    name: Stack Overflow API Support
+    url: http://stackapps.com/
+  termsOfService: https://stackexchange.com/legal/api-terms-of-use
+externalDocs:
+  description: Stack Exchange API Documentation
+  url: https://api.stackexchange.com/docs
+servers:
+  - url: https://api.stackexchange.com/2.3
+    description: Stack Exchange API v2.3
+tags:
+  - name: Questions
+    description: >-
+      Operations for retrieving, searching, and writing questions on Stack
+      Overflow.
+  - name: Answers
+    description: >-
+      Operations for retrieving and writing answers to Stack Overflow questions.
+  - name: Comments
+    description: >-
+      Operations for retrieving and writing comments on Stack Overflow posts.
+  - name: Users
+    description: >-
+      Operations for retrieving user profiles and activity on Stack Overflow.
+  - name: Tags
+    description: >-
+      Operations for retrieving tags used to categorize Stack Overflow questions.
+  - name: Badges
+    description: >-
+      Operations for retrieving badge information on Stack Overflow.
+  - name: Search
+    description: >-
+      Operations for searching Stack Overflow questions and content.
+security:
+  - oauth2: []
+  - {}
+paths:
+  /questions:
+    get:
+      operationId: getQuestions
+      summary: Get All Questions
+      description: >-
+        Returns questions on Stack Overflow sorted by activity, creation date,
+        votes, or relevance. Supports filtering by tags and date ranges.
+      tags:
+        - Questions
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/fromdate'
+        - $ref: '#/components/parameters/todate'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/tagged'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/site'
+      responses:
+        '200':
+          description: A list of questions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /questions/{ids}:
+    get:
+      operationId: getQuestionsByIds
+      summary: Get Questions by IDs
+      description: >-
+        Returns the questions identified by a semicolon-delimited list of
+        question IDs (maximum 100).
+      tags:
+        - Questions
+      parameters:
+        - name: ids
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Semicolon-delimited list of question IDs (max 100)
+          example: '12345;67890'
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions matching the provided IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /questions/{ids}/answers:
+    get:
+      operationId: getAnswersForQuestion
+      summary: Get Answers for Questions
+      description: >-
+        Returns the answers for the questions identified by a semicolon-
+        delimited list of question IDs.
+      tags:
+        - Questions
+        - Answers
+      parameters:
+        - name: ids
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Semicolon-delimited list of question IDs
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers for the specified questions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+  /questions/unanswered:
+    get:
+      operationId: getUnansweredQuestions
+      summary: Get Unanswered Questions
+      description: >-
+        Returns Stack Overflow questions that have no upvoted or accepted
+        answers. These are questions that need community attention.
+      tags:
+        - Questions
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/tagged'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Unanswered questions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /questions/featured:
+    get:
+      operationId: getFeaturedQuestions
+      summary: Get Featured Questions
+      description: >-
+        Returns Stack Overflow questions that have active bounties. Bounty
+        questions are featured to attract answers.
+      tags:
+        - Questions
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/tagged'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Featured questions with active bounties
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /answers:
+    get:
+      operationId: getAnswers
+      summary: Get All Answers
+      description: >-
+        Returns all answers on Stack Overflow sorted by creation date, activity,
+        or vote score.
+      tags:
+        - Answers
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/fromdate'
+        - $ref: '#/components/parameters/todate'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of answers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+  /answers/{ids}:
+    get:
+      operationId: getAnswersByIds
+      summary: Get Answers by IDs
+      description: >-
+        Returns the answers identified by a semicolon-delimited list of
+        answer IDs.
+      tags:
+        - Answers
+      parameters:
+        - name: ids
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Semicolon-delimited list of answer IDs
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers matching the provided IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+  /comments:
+    get:
+      operationId: getComments
+      summary: Get All Comments
+      description: >-
+        Returns comments on Stack Overflow posts sorted by creation date or
+        vote score.
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/fromdate'
+        - $ref: '#/components/parameters/todate'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentsResponse'
+  /users:
+    get:
+      operationId: getUsers
+      summary: Get All Users
+      description: >-
+        Returns Stack Overflow user profiles. Use inname to filter by display
+        name. Results can be sorted by reputation, creation date, or name.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/fromdate'
+        - $ref: '#/components/parameters/todate'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - name: inname
+          in: query
+          schema:
+            type: string
+          description: Filter users whose display name contains this string
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of user profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+  /users/{ids}:
+    get:
+      operationId: getUsersByIds
+      summary: Get Users by IDs
+      description: >-
+        Returns the user profiles identified by a semicolon-delimited list of
+        user IDs.
+      tags:
+        - Users
+      parameters:
+        - name: ids
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Semicolon-delimited list of user IDs
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: User profiles matching the provided IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+  /users/me:
+    get:
+      operationId: getAuthenticatedUser
+      summary: Get Authenticated User
+      description: >-
+        Returns the profile of the authenticated user based on the provided
+        OAuth access token.
+      tags:
+        - Users
+      security:
+        - oauth2: []
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: The authenticated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /users/{ids}/questions:
+    get:
+      operationId: getQuestionsByUser
+      summary: Get Questions by User
+      description: >-
+        Returns questions asked by users identified by a semicolon-delimited
+        list of user IDs.
+      tags:
+        - Users
+        - Questions
+      parameters:
+        - name: ids
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Semicolon-delimited list of user IDs
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions asked by the specified users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /users/{ids}/answers:
+    get:
+      operationId: getAnswersByUser
+      summary: Get Answers by User
+      description: >-
+        Returns answers posted by users identified by a semicolon-delimited
+        list of user IDs.
+      tags:
+        - Users
+        - Answers
+      parameters:
+        - name: ids
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Semicolon-delimited list of user IDs
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers posted by the specified users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+  /tags:
+    get:
+      operationId: getTags
+      summary: Get All Tags
+      description: >-
+        Returns all tags on Stack Overflow. Use inname to filter by tag name.
+        Results include usage counts and synonym information.
+      tags:
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - name: inname
+          in: query
+          schema:
+            type: string
+          description: Filter tags whose name contains this string
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of tags
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse'
+  /tags/{tags}/info:
+    get:
+      operationId: getTagInfo
+      summary: Get Tag Info
+      description: >-
+        Returns detailed information about the tags specified by a semicolon-
+        delimited list of tag names.
+      tags:
+        - Tags
+      parameters:
+        - name: tags
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Semicolon-delimited list of tag names
+          example: javascript;python
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Tag information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse'
+  /badges:
+    get:
+      operationId: getBadges
+      summary: Get All Badges
+      description: >-
+        Returns all badges available on Stack Overflow, including bronze, silver,
+        and gold badges for various achievements.
+      tags:
+        - Badges
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - name: inname
+          in: query
+          schema:
+            type: string
+          description: Filter badges whose name contains this string
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of badges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadgesResponse'
+  /search:
+    get:
+      operationId: searchQuestions
+      summary: Search Questions
+      description: >-
+        Searches Stack Overflow questions by title text, tags, and exclusion
+        tags. At least one of intitle, tagged, or nottagged must be specified.
+      tags:
+        - Search
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - name: intitle
+          in: query
+          schema:
+            type: string
+          description: Text that must appear in question titles
+        - $ref: '#/components/parameters/tagged'
+        - name: nottagged
+          in: query
+          schema:
+            type: string
+          description: Semicolon-delimited tags to exclude from results
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions matching the search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /search/advanced:
+    get:
+      operationId: searchAdvanced
+      summary: Advanced Search
+      description: >-
+        Performs an advanced search of Stack Overflow questions with filters for
+        acceptance status, answer count, body text, closure status, tags, user,
+        view count, and wiki status.
+      tags:
+        - Search
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/sort'
+        - name: q
+          in: query
+          schema:
+            type: string
+          description: Full-text search query
+        - name: accepted
+          in: query
+          schema:
+            type: boolean
+          description: Filter for questions with accepted answers
+        - name: answers
+          in: query
+          schema:
+            type: integer
+          description: Minimum number of answers required
+        - name: body
+          in: query
+          schema:
+            type: string
+          description: Text that must appear in the question body
+        - name: closed
+          in: query
+          schema:
+            type: boolean
+          description: Filter for closed or open questions
+        - $ref: '#/components/parameters/tagged'
+        - name: title
+          in: query
+          schema:
+            type: string
+          description: Text that must appear in the question title
+        - name: user
+          in: query
+          schema:
+            type: integer
+          description: Filter by user ID
+        - name: views
+          in: query
+          schema:
+            type: integer
+          description: Minimum number of views required
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions matching the advanced search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /similar:
+    get:
+      operationId: findSimilarQuestions
+      summary: Find Similar Questions
+      description: >-
+        Returns questions similar to a given title. Useful for finding existing
+        answers before posting a new question.
+      tags:
+        - Search
+      parameters:
+        - $ref: '#/components/parameters/site'
+        - name: title
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Question title to find similar questions for
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/tagged'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions similar to the provided title
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: >-
+        OAuth 2.0 authentication. Register an application at
+        http://stackapps.com/apps/oauth to obtain credentials.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://stackoverflow.com/oauth
+          tokenUrl: https://stackoverflow.com/oauth/access_token/json
+          scopes:
+            no_expiry: Issues an access token that does not expire
+            write_access: Allows write access to a user's data
+            private_info: Access a user's private information
+  parameters:
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+      description: Sort order
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    tagged:
+      name: tagged
+      in: query
+      schema:
+        type: string
+      description: Semicolon-delimited list of tags to filter by
+  responses:
+    BadRequest:
+      description: Bad request due to missing or invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required or token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+    Question:
+      type: object
+      properties:
+        question_id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        score:
+          type: integer
+        view_count:
+          type: integer
+        answer_count:
+          type: integer
+        accepted_answer_id:
+          type: integer
+        is_answered:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        tags:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+        bounty_amount:
+          type: integer
+        bounty_closes_date:
+          type: integer
+    Answer:
+      type: object
+      properties:
+        answer_id:
+          type: integer
+        question_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        is_accepted:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
+    Comment:
+      type: object
+      properties:
+        comment_id:
+          type: integer
+        post_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        creation_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+            - unregistered
+            - registered
+            - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+        website_url:
+          type: string
+          format: uri
+        location:
+          type: string
+        about_me:
+          type: string
+        creation_date:
+          type: integer
+        last_access_date:
+          type: integer
+        question_count:
+          type: integer
+        answer_count:
+          type: integer
+        link:
+          type: string
+          format: uri
+    Tag:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+        is_moderator_only:
+          type: boolean
+        is_required:
+          type: boolean
+        has_synonyms:
+          type: boolean
+    Badge:
+      type: object
+      properties:
+        badge_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        award_count:
+          type: integer
+        rank:
+          type: string
+          enum:
+            - bronze
+            - silver
+            - gold
+        badge_type:
+          type: string
+          enum:
+            - named
+            - tag_based
+    QuestionsResponse:
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Question'
+    AnswersResponse:
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Answer'
+    CommentsResponse:
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Comment'
+    UsersResponse:
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+    TagsResponse:
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tag'
+    BadgesResponse:
+      allOf:
+        - $ref: '#/components/schemas/Wrapper'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Badge'
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string

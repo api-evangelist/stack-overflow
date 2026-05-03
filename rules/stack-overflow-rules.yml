@@ -1,0 +1,90 @@
+extends: spectral:oas
+rules:
+  stack-overflow-operation-summaries-title-case:
+    description: All Stack Overflow API operation summaries must use Title Case
+    message: "Operation summary '{{value}}' must use Title Case"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][a-zA-Z0-9]*([ ][A-Z][a-zA-Z0-9]*)*$"
+
+  stack-overflow-operationid-camel-case:
+    description: Stack Overflow API operationIds must use camelCase
+    message: "operationId '{{value}}' must use camelCase"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  stack-overflow-operations-must-have-operationid:
+    description: All Stack Overflow API operations must have an operationId
+    message: "Operation is missing operationId"
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: operationId
+      function: truthy
+
+  stack-overflow-pagination-supported:
+    description: List operations should support page and pagesize parameters
+    message: "List operations should support pagination via page and pagesize"
+    severity: warn
+    given: "$.paths[*].get.parameters[*]"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+
+  stack-overflow-wrapper-response-schema:
+    description: Stack Overflow list responses must use the wrapper format with items
+    message: "Response schema should include items array for list responses"
+    severity: warn
+    given: "$.components.schemas[*]"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+
+  stack-overflow-teams-bearer-auth:
+    description: Stack Overflow for Teams API must use bearer token authentication
+    message: "Teams API must define bearerAuth security scheme"
+    severity: error
+    given: "$.components.securitySchemes"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+
+  stack-overflow-teams-path-includes-team:
+    description: Stack Overflow for Teams paths must include team parameter
+    message: "Teams API paths should include the {team} path parameter"
+    severity: warn
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^/teams/\\{team\\}"
+
+  stack-overflow-response-error-schemas:
+    description: Error responses must reference ErrorResponse schema
+    message: "4xx responses should use ErrorResponse schema"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].responses[4*].content.application/json.schema"
+    then:
+      function: truthy
+
+  stack-overflow-post-requires-body:
+    description: POST and PUT operations must have request bodies
+    message: "POST/PUT operations must define a requestBody"
+    severity: error
+    given: "$.paths[*][post,put]"
+    then:
+      field: requestBody
+      function: truthy

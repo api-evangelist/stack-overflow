@@ -1,0 +1,31 @@
+{
+  "title": "Stack Overflow Question Structure",
+  "description": "Structure of a Stack Overflow question with programming context",
+  "type": "object",
+  "properties": {
+    "question_id": {"type": "integer", "description": "Unique question identifier"},
+    "title": {"type": "string", "description": "Question title"},
+    "body": {"type": "string", "description": "HTML question body"},
+    "score": {"type": "integer", "description": "Net vote score"},
+    "view_count": {"type": "integer", "description": "Total views"},
+    "answer_count": {"type": "integer", "description": "Number of answers"},
+    "accepted_answer_id": {"type": "integer", "description": "Accepted answer ID"},
+    "is_answered": {"type": "boolean", "description": "Has accepted answer"},
+    "creation_date": {"type": "integer", "description": "Unix creation timestamp"},
+    "last_activity_date": {"type": "integer", "description": "Unix last activity timestamp"},
+    "owner": {
+      "type": "object",
+      "properties": {
+        "user_id": {"type": "integer"},
+        "display_name": {"type": "string"},
+        "reputation": {"type": "integer"},
+        "user_type": {"type": "string"},
+        "profile_image": {"type": "string"},
+        "link": {"type": "string"}
+      }
+    },
+    "tags": {"type": "array", "items": {"type": "string"}, "description": "Programming language and topic tags"},
+    "link": {"type": "string", "description": "URL to question"},
+    "bounty_amount": {"type": "integer", "description": "Active bounty amount"}
+  }
+}

@@ -1,0 +1,113 @@
+name: Stack Overflow Vocabulary
+description: >-
+  Vocabulary for Stack Overflow covering its Q&A platform, reputation system,
+  developer community concepts, Teams knowledge base features, and API terms.
+created: '2026-05-02'
+modified: '2026-05-02'
+terms:
+  - term: Stack Overflow
+    definition: >-
+      The world's largest Q&A community for programmers and software developers.
+      A Stack Exchange network site where developers ask and answer programming
+      questions, with content under CC BY-SA license.
+
+  - term: Question
+    definition: >-
+      A programming or software development problem posted to Stack Overflow
+      seeking a solution. Questions include a title, body, and tags.
+
+  - term: Answer
+    definition: >-
+      A post providing a solution to a Stack Overflow question. Answers can
+      be voted on, commented on, and one may be accepted by the question asker.
+
+  - term: Article
+    definition: >-
+      Long-form knowledge content in Stack Overflow for Teams. Articles are
+      for documentation, how-tos, and reference material that doesn't fit the
+      Q&A format.
+
+  - term: Tag
+    definition: >-
+      Keywords categorizing questions by programming language, framework, or
+      technology (e.g., javascript, python, react, docker). Questions can have
+      up to 5 tags.
+
+  - term: Reputation
+    definition: >-
+      A numerical measure of community trust earned through upvotes on
+      questions and answers. Reputation gates access to features like voting,
+      commenting, and editing.
+
+  - term: Badge
+    definition: >-
+      Achievement awards given for reaching milestones or demonstrating
+      positive behaviors. Bronze, silver, and gold tiers exist.
+
+  - term: Bounty
+    definition: >-
+      Additional reputation points offered to attract quality answers to a
+      question. Bounty questions are featured prominently.
+
+  - term: Stack Overflow for Teams
+    definition: >-
+      A private, searchable knowledge base for organizations built on the
+      Stack Overflow platform. Enables internal Q&A, documentation articles,
+      and knowledge management.
+
+  - term: Subject Matter Expert
+    abbreviation: SME
+    definition: >-
+      A designated user or user group in Stack Overflow for Teams with
+      expertise in specific topics (tags). SMEs are notified of unanswered
+      questions and can review tag wikis.
+
+  - term: User Group
+    definition: >-
+      A collection of users in Stack Overflow for Teams that can be assigned
+      as SMEs for tags or used for access control. Groups simplify team
+      management.
+
+  - term: Personal Access Token
+    abbreviation: PAT
+    definition: >-
+      Authentication credential for the Stack Overflow for Teams API v3.
+      Passed as a Bearer token in the Authorization header.
+
+  - term: API Wrapper
+    definition: >-
+      The Stack Exchange/Stack Overflow API response envelope containing 'items',
+      'has_more', 'quota_max', 'quota_remaining', and 'backoff' metadata.
+
+  - term: Quota
+    definition: >-
+      Daily API request limit. For unauthenticated requests: 300/day.
+      For authenticated requests (with access_token + key): up to 10,000/day.
+
+  - term: Filter
+    definition: >-
+      API mechanism to control response field inclusion. Reduces response
+      payload size by returning only needed fields.
+
+  - term: Unanswered Question
+    definition: >-
+      A question with no upvoted or accepted answers. The /questions/unanswered
+      endpoint returns these questions specifically to help connect askers with
+      answerers.
+
+  - term: Featured Question
+    definition: >-
+      A question with an active bounty. Featured questions are highlighted to
+      attract answers from the community.
+
+  - term: OAuth 2.0
+    definition: >-
+      Authentication framework used by the Stack Overflow public API. Clients
+      register at StackApps and use the authorization code flow to obtain
+      access tokens.
+
+  - term: StackApps
+    definition: >-
+      The Stack Exchange site for developers building applications and tools
+      that integrate with the Stack Exchange API. Used for app registration,
+      showcasing apps, and API support.

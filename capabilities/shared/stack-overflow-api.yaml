@@ -1,0 +1,275 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Stack Overflow Public API"
+  description: "Stack Overflow public API v2.3 for reading questions, answers, comments, users, tags, and badges. Authentication via OAuth 2.0 access tokens."
+  tags:
+    - Stack Overflow
+    - Q&A
+    - Programming
+    - Developer Community
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      STACK_OVERFLOW_ACCESS_TOKEN: STACK_OVERFLOW_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: stack-overflow-api
+      baseUri: https://api.stackexchange.com/2.3
+      description: "Stack Overflow public API v2.3"
+      authentication:
+        type: apikey
+        key: access_token
+        value: "{{STACK_OVERFLOW_ACCESS_TOKEN}}"
+        placement: query
+      resources:
+        - name: questions
+          path: /questions
+          description: "Stack Overflow questions"
+          operations:
+            - name: get-questions
+              method: GET
+              description: "Get questions from Stack Overflow"
+              inputParameters:
+                - name: site
+                  in: query
+                  type: string
+                  required: true
+                  description: "Must be stackoverflow"
+                - name: tagged
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by programming language or topic tags"
+                - name: sort
+                  in: query
+                  type: string
+                  required: false
+                  description: "Sort by activity, creation, votes, hot, week, month"
+                - name: order
+                  in: query
+                  type: string
+                  required: false
+                  description: "Sort order (asc, desc)"
+                - name: page
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Page number"
+                - name: pagesize
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Results per page (max 100)"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: search
+          path: /search
+          description: "Search Stack Overflow questions"
+          operations:
+            - name: search-questions
+              method: GET
+              description: "Search Stack Overflow questions by title and tags"
+              inputParameters:
+                - name: site
+                  in: query
+                  type: string
+                  required: true
+                  description: "Must be stackoverflow"
+                - name: intitle
+                  in: query
+                  type: string
+                  required: false
+                  description: "Text to search in question titles"
+                - name: tagged
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by tags"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: search-advanced
+          path: /search/advanced
+          description: "Advanced Stack Overflow question search"
+          operations:
+            - name: search-advanced
+              method: GET
+              description: "Advanced question search with multiple filter options"
+              inputParameters:
+                - name: site
+                  in: query
+                  type: string
+                  required: true
+                  description: "Must be stackoverflow"
+                - name: q
+                  in: query
+                  type: string
+                  required: false
+                  description: "Full-text search query"
+                - name: tagged
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by tags"
+                - name: accepted
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Filter for questions with accepted answers"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: similar
+          path: /similar
+          description: "Find similar questions on Stack Overflow"
+          operations:
+            - name: find-similar-questions
+              method: GET
+              description: "Find questions similar to a given title"
+              inputParameters:
+                - name: site
+                  in: query
+                  type: string
+                  required: true
+                  description: "Must be stackoverflow"
+                - name: title
+                  in: query
+                  type: string
+                  required: true
+                  description: "Question title to find similar questions for"
+                - name: tagged
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter similar questions by tags"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: tags
+          path: /tags
+          description: "Stack Overflow programming tags"
+          operations:
+            - name: get-tags
+              method: GET
+              description: "Get programming tags on Stack Overflow"
+              inputParameters:
+                - name: site
+                  in: query
+                  type: string
+                  required: true
+                  description: "Must be stackoverflow"
+                - name: inname
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter tags by name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: users
+          path: /users
+          description: "Stack Overflow users"
+          operations:
+            - name: get-users
+              method: GET
+              description: "Get Stack Overflow users"
+              inputParameters:
+                - name: site
+                  in: query
+                  type: string
+                  required: true
+                  description: "Must be stackoverflow"
+                - name: inname
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter users by display name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: stack-overflow-api
+      resources:
+        - path: /v1/questions
+          name: questions
+          operations:
+            - method: GET
+              name: get-questions
+              call: "stack-overflow-api.get-questions"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/search
+          name: search
+          operations:
+            - method: GET
+              name: search-questions
+              call: "stack-overflow-api.search-questions"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: stack-overflow-mcp
+      transport: http
+      tools:
+        - name: get-stackoverflow-questions
+          description: "Get questions from Stack Overflow with optional tag and sort filters"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "stack-overflow-api.get-questions"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: search-stackoverflow-questions
+          description: "Search Stack Overflow questions by title text and programming tags"
+          hints:
+            readOnly: true
+            openWorld: true
+            idempotent: true
+          call: "stack-overflow-api.search-questions"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: find-similar-stackoverflow-questions
+          description: "Find Stack Overflow questions similar to a given question title"
+          hints:
+            readOnly: true
+            openWorld: true
+            idempotent: true
+          call: "stack-overflow-api.find-similar-questions"
+          outputParameters:
+            - type: object
+              mapping: "$."

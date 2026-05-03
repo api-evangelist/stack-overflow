@@ -1,0 +1,56 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "sioc": "http://rdfs.org/sioc/ns#",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "so": "https://api.stackexchange.com/2.3/",
+
+    "StackOverflow": "schema:WebSite",
+    "Question": "schema:Question",
+    "Answer": "schema:Answer",
+    "Comment": "sioc:Post",
+    "Article": "schema:Article",
+    "User": "foaf:Person",
+    "Tag": "schema:DefinedTerm",
+    "Badge": "schema:Certification",
+    "UserGroup": "schema:Organization",
+    "Team": "schema:Team",
+    "SME": "so:SubjectMatterExpert",
+
+    "question_id": "schema:identifier",
+    "title": "schema:name",
+    "body": "schema:text",
+    "score": "schema:reviewCount",
+    "view_count": "schema:interactionCount",
+    "answer_count": "schema:answerCount",
+    "accepted_answer_id": "schema:acceptedAnswer",
+    "creation_date": {
+      "@id": "schema:dateCreated",
+      "@type": "schema:DateTime"
+    },
+    "last_activity_date": {
+      "@id": "schema:dateModified",
+      "@type": "schema:DateTime"
+    },
+    "owner": "schema:author",
+    "tags": "schema:keywords",
+    "link": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+
+    "user_id": "schema:identifier",
+    "display_name": "foaf:name",
+    "reputation": "so:reputation",
+    "profile_image": {
+      "@id": "foaf:img",
+      "@type": "@id"
+    },
+    "email": "schema:email",
+
+    "team": "schema:identifier",
+    "is_accepted": "so:isAccepted",
+    "bounty_amount": "so:bountyAmount"
+  }
+}

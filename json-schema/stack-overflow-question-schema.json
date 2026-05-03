@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/api-evangelist/stack-overflow/json-schema/stack-overflow-question-schema.json",
+  "title": "Stack Overflow Question",
+  "description": "A question on Stack Overflow with votes, tags, answers, and owner information",
+  "type": "object",
+  "required": ["question_id", "title", "link"],
+  "properties": {
+    "question_id": {
+      "type": "integer",
+      "description": "Unique identifier for the question"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the question"
+    },
+    "body": {
+      "type": "string",
+      "description": "HTML body of the question"
+    },
+    "score": {
+      "type": "integer",
+      "description": "Net vote score"
+    },
+    "view_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of views"
+    },
+    "answer_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of answers"
+    },
+    "accepted_answer_id": {
+      "type": "integer",
+      "description": "ID of the accepted answer"
+    },
+    "is_answered": {
+      "type": "boolean",
+      "description": "Whether the question has been answered"
+    },
+    "creation_date": {
+      "type": "integer",
+      "description": "Unix timestamp of creation"
+    },
+    "last_activity_date": {
+      "type": "integer",
+      "description": "Unix timestamp of last activity"
+    },
+    "owner": {
+      "$ref": "#/$defs/ShallowUser"
+    },
+    "tags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Programming language and topic tags"
+    },
+    "link": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the question"
+    },
+    "bounty_amount": {
+      "type": "integer",
+      "description": "Active bounty amount in reputation points"
+    }
+  },
+  "$defs": {
+    "ShallowUser": {
+      "title": "Shallow User",
+      "type": "object",
+      "properties": {
+        "user_id": {"type": "integer"},
+        "display_name": {"type": "string"},
+        "reputation": {"type": "integer"},
+        "user_type": {
+          "type": "string",
+          "enum": ["unregistered", "registered", "moderator"]
+        },
+        "profile_image": {"type": "string", "format": "uri"},
+        "link": {"type": "string", "format": "uri"}
+      }
+    }
+  }
+}
