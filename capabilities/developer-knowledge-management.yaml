@@ -1,293 +1,606 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "Stack Overflow Developer Knowledge Management"
-  description: >-
-    Unified workflow capability combining Stack Overflow's public Q&A search
-    with Stack Overflow for Teams private knowledge base management. Enables
-    developers and AI agents to search public Stack Overflow for programming
-    solutions, find similar questions, and manage internal team knowledge
-    through questions, answers, and articles.
+  label: Stack Overflow Developer Knowledge Management
+  description: Unified workflow capability combining Stack Overflow's public Q&A search with Stack Overflow for Teams private
+    knowledge base management. Enables developers and AI agents to search public Stack Overflow for programming solutions,
+    find similar questions, and manage internal team knowledge through questions, answers, and articles.
   tags:
-    - Stack Overflow
-    - Knowledge Management
-    - Developer Community
-    - Q&A
-    - Teams
-    - Search
-  created: "2026-05-02"
-  modified: "2026-05-02"
-
+  - Stack Overflow
+  - Knowledge Management
+  - Developer Community
+  - Q&A
+  - Teams
+  - Search
+  created: '2026-05-02'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      STACK_OVERFLOW_ACCESS_TOKEN: STACK_OVERFLOW_ACCESS_TOKEN
-      STACK_OVERFLOW_TEAMS_PAT: STACK_OVERFLOW_TEAMS_PAT
-
+- namespace: env
+  keys:
+    STACK_OVERFLOW_ACCESS_TOKEN: STACK_OVERFLOW_ACCESS_TOKEN
+    STACK_OVERFLOW_TEAMS_PAT: STACK_OVERFLOW_TEAMS_PAT
 capability:
   consumes:
-    - import: stack-overflow-api
-      location: ./shared/stack-overflow-api.yaml
-    - import: stack-overflow-teams-api
-      location: ./shared/stack-overflow-teams-api.yaml
-
+  - type: http
+    namespace: stack-overflow-api
+    baseUri: https://api.stackexchange.com/2.3
+    description: Stack Overflow public API v2.3
+    authentication:
+      type: apikey
+      key: access_token
+      value: '{{STACK_OVERFLOW_ACCESS_TOKEN}}'
+      placement: query
+    resources:
+    - name: questions
+      path: /questions
+      description: Stack Overflow questions
+      operations:
+      - name: get-questions
+        method: GET
+        description: Get questions from Stack Overflow
+        inputParameters:
+        - name: site
+          in: query
+          type: string
+          required: true
+          description: Must be stackoverflow
+        - name: tagged
+          in: query
+          type: string
+          required: false
+          description: Filter by programming language or topic tags
+        - name: sort
+          in: query
+          type: string
+          required: false
+          description: Sort by activity, creation, votes, hot, week, month
+        - name: order
+          in: query
+          type: string
+          required: false
+          description: Sort order (asc, desc)
+        - name: page
+          in: query
+          type: integer
+          required: false
+          description: Page number
+        - name: pagesize
+          in: query
+          type: integer
+          required: false
+          description: Results per page (max 100)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: Search Stack Overflow questions
+      operations:
+      - name: search-questions
+        method: GET
+        description: Search Stack Overflow questions by title and tags
+        inputParameters:
+        - name: site
+          in: query
+          type: string
+          required: true
+          description: Must be stackoverflow
+        - name: intitle
+          in: query
+          type: string
+          required: false
+          description: Text to search in question titles
+        - name: tagged
+          in: query
+          type: string
+          required: false
+          description: Filter by tags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search-advanced
+      path: /search/advanced
+      description: Advanced Stack Overflow question search
+      operations:
+      - name: search-advanced
+        method: GET
+        description: Advanced question search with multiple filter options
+        inputParameters:
+        - name: site
+          in: query
+          type: string
+          required: true
+          description: Must be stackoverflow
+        - name: q
+          in: query
+          type: string
+          required: false
+          description: Full-text search query
+        - name: tagged
+          in: query
+          type: string
+          required: false
+          description: Filter by tags
+        - name: accepted
+          in: query
+          type: boolean
+          required: false
+          description: Filter for questions with accepted answers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: similar
+      path: /similar
+      description: Find similar questions on Stack Overflow
+      operations:
+      - name: find-similar-questions
+        method: GET
+        description: Find questions similar to a given title
+        inputParameters:
+        - name: site
+          in: query
+          type: string
+          required: true
+          description: Must be stackoverflow
+        - name: title
+          in: query
+          type: string
+          required: true
+          description: Question title to find similar questions for
+        - name: tagged
+          in: query
+          type: string
+          required: false
+          description: Filter similar questions by tags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: tags
+      path: /tags
+      description: Stack Overflow programming tags
+      operations:
+      - name: get-tags
+        method: GET
+        description: Get programming tags on Stack Overflow
+        inputParameters:
+        - name: site
+          in: query
+          type: string
+          required: true
+          description: Must be stackoverflow
+        - name: inname
+          in: query
+          type: string
+          required: false
+          description: Filter tags by name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users
+      path: /users
+      description: Stack Overflow users
+      operations:
+      - name: get-users
+        method: GET
+        description: Get Stack Overflow users
+        inputParameters:
+        - name: site
+          in: query
+          type: string
+          required: true
+          description: Must be stackoverflow
+        - name: inname
+          in: query
+          type: string
+          required: false
+          description: Filter users by display name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: stack-overflow-teams-api
+    baseUri: https://api.stackoverflowteams.com/v3
+    description: Stack Overflow for Teams API v3
+    authentication:
+      type: bearer
+      token: '{{STACK_OVERFLOW_TEAMS_PAT}}'
+    resources:
+    - name: team-questions
+      path: /teams/{team}/questions
+      description: Team workspace questions
+      operations:
+      - name: get-team-questions
+        method: GET
+        description: Get questions in a Stack Overflow for Teams workspace
+        inputParameters:
+        - name: team
+          in: path
+          type: string
+          required: true
+          description: Team workspace slug
+        - name: sort
+          in: query
+          type: string
+          required: false
+          description: Sort field
+        - name: order
+          in: query
+          type: string
+          required: false
+          description: Sort order
+        - name: page
+          in: query
+          type: integer
+          required: false
+          description: Page number
+        - name: pagesize
+          in: query
+          type: integer
+          required: false
+          description: Results per page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-team-question
+        method: POST
+        description: Create a new question in a Stack Overflow for Teams workspace
+        inputParameters:
+        - name: team
+          in: path
+          type: string
+          required: true
+          description: Team workspace slug
+        body:
+          type: json
+          data:
+            title: '{{tools.title}}'
+            body: '{{tools.body}}'
+            tags: '{{tools.tags}}'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: team-articles
+      path: /teams/{team}/articles
+      description: Team knowledge articles
+      operations:
+      - name: get-team-articles
+        method: GET
+        description: Get knowledge articles in a Stack Overflow for Teams workspace
+        inputParameters:
+        - name: team
+          in: path
+          type: string
+          required: true
+          description: Team workspace slug
+        - name: page
+          in: query
+          type: integer
+          required: false
+          description: Page number
+        - name: pagesize
+          in: query
+          type: integer
+          required: false
+          description: Results per page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-team-article
+        method: POST
+        description: Create a new knowledge article in a Stack Overflow for Teams workspace
+        inputParameters:
+        - name: team
+          in: path
+          type: string
+          required: true
+          description: Team workspace slug
+        body:
+          type: json
+          data:
+            title: '{{tools.title}}'
+            body: '{{tools.body}}'
+            tags: '{{tools.tags}}'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: team-users
+      path: /teams/{team}/users
+      description: Team workspace users
+      operations:
+      - name: get-team-users
+        method: GET
+        description: Get users in a Stack Overflow for Teams workspace
+        inputParameters:
+        - name: team
+          in: path
+          type: string
+          required: true
+          description: Team workspace slug
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: team-tags
+      path: /teams/{team}/tags
+      description: Team workspace tags
+      operations:
+      - name: get-team-tags
+        method: GET
+        description: Get tags in a Stack Overflow for Teams workspace
+        inputParameters:
+        - name: team
+          in: path
+          type: string
+          required: true
+          description: Team workspace slug
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
-    - type: rest
-      port: 8080
-      namespace: developer-knowledge-api
-      description: "Unified REST API for Stack Overflow public search and Teams knowledge management."
-      resources:
-        - path: /v1/questions
-          name: questions
-          description: "Browse Stack Overflow questions"
-          operations:
-            - method: GET
-              name: get-questions
-              description: "Get questions from Stack Overflow sorted by activity, votes, or creation date"
-              call: "stack-overflow-api.get-questions"
-              with:
-                site: "rest.site"
-                tagged: "rest.tagged"
-                sort: "rest.sort"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/search
-          name: search
-          description: "Search Stack Overflow questions"
-          operations:
-            - method: GET
-              name: search-questions
-              description: "Search Stack Overflow questions by title text and tags"
-              call: "stack-overflow-api.search-questions"
-              with:
-                site: "rest.site"
-                intitle: "rest.intitle"
-                tagged: "rest.tagged"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/search/advanced
-          name: advanced-search
-          description: "Advanced Stack Overflow question search"
-          operations:
-            - method: GET
-              name: search-advanced
-              description: "Advanced search with acceptance and filter options"
-              call: "stack-overflow-api.search-advanced"
-              with:
-                site: "rest.site"
-                q: "rest.q"
-                tagged: "rest.tagged"
-                accepted: "rest.accepted"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/similar
-          name: similar-questions
-          description: "Find similar questions before asking new ones"
-          operations:
-            - method: GET
-              name: find-similar
-              description: "Find existing similar questions to avoid duplicates"
-              call: "stack-overflow-api.find-similar-questions"
-              with:
-                site: "rest.site"
-                title: "rest.title"
-                tagged: "rest.tagged"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/teams/{team}/questions
-          name: team-questions
-          description: "Internal team Q&A questions"
-          operations:
-            - method: GET
-              name: get-team-questions
-              description: "Get internal knowledge base questions"
-              call: "stack-overflow-teams-api.get-team-questions"
-              with:
-                team: "rest.team"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-team-question
-              description: "Create a new internal knowledge base question"
-              call: "stack-overflow-teams-api.create-team-question"
-              with:
-                team: "rest.team"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/teams/{team}/articles
-          name: team-articles
-          description: "Internal team knowledge articles"
-          operations:
-            - method: GET
-              name: get-team-articles
-              description: "Get internal documentation articles"
-              call: "stack-overflow-teams-api.get-team-articles"
-              with:
-                team: "rest.team"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-team-article
-              description: "Create a new internal documentation article"
-              call: "stack-overflow-teams-api.create-team-article"
-              with:
-                team: "rest.team"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-        - path: /v1/tags
-          name: tags
-          description: "Browse programming technology tags"
-          operations:
-            - method: GET
-              name: get-tags
-              description: "Get Stack Overflow programming tags"
-              call: "stack-overflow-api.get-tags"
-              with:
-                site: "rest.site"
-                inname: "rest.inname"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9090
-      namespace: developer-knowledge-mcp
-      transport: http
-      description: "MCP server for AI-assisted developer knowledge discovery and team knowledge management."
-      tools:
-        - name: search-stackoverflow
-          description: "Search Stack Overflow for programming questions, solutions, and code examples by keyword or technology tag"
-          hints:
-            readOnly: true
-            openWorld: true
-            idempotent: true
-          call: "stack-overflow-api.search-questions"
-          with:
-            site: "tools.site"
-            intitle: "tools.intitle"
-            tagged: "tools.tagged"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: advanced-search-stackoverflow
-          description: "Advanced Stack Overflow search with filters for accepted answers, minimum answers, tags, and view count"
-          hints:
-            readOnly: true
-            openWorld: true
-            idempotent: true
-          call: "stack-overflow-api.search-advanced"
-          with:
-            site: "tools.site"
-            q: "tools.q"
-            tagged: "tools.tagged"
-            accepted: "tools.accepted"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: find-similar-stackoverflow-questions
-          description: "Find existing Stack Overflow questions similar to a given title to avoid duplicates"
-          hints:
-            readOnly: true
-            openWorld: true
-            idempotent: true
-          call: "stack-overflow-api.find-similar-questions"
-          with:
-            site: "tools.site"
-            title: "tools.title"
-            tagged: "tools.tagged"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-top-stackoverflow-questions
-          description: "Get top-voted or most-active Stack Overflow questions by programming language or topic tag"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "stack-overflow-api.get-questions"
-          with:
-            site: "tools.site"
-            tagged: "tools.tagged"
-            sort: "tools.sort"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: browse-programming-tags
-          description: "Browse Stack Overflow tags to explore programming languages, frameworks, and technologies"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "stack-overflow-api.get-tags"
-          with:
-            site: "tools.site"
-            inname: "tools.inname"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-team-questions
-          description: "Get questions from an internal Stack Overflow for Teams knowledge base"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "stack-overflow-teams-api.get-team-questions"
-          with:
-            team: "tools.team"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: create-team-question
-          description: "Create a new question in a Stack Overflow for Teams internal knowledge base"
-          hints:
-            readOnly: false
-            destructive: false
-            idempotent: false
-          call: "stack-overflow-teams-api.create-team-question"
-          with:
-            team: "tools.team"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: get-team-articles
-          description: "Get knowledge articles from a Stack Overflow for Teams workspace"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "stack-overflow-teams-api.get-team-articles"
-          with:
-            team: "tools.team"
-          outputParameters:
-            - type: object
-              mapping: "$."
-
-        - name: create-team-article
-          description: "Create a new knowledge article in a Stack Overflow for Teams workspace"
-          hints:
-            readOnly: false
-            destructive: false
-            idempotent: false
-          call: "stack-overflow-teams-api.create-team-article"
-          with:
-            team: "tools.team"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8080
+    namespace: developer-knowledge-api
+    description: Unified REST API for Stack Overflow public search and Teams knowledge management.
+    resources:
+    - path: /v1/questions
+      name: questions
+      description: Browse Stack Overflow questions
+      operations:
+      - method: GET
+        name: get-questions
+        description: Get questions from Stack Overflow sorted by activity, votes, or creation date
+        call: stack-overflow-api.get-questions
+        with:
+          site: rest.site
+          tagged: rest.tagged
+          sort: rest.sort
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/search
+      name: search
+      description: Search Stack Overflow questions
+      operations:
+      - method: GET
+        name: search-questions
+        description: Search Stack Overflow questions by title text and tags
+        call: stack-overflow-api.search-questions
+        with:
+          site: rest.site
+          intitle: rest.intitle
+          tagged: rest.tagged
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/search/advanced
+      name: advanced-search
+      description: Advanced Stack Overflow question search
+      operations:
+      - method: GET
+        name: search-advanced
+        description: Advanced search with acceptance and filter options
+        call: stack-overflow-api.search-advanced
+        with:
+          site: rest.site
+          q: rest.q
+          tagged: rest.tagged
+          accepted: rest.accepted
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/similar
+      name: similar-questions
+      description: Find similar questions before asking new ones
+      operations:
+      - method: GET
+        name: find-similar
+        description: Find existing similar questions to avoid duplicates
+        call: stack-overflow-api.find-similar-questions
+        with:
+          site: rest.site
+          title: rest.title
+          tagged: rest.tagged
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team}/questions
+      name: team-questions
+      description: Internal team Q&A questions
+      operations:
+      - method: GET
+        name: get-team-questions
+        description: Get internal knowledge base questions
+        call: stack-overflow-teams-api.get-team-questions
+        with:
+          team: rest.team
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-team-question
+        description: Create a new internal knowledge base question
+        call: stack-overflow-teams-api.create-team-question
+        with:
+          team: rest.team
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team}/articles
+      name: team-articles
+      description: Internal team knowledge articles
+      operations:
+      - method: GET
+        name: get-team-articles
+        description: Get internal documentation articles
+        call: stack-overflow-teams-api.get-team-articles
+        with:
+          team: rest.team
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-team-article
+        description: Create a new internal documentation article
+        call: stack-overflow-teams-api.create-team-article
+        with:
+          team: rest.team
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tags
+      name: tags
+      description: Browse programming technology tags
+      operations:
+      - method: GET
+        name: get-tags
+        description: Get Stack Overflow programming tags
+        call: stack-overflow-api.get-tags
+        with:
+          site: rest.site
+          inname: rest.inname
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: developer-knowledge-mcp
+    transport: http
+    description: MCP server for AI-assisted developer knowledge discovery and team knowledge management.
+    tools:
+    - name: search-stackoverflow
+      description: Search Stack Overflow for programming questions, solutions, and code examples by keyword or technology
+        tag
+      hints:
+        readOnly: true
+        openWorld: true
+        idempotent: true
+      call: stack-overflow-api.search-questions
+      with:
+        site: tools.site
+        intitle: tools.intitle
+        tagged: tools.tagged
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: advanced-search-stackoverflow
+      description: Advanced Stack Overflow search with filters for accepted answers, minimum answers, tags, and view count
+      hints:
+        readOnly: true
+        openWorld: true
+        idempotent: true
+      call: stack-overflow-api.search-advanced
+      with:
+        site: tools.site
+        q: tools.q
+        tagged: tools.tagged
+        accepted: tools.accepted
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: find-similar-stackoverflow-questions
+      description: Find existing Stack Overflow questions similar to a given title to avoid duplicates
+      hints:
+        readOnly: true
+        openWorld: true
+        idempotent: true
+      call: stack-overflow-api.find-similar-questions
+      with:
+        site: tools.site
+        title: tools.title
+        tagged: tools.tagged
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-top-stackoverflow-questions
+      description: Get top-voted or most-active Stack Overflow questions by programming language or topic tag
+      hints:
+        readOnly: true
+        idempotent: true
+      call: stack-overflow-api.get-questions
+      with:
+        site: tools.site
+        tagged: tools.tagged
+        sort: tools.sort
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: browse-programming-tags
+      description: Browse Stack Overflow tags to explore programming languages, frameworks, and technologies
+      hints:
+        readOnly: true
+        idempotent: true
+      call: stack-overflow-api.get-tags
+      with:
+        site: tools.site
+        inname: tools.inname
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-team-questions
+      description: Get questions from an internal Stack Overflow for Teams knowledge base
+      hints:
+        readOnly: true
+        idempotent: true
+      call: stack-overflow-teams-api.get-team-questions
+      with:
+        team: tools.team
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-team-question
+      description: Create a new question in a Stack Overflow for Teams internal knowledge base
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: stack-overflow-teams-api.create-team-question
+      with:
+        team: tools.team
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-team-articles
+      description: Get knowledge articles from a Stack Overflow for Teams workspace
+      hints:
+        readOnly: true
+        idempotent: true
+      call: stack-overflow-teams-api.get-team-articles
+      with:
+        team: tools.team
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-team-article
+      description: Create a new knowledge article in a Stack Overflow for Teams workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: stack-overflow-teams-api.create-team-article
+      with:
+        team: tools.team
+      outputParameters:
+      - type: object
+        mapping: $.
