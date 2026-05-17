@@ -47,11 +47,11 @@ apis:
       - url: https://api.stackexchange.com/docs
         type: Documentation
       - url: https://stackexchange.com/legal/api-terms-of-use
-        type: Terms of Service
+        type: TermsOfService
       - url: https://api.stackexchange.com/docs/throttle
-        type: Rate Limits
+        type: RateLimits
       - url: http://stackapps.com/apps/oauth/register
-        type: Sign Up
+        type: SignUp
       - url: openapi/stack-overflow-openapi.yml
         type: OpenAPI
   - aid: stack-overflow:stack-overflow-for-teams-api
@@ -88,11 +88,11 @@ common:
   - url: https://api.stackexchange.com/docs/authentication
     type: Authentication
   - url: http://stackapps.com/apps/oauth/register
-    type: Sign Up
+    type: SignUp
   - url: https://stackexchange.com/legal/api-terms-of-use
-    type: Terms of Service
+    type: TermsOfService
   - url: json-ld/stack-overflow-context.jsonld
-    type: JSON-LD
+    type: JSONLD
   - url: json-schema/stack-overflow-question-schema.json
     type: JSONSchema
   - url: vocabulary/stack-overflow-vocabulary.yml
