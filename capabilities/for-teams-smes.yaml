@@ -1,0 +1,122 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Stack Overflow for Teams API — SMEs
+  description: 'Stack Overflow for Teams API — SMEs. 2 operations. Lead operation: Get Tag SMEs. Self-contained Naftiko capability
+    covering one Stack Overflow business surface.'
+  tags:
+  - Stack Overflow
+  - SMEs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    STACK_OVERFLOW_API_KEY: STACK_OVERFLOW_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: for-teams-smes
+    baseUri: https://api.stackoverflowteams.com/v3
+    description: Stack Overflow for Teams API — SMEs business capability. Self-contained, no shared references.
+    resources:
+    - name: teams-team-tags-tag-smes
+      path: /teams/{team}/tags/{tag}/smes
+      operations:
+      - name: gettagsmes
+        method: GET
+        description: Get Tag SMEs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tag
+          in: path
+          type: string
+          description: The tag name
+          required: true
+      - name: addtagsme
+        method: POST
+        description: Add an SME for a Tag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tag
+          in: path
+          type: string
+          description: The tag name
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.STACK_OVERFLOW_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: for-teams-smes-rest
+    port: 8080
+    description: REST adapter for Stack Overflow for Teams API — SMEs. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team}/tags/{tag}/smes
+      name: teams-team-tags-tag-smes
+      description: REST surface for teams-team-tags-tag-smes.
+      operations:
+      - method: GET
+        name: gettagsmes
+        description: Get Tag SMEs
+        call: for-teams-smes.gettagsmes
+        with:
+          tag: rest.tag
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: addtagsme
+        description: Add an SME for a Tag
+        call: for-teams-smes.addtagsme
+        with:
+          tag: rest.tag
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: for-teams-smes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Stack Overflow for Teams API — SMEs. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: get-tag-smes
+      description: Get Tag SMEs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: for-teams-smes.gettagsmes
+      with:
+        tag: tools.tag
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: add-sme-tag
+      description: Add an SME for a Tag
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: for-teams-smes.addtagsme
+      with:
+        tag: tools.tag
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

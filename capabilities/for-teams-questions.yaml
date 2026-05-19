@@ -1,0 +1,204 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Stack Overflow for Teams API — Questions
+  description: 'Stack Overflow for Teams API — Questions. 5 operations. Lead operation: Get Team Questions. Self-contained
+    Naftiko capability covering one Stack Overflow business surface.'
+  tags:
+  - Stack Overflow
+  - Questions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    STACK_OVERFLOW_API_KEY: STACK_OVERFLOW_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: for-teams-questions
+    baseUri: https://api.stackoverflowteams.com/v3
+    description: Stack Overflow for Teams API — Questions business capability. Self-contained, no shared references.
+    resources:
+    - name: teams-team-questions
+      path: /teams/{team}/questions
+      operations:
+      - name: getteamquestions
+        method: GET
+        description: Get Team Questions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createteamquestion
+        method: POST
+        description: Create a Team Question
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-questions-id
+      path: /teams/{team}/questions/{id}
+      operations:
+      - name: getteamquestion
+        method: GET
+        description: Get a Team Question
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateteamquestion
+        method: PUT
+        description: Update a Team Question
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-questions-id-answers
+      path: /teams/{team}/questions/{id}/answers
+      operations:
+      - name: getteamanswers
+        method: GET
+        description: Get Answers for a Team Question
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.STACK_OVERFLOW_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: for-teams-questions-rest
+    port: 8080
+    description: REST adapter for Stack Overflow for Teams API — Questions. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team}/questions
+      name: teams-team-questions
+      description: REST surface for teams-team-questions.
+      operations:
+      - method: GET
+        name: getteamquestions
+        description: Get Team Questions
+        call: for-teams-questions.getteamquestions
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createteamquestion
+        description: Create a Team Question
+        call: for-teams-questions.createteamquestion
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team}/questions/{id}
+      name: teams-team-questions-id
+      description: REST surface for teams-team-questions-id.
+      operations:
+      - method: GET
+        name: getteamquestion
+        description: Get a Team Question
+        call: for-teams-questions.getteamquestion
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateteamquestion
+        description: Update a Team Question
+        call: for-teams-questions.updateteamquestion
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team}/questions/{id}/answers
+      name: teams-team-questions-id-answers
+      description: REST surface for teams-team-questions-id-answers.
+      operations:
+      - method: GET
+        name: getteamanswers
+        description: Get Answers for a Team Question
+        call: for-teams-questions.getteamanswers
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: for-teams-questions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Stack Overflow for Teams API — Questions. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: get-team-questions
+      description: Get Team Questions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: for-teams-questions.getteamquestions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-team-question
+      description: Create a Team Question
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: for-teams-questions.createteamquestion
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-team-question
+      description: Get a Team Question
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: for-teams-questions.getteamquestion
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-team-question
+      description: Update a Team Question
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: for-teams-questions.updateteamquestion
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-answers-team-question
+      description: Get Answers for a Team Question
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: for-teams-questions.getteamanswers
+      outputParameters:
+      - type: object
+        mapping: $.

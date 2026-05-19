@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Stack Overflow API — Comments
+  description: 'Stack Overflow API — Comments. 1 operations. Lead operation: Get All Comments. Self-contained Naftiko capability
+    covering one Stack Overflow business surface.'
+  tags:
+  - Stack Overflow
+  - Comments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    STACK_OVERFLOW_API_KEY: STACK_OVERFLOW_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: stack-overflow-comments
+    baseUri: https://api.stackexchange.com/2.3
+    description: Stack Overflow API — Comments business capability. Self-contained, no shared references.
+    resources:
+    - name: comments
+      path: /comments
+      operations:
+      - name: getcomments
+        method: GET
+        description: Get All Comments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.STACK_OVERFLOW_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: stack-overflow-comments-rest
+    port: 8080
+    description: REST adapter for Stack Overflow API — Comments. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/comments
+      name: comments
+      description: REST surface for comments.
+      operations:
+      - method: GET
+        name: getcomments
+        description: Get All Comments
+        call: stack-overflow-comments.getcomments
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: stack-overflow-comments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Stack Overflow API — Comments. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: get-all-comments
+      description: Get All Comments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-comments.getcomments
+      outputParameters:
+      - type: object
+        mapping: $.

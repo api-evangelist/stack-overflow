@@ -1,0 +1,260 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Stack Overflow API — Questions
+  description: 'Stack Overflow API — Questions. 6 operations. Lead operation: Get All Questions. Self-contained Naftiko capability
+    covering one Stack Overflow business surface.'
+  tags:
+  - Stack Overflow
+  - Questions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    STACK_OVERFLOW_API_KEY: STACK_OVERFLOW_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: stack-overflow-questions
+    baseUri: https://api.stackexchange.com/2.3
+    description: Stack Overflow API — Questions business capability. Self-contained, no shared references.
+    resources:
+    - name: questions
+      path: /questions
+      operations:
+      - name: getquestions
+        method: GET
+        description: Get All Questions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: questions-featured
+      path: /questions/featured
+      operations:
+      - name: getfeaturedquestions
+        method: GET
+        description: Get Featured Questions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: questions-unanswered
+      path: /questions/unanswered
+      operations:
+      - name: getunansweredquestions
+        method: GET
+        description: Get Unanswered Questions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: questions-ids
+      path: /questions/{ids}
+      operations:
+      - name: getquestionsbyids
+        method: GET
+        description: Get Questions by IDs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ids
+          in: path
+          type: string
+          description: Semicolon-delimited list of question IDs (max 100)
+          required: true
+    - name: questions-ids-answers
+      path: /questions/{ids}/answers
+      operations:
+      - name: getanswersforquestion
+        method: GET
+        description: Get Answers for Questions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ids
+          in: path
+          type: string
+          description: Semicolon-delimited list of question IDs
+          required: true
+    - name: users-ids-questions
+      path: /users/{ids}/questions
+      operations:
+      - name: getquestionsbyuser
+        method: GET
+        description: Get Questions by User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ids
+          in: path
+          type: string
+          description: Semicolon-delimited list of user IDs
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.STACK_OVERFLOW_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: stack-overflow-questions-rest
+    port: 8080
+    description: REST adapter for Stack Overflow API — Questions. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/questions
+      name: questions
+      description: REST surface for questions.
+      operations:
+      - method: GET
+        name: getquestions
+        description: Get All Questions
+        call: stack-overflow-questions.getquestions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/questions/featured
+      name: questions-featured
+      description: REST surface for questions-featured.
+      operations:
+      - method: GET
+        name: getfeaturedquestions
+        description: Get Featured Questions
+        call: stack-overflow-questions.getfeaturedquestions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/questions/unanswered
+      name: questions-unanswered
+      description: REST surface for questions-unanswered.
+      operations:
+      - method: GET
+        name: getunansweredquestions
+        description: Get Unanswered Questions
+        call: stack-overflow-questions.getunansweredquestions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/questions/{ids}
+      name: questions-ids
+      description: REST surface for questions-ids.
+      operations:
+      - method: GET
+        name: getquestionsbyids
+        description: Get Questions by IDs
+        call: stack-overflow-questions.getquestionsbyids
+        with:
+          ids: rest.ids
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/questions/{ids}/answers
+      name: questions-ids-answers
+      description: REST surface for questions-ids-answers.
+      operations:
+      - method: GET
+        name: getanswersforquestion
+        description: Get Answers for Questions
+        call: stack-overflow-questions.getanswersforquestion
+        with:
+          ids: rest.ids
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{ids}/questions
+      name: users-ids-questions
+      description: REST surface for users-ids-questions.
+      operations:
+      - method: GET
+        name: getquestionsbyuser
+        description: Get Questions by User
+        call: stack-overflow-questions.getquestionsbyuser
+        with:
+          ids: rest.ids
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: stack-overflow-questions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Stack Overflow API — Questions. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: get-all-questions
+      description: Get All Questions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-questions.getquestions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-featured-questions
+      description: Get Featured Questions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-questions.getfeaturedquestions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-unanswered-questions
+      description: Get Unanswered Questions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-questions.getunansweredquestions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-questions-ids
+      description: Get Questions by IDs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-questions.getquestionsbyids
+      with:
+        ids: tools.ids
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-answers-questions
+      description: Get Answers for Questions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-questions.getanswersforquestion
+      with:
+        ids: tools.ids
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-questions-user
+      description: Get Questions by User
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-questions.getquestionsbyuser
+      with:
+        ids: tools.ids
+      outputParameters:
+      - type: object
+        mapping: $.

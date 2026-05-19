@@ -1,0 +1,147 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Stack Overflow for Teams API — Tags
+  description: 'Stack Overflow for Teams API — Tags. 3 operations. Lead operation: Get Team Tags. Self-contained Naftiko capability
+    covering one Stack Overflow business surface.'
+  tags:
+  - Stack Overflow
+  - Tags
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    STACK_OVERFLOW_API_KEY: STACK_OVERFLOW_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: for-teams-tags
+    baseUri: https://api.stackoverflowteams.com/v3
+    description: Stack Overflow for Teams API — Tags business capability. Self-contained, no shared references.
+    resources:
+    - name: teams-team-tags
+      path: /teams/{team}/tags
+      operations:
+      - name: getteamtags
+        method: GET
+        description: Get Team Tags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createteamtag
+        method: POST
+        description: Create a Team Tag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team-tags-tag-smes
+      path: /teams/{team}/tags/{tag}/smes
+      operations:
+      - name: gettagsmes
+        method: GET
+        description: Get Tag SMEs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tag
+          in: path
+          type: string
+          description: The tag name
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.STACK_OVERFLOW_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: for-teams-tags-rest
+    port: 8080
+    description: REST adapter for Stack Overflow for Teams API — Tags. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team}/tags
+      name: teams-team-tags
+      description: REST surface for teams-team-tags.
+      operations:
+      - method: GET
+        name: getteamtags
+        description: Get Team Tags
+        call: for-teams-tags.getteamtags
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createteamtag
+        description: Create a Team Tag
+        call: for-teams-tags.createteamtag
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team}/tags/{tag}/smes
+      name: teams-team-tags-tag-smes
+      description: REST surface for teams-team-tags-tag-smes.
+      operations:
+      - method: GET
+        name: gettagsmes
+        description: Get Tag SMEs
+        call: for-teams-tags.gettagsmes
+        with:
+          tag: rest.tag
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: for-teams-tags-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Stack Overflow for Teams API — Tags. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: get-team-tags
+      description: Get Team Tags
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: for-teams-tags.getteamtags
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-team-tag
+      description: Create a Team Tag
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: for-teams-tags.createteamtag
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-tag-smes
+      description: Get Tag SMEs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: for-teams-tags.gettagsmes
+      with:
+        tag: tools.tag
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Stack Overflow for Teams API — Answers
+  description: 'Stack Overflow for Teams API — Answers. 2 operations. Lead operation: Get Answers for a Team Question. Self-contained
+    Naftiko capability covering one Stack Overflow business surface.'
+  tags:
+  - Stack Overflow
+  - Answers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    STACK_OVERFLOW_API_KEY: STACK_OVERFLOW_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: for-teams-answers
+    baseUri: https://api.stackoverflowteams.com/v3
+    description: Stack Overflow for Teams API — Answers business capability. Self-contained, no shared references.
+    resources:
+    - name: teams-team-questions-id-answers
+      path: /teams/{team}/questions/{id}/answers
+      operations:
+      - name: getteamanswers
+        method: GET
+        description: Get Answers for a Team Question
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createteamanswer
+        method: POST
+        description: Create an Answer for a Team Question
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.STACK_OVERFLOW_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: for-teams-answers-rest
+    port: 8080
+    description: REST adapter for Stack Overflow for Teams API — Answers. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team}/questions/{id}/answers
+      name: teams-team-questions-id-answers
+      description: REST surface for teams-team-questions-id-answers.
+      operations:
+      - method: GET
+        name: getteamanswers
+        description: Get Answers for a Team Question
+        call: for-teams-answers.getteamanswers
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createteamanswer
+        description: Create an Answer for a Team Question
+        call: for-teams-answers.createteamanswer
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: for-teams-answers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Stack Overflow for Teams API — Answers. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: get-answers-team-question
+      description: Get Answers for a Team Question
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: for-teams-answers.getteamanswers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-answer-team-question
+      description: Create an Answer for a Team Question
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: for-teams-answers.createteamanswer
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

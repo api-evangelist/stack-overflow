@@ -1,0 +1,121 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Stack Overflow API — Tags
+  description: 'Stack Overflow API — Tags. 2 operations. Lead operation: Get All Tags. Self-contained Naftiko capability covering
+    one Stack Overflow business surface.'
+  tags:
+  - Stack Overflow
+  - Tags
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    STACK_OVERFLOW_API_KEY: STACK_OVERFLOW_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: stack-overflow-tags
+    baseUri: https://api.stackexchange.com/2.3
+    description: Stack Overflow API — Tags business capability. Self-contained, no shared references.
+    resources:
+    - name: tags
+      path: /tags
+      operations:
+      - name: gettags
+        method: GET
+        description: Get All Tags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: inname
+          in: query
+          type: string
+          description: Filter tags whose name contains this string
+    - name: tags-tags-info
+      path: /tags/{tags}/info
+      operations:
+      - name: gettaginfo
+        method: GET
+        description: Get Tag Info
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tags
+          in: path
+          type: string
+          description: Semicolon-delimited list of tag names
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.STACK_OVERFLOW_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: stack-overflow-tags-rest
+    port: 8080
+    description: REST adapter for Stack Overflow API — Tags. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/tags
+      name: tags
+      description: REST surface for tags.
+      operations:
+      - method: GET
+        name: gettags
+        description: Get All Tags
+        call: stack-overflow-tags.gettags
+        with:
+          inname: rest.inname
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tags/{tags}/info
+      name: tags-tags-info
+      description: REST surface for tags-tags-info.
+      operations:
+      - method: GET
+        name: gettaginfo
+        description: Get Tag Info
+        call: stack-overflow-tags.gettaginfo
+        with:
+          tags: rest.tags
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: stack-overflow-tags-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Stack Overflow API — Tags. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: get-all-tags
+      description: Get All Tags
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-tags.gettags
+      with:
+        inname: tools.inname
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-tag-info
+      description: Get Tag Info
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: stack-overflow-tags.gettaginfo
+      with:
+        tags: tools.tags
+      outputParameters:
+      - type: object
+        mapping: $.
