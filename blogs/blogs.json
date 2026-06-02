@@ -2,18 +2,34 @@
   "repo": "stack-overflow",
   "feeds": [
     {
-      "source": "https://stackoverflow.blog/",
+      "source": "https://stackoverflow.blog/feed/",
       "feed_url": "https://stackoverflow.blog/feed/",
-      "title": "Stack Overflow Blog",
-      "saved": 29
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/feed/",
+      "feed_url": "https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
     },
     {
       "source": "https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/",
       "feed_url": "https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/feed/",
-      "title": "Stack Overflow Blog",
-      "saved": 0
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    },
+    {
+      "source": "https://stackoverflow.blog/",
+      "feed_url": "https://stackoverflow.blog/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
     }
   ],
-  "post_count": 43,
-  "fetched": "2026-05-17T20:20:35Z"
+  "post_count": 55,
+  "fetched": "2026-06-01T23:35:02Z"
 }
