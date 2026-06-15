@@ -1,0 +1,644 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stack Overflow for Teams API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Questions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Team Questions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/questions",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a list of questions in the specified Stack Overflow for Teams workspace. Supports filtering by tags, status, and date ranges."
+        },
+        {
+          "info": {
+            "name": "Create a Team Question",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/questions",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new question in the specified Stack Overflow for Teams workspace. Requires write access (Business tier)."
+        },
+        {
+          "info": {
+            "name": "Get a Team Question",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/questions/:id",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a specific question from a Stack Overflow for Teams workspace by its ID."
+        },
+        {
+          "info": {
+            "name": "Update a Team Question",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/questions/:id",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing question in a Stack Overflow for Teams workspace. Requires write access."
+        },
+        {
+          "info": {
+            "name": "Get Answers for a Team Question",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/questions/:id/answers",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns all answers to a specific question in a Stack Overflow for Teams workspace."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Answers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an Answer for a Team Question",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/questions/:id/answers",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new answer to a question in a Stack Overflow for Teams workspace. Requires write access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Articles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Team Articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/articles",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a list of knowledge articles in the specified Stack Overflow for Teams workspace. Articles are long-form content pieces for documentation and knowledge sharing."
+        },
+        {
+          "info": {
+            "name": "Create a Team Article",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/articles",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new knowledge article in a Stack Overflow for Teams workspace. Requires write access (Business tier)."
+        },
+        {
+          "info": {
+            "name": "Get a Team Article",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/articles/:id",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a specific knowledge article from a Stack Overflow for Teams workspace by its ID."
+        },
+        {
+          "info": {
+            "name": "Update a Team Article",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/articles/:id",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing knowledge article in a Stack Overflow for Teams workspace. Requires write access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Team Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/users",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a list of users in the specified Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Get a Team User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/users/:id",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a specific user from a Stack Overflow for Teams workspace."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "User Groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Team User Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/user-groups",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a list of user groups in the specified Stack Overflow for Teams workspace. User groups can be assigned as SMEs for tags."
+        },
+        {
+          "info": {
+            "name": "Create a Team User Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/user-groups",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new user group in a Stack Overflow for Teams workspace. Requires write access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Team Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a list of tags used in the specified Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Create a Team Tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new tag in a Stack Overflow for Teams workspace. Requires write access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SMEs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Tag SMEs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags/:tag/smes",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "path",
+                "description": "The tag name"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns the Subject Matter Experts (SMEs) assigned to a specific tag in a Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Add an SME for a Tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags/:tag/smes",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "path",
+                "description": "The tag name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assigns a user or user group as a Subject Matter Expert for a specific tag in a Teams workspace. Requires write access."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
