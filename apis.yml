@@ -31,7 +31,7 @@ apis:
       - Questions
       - Stack Overflow
       - Users
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://api.stackexchange.com/2.3
     humanURL: https://api.stackexchange.com/
     description: >-
@@ -59,7 +59,7 @@ apis:
       - Q&A
       - Stack Overflow
       - Teams
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://api.stackoverflowteams.com/v3
     humanURL: https://api.stackoverflowteams.com/docs
     description: >-
