@@ -47,7 +47,7 @@ apis:
       - url: https://api.stackexchange.com/docs/throttle
         type: RateLimits
       - url: http://stackapps.com/apps/oauth/register
-        type: SignUp
+        type: Signup
       - url: openapi/stack-overflow-openapi.yml
         type: OpenAPI
   - aid: stack-overflow:stack-overflow-for-teams-api
@@ -86,7 +86,7 @@ common:
   - url: https://api.stackexchange.com/docs/authentication
     type: Authentication
   - url: http://stackapps.com/apps/oauth/register
-    type: SignUp
+    type: Signup
   - url: https://stackexchange.com/legal/api-terms-of-use
     type: TermsOfService
   - url: json-ld/stack-overflow-context.jsonld
