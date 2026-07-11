@@ -75,6 +75,10 @@ apis:
       - url: openapi/stack-overflow-for-teams-openapi.yml
         type: OpenAPI
 common:
+  - type: Authentication
+    url: authentication/stack-overflow-authentication.yml
+  - type: OAuthScopes
+    url: scopes/stack-overflow-scopes.yml
   - type: GitHubOrganization
     url: https://github.com/stackexchange
   - type: LinkedIn
