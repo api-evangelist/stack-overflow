@@ -1,0 +1,28 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/stack-overflow-for-teams-openapi.yml, openapi/stack-overflow-openapi.yml
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in
+    the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+  sources:
+  - openapi/stack-overflow-for-teams-openapi.yml
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://stackoverflow.com/oauth
+    tokenUrl: https://stackoverflow.com/oauth/access_token/json
+    scopes: 3
+  description: OAuth 2.0 authentication. Register an application at http://stackapps.com/apps/oauth
+    to obtain credentials.
+  sources:
+  - openapi/stack-overflow-openapi.yml

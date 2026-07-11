@@ -1,0 +1,47 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: stackoverflow.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 15 13:00:40 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: api.stackexchange.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep  4 22:33:35 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: api.stackoverflowteams.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Aug 28 09:32:11 2026 GMT
+  hsts: true
+  hsts_max_age: 10368000
+domains:
+- domain: stackoverflow.com
+  dnssec: false
+  caa:
+  - 0 issuewild "digicert.com; cansignhttpexchanges=yes"
+  - 0 issuewild "letsencrypt.org"
+  - 0 issuewild "pki.goog; cansignhttpexchanges=yes"
+  - 0 issuewild "sectigo.com"
+  - 0 issuewild "ssl.com"
+  - 128 iodef "mailto:sysadmin-team@stackoverflow.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: stackexchange.com
+  dnssec: false
+  caa:
+  - 0 issuewild "digicert.com; cansignhttpexchanges=yes"
+  - 0 issuewild "letsencrypt.org"
+  - 0 issuewild "pki.goog; cansignhttpexchanges=yes"
+  - 0 issuewild "sectigo.com"
+  - 0 issuewild "ssl.com"
+  - 128 iodef "mailto:sysadmin-team@stackoverflow.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
