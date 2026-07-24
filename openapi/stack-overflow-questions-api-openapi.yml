@@ -1,0 +1,668 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers Questions API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: Questions
+  description: Operations for managing questions in a Stack Overflow for Teams workspace.
+paths:
+  /teams/{team}/questions:
+    get:
+      operationId: getTeamQuestions
+      summary: Get Team Questions
+      description: Returns a list of questions in the specified Stack Overflow for Teams workspace. Supports filtering by tags, status, and date ranges.
+      tags:
+      - Questions
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of questions in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      operationId: createTeamQuestion
+      summary: Create a Team Question
+      description: Creates a new question in the specified Stack Overflow for Teams workspace. Requires write access (Business tier).
+      tags:
+      - Questions
+      parameters:
+      - $ref: '#/components/parameters/team'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuestionRequest'
+      responses:
+        '201':
+          description: Question created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /teams/{team}/questions/{id}:
+    get:
+      operationId: getTeamQuestion
+      summary: Get a Team Question
+      description: Returns a specific question from a Stack Overflow for Teams workspace by its ID.
+      tags:
+      - Questions
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: The requested question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateTeamQuestion
+      summary: Update a Team Question
+      description: Updates an existing question in a Stack Overflow for Teams workspace. Requires write access.
+      tags:
+      - Questions
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuestionRequest'
+      responses:
+        '200':
+          description: Question updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /teams/{team}/questions/{id}/answers:
+    get:
+      operationId: getTeamAnswers
+      summary: Get Answers for a Team Question
+      description: Returns all answers to a specific question in a Stack Overflow for Teams workspace.
+      tags:
+      - Questions
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers for the specified question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+  /questions:
+    get:
+      operationId: getQuestions
+      summary: Get All Questions
+      description: Returns questions on Stack Overflow sorted by activity, creation date, votes, or relevance. Supports filtering by tags and date ranges.
+      tags:
+      - Questions
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/fromdate'
+      - $ref: '#/components/parameters/todate'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/tagged'
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/site'
+      responses:
+        '200':
+          description: A list of questions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse_2'
+        '400':
+          $ref: '#/components/responses/BadRequest_2'
+        '401':
+          $ref: '#/components/responses/Unauthorized_2'
+  /questions/{ids}:
+    get:
+      operationId: getQuestionsByIds
+      summary: Get Questions by IDs
+      description: Returns the questions identified by a semicolon-delimited list of question IDs (maximum 100).
+      tags:
+      - Questions
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of question IDs (max 100)
+        example: 12345;67890
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions matching the provided IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse_2'
+  /questions/{ids}/answers:
+    get:
+      operationId: getAnswersForQuestion
+      summary: Get Answers for Questions
+      description: Returns the answers for the questions identified by a semicolon- delimited list of question IDs.
+      tags:
+      - Questions
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of question IDs
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers for the specified questions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse_2'
+  /questions/unanswered:
+    get:
+      operationId: getUnansweredQuestions
+      summary: Get Unanswered Questions
+      description: Returns Stack Overflow questions that have no upvoted or accepted answers. These are questions that need community attention.
+      tags:
+      - Questions
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/tagged'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Unanswered questions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse_2'
+  /questions/featured:
+    get:
+      operationId: getFeaturedQuestions
+      summary: Get Featured Questions
+      description: Returns Stack Overflow questions that have active bounties. Bounty questions are featured to attract answers.
+      tags:
+      - Questions
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/tagged'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Featured questions with active bounties
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse_2'
+  /users/{ids}/questions:
+    get:
+      operationId: getQuestionsByUser
+      summary: Get Questions by User
+      description: Returns questions asked by users identified by a semicolon-delimited list of user IDs.
+      tags:
+      - Questions
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of user IDs
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions asked by the specified users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse_2'
+components:
+  schemas:
+    Question_2:
+      type: object
+      properties:
+        question_id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        score:
+          type: integer
+        view_count:
+          type: integer
+        answer_count:
+          type: integer
+        accepted_answer_id:
+          type: integer
+        is_answered:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        tags:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+        bounty_amount:
+          type: integer
+        bounty_closes_date:
+          type: integer
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the question
+        title:
+          type: string
+          description: The title of the question
+        body:
+          type: string
+          description: The HTML body of the question
+        score:
+          type: integer
+          description: Net vote score
+        answer_count:
+          type: integer
+          description: Number of answers
+        view_count:
+          type: integer
+          description: Number of views
+        creation_date:
+          type: string
+          format: date-time
+          description: When the question was created
+        last_activity_date:
+          type: string
+          format: date-time
+          description: When the question last had activity
+        owner:
+          $ref: '#/components/schemas/UserRef'
+        tags:
+          type: array
+          items:
+            type: string
+        is_answered:
+          type: boolean
+        link:
+          type: string
+          format: uri
+    QuestionsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    AnswersResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    Answer_2:
+      type: object
+      properties:
+        answer_id:
+          type: integer
+        question_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        is_accepted:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+    UpdateQuestionRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    QuestionsResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Question_2'
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the answer
+        question_id:
+          type: integer
+          description: ID of the question this answer belongs to
+        body:
+          type: string
+          description: The HTML body of the answer
+        score:
+          type: integer
+          description: Net vote score
+        is_accepted:
+          type: boolean
+          description: Whether this is the accepted answer
+        creation_date:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/UserRef'
+    AnswersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Answer_2'
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+    CreateQuestionRequest:
+      type: object
+      required:
+      - title
+      - body
+      - tags
+      properties:
+        title:
+          type: string
+          description: Question title
+        body:
+          type: string
+          description: Question body in Markdown
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags for the question
+  parameters:
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    tagged:
+      name: tagged
+      in: query
+      schema:
+        type: string
+      description: Semicolon-delimited list of tags to filter by
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    pagesize_2:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+  responses:
+    Unauthorized_2:
+      description: Authentication required or token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request due to invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest_2:
+      description: Bad request due to missing or invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required or PAT is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs

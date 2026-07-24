@@ -1,0 +1,489 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers Users API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: Users
+  description: Operations for managing users in a Teams workspace.
+paths:
+  /teams/{team}/users:
+    get:
+      operationId: getTeamUsers
+      summary: Get Team Users
+      description: Returns a list of users in the specified Stack Overflow for Teams workspace.
+      tags:
+      - Users
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of users in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+  /teams/{team}/users/{id}:
+    get:
+      operationId: getTeamUser
+      summary: Get a Team User
+      description: Returns a specific user from a Stack Overflow for Teams workspace.
+      tags:
+      - Users
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: The requested user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /users:
+    get:
+      operationId: getUsers
+      summary: Get All Users
+      description: Returns Stack Overflow user profiles. Use inname to filter by display name. Results can be sorted by reputation, creation date, or name.
+      tags:
+      - Users
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/fromdate'
+      - $ref: '#/components/parameters/todate'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - name: inname
+        in: query
+        schema:
+          type: string
+        description: Filter users whose display name contains this string
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of user profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse_2'
+  /users/{ids}:
+    get:
+      operationId: getUsersByIds
+      summary: Get Users by IDs
+      description: Returns the user profiles identified by a semicolon-delimited list of user IDs.
+      tags:
+      - Users
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of user IDs
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: User profiles matching the provided IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse_2'
+  /users/me:
+    get:
+      operationId: getAuthenticatedUser
+      summary: Get Authenticated User
+      description: Returns the profile of the authenticated user based on the provided OAuth access token.
+      tags:
+      - Users
+      security:
+      - oauth2: []
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: The authenticated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse_2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /users/{ids}/questions:
+    get:
+      operationId: getQuestionsByUser
+      summary: Get Questions by User
+      description: Returns questions asked by users identified by a semicolon-delimited list of user IDs.
+      tags:
+      - Users
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of user IDs
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions asked by the specified users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /users/{ids}/answers:
+    get:
+      operationId: getAnswersByUser
+      summary: Get Answers by User
+      description: Returns answers posted by users identified by a semicolon-delimited list of user IDs.
+      tags:
+      - Users
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of user IDs
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers posted by the specified users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+components:
+  schemas:
+    Question:
+      type: object
+      properties:
+        question_id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        score:
+          type: integer
+        view_count:
+          type: integer
+        answer_count:
+          type: integer
+        accepted_answer_id:
+          type: integer
+        is_answered:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        tags:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+        bounty_amount:
+          type: integer
+        bounty_closes_date:
+          type: integer
+    QuestionsResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Question'
+    AnswersResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Answer'
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    User_2:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+        website_url:
+          type: string
+          format: uri
+        location:
+          type: string
+        about_me:
+          type: string
+        creation_date:
+          type: integer
+        last_access_date:
+          type: integer
+        question_count:
+          type: integer
+        answer_count:
+          type: integer
+        link:
+          type: string
+          format: uri
+    Answer:
+      type: object
+      properties:
+        answer_id:
+          type: integer
+        question_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        is_accepted:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
+    UsersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/User_2'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the user
+        display_name:
+          type: string
+          description: User's display name
+        reputation:
+          type: integer
+          description: User's reputation score
+        email:
+          type: string
+          format: email
+          description: User's email address
+        profile_image:
+          type: string
+          format: uri
+        last_access_date:
+          type: string
+          format: date-time
+        is_admin:
+          type: boolean
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
+    UsersResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+  parameters:
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    pagesize_2:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+  responses:
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required or token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs

@@ -1,0 +1,176 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers Comments API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: Comments
+  description: Operations for retrieving and writing comments on Stack Overflow posts.
+paths:
+  /comments:
+    get:
+      operationId: getComments
+      summary: Get All Comments
+      description: Returns comments on Stack Overflow posts sorted by creation date or vote score.
+      tags:
+      - Comments
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/fromdate'
+      - $ref: '#/components/parameters/todate'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentsResponse'
+components:
+  parameters:
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+  schemas:
+    CommentsResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Comment'
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+    Comment:
+      type: object
+      properties:
+        comment_id:
+          type: integer
+        post_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        creation_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs

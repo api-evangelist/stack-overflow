@@ -1,0 +1,285 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers Search API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: Search
+  description: Operations for searching Stack Overflow questions and content.
+paths:
+  /search:
+    get:
+      operationId: searchQuestions
+      summary: Search Questions
+      description: Searches Stack Overflow questions by title text, tags, and exclusion tags. At least one of intitle, tagged, or nottagged must be specified.
+      tags:
+      - Search
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - name: intitle
+        in: query
+        schema:
+          type: string
+        description: Text that must appear in question titles
+      - $ref: '#/components/parameters/tagged'
+      - name: nottagged
+        in: query
+        schema:
+          type: string
+        description: Semicolon-delimited tags to exclude from results
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions matching the search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /search/advanced:
+    get:
+      operationId: searchAdvanced
+      summary: Advanced Search
+      description: Performs an advanced search of Stack Overflow questions with filters for acceptance status, answer count, body text, closure status, tags, user, view count, and wiki status.
+      tags:
+      - Search
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - name: q
+        in: query
+        schema:
+          type: string
+        description: Full-text search query
+      - name: accepted
+        in: query
+        schema:
+          type: boolean
+        description: Filter for questions with accepted answers
+      - name: answers
+        in: query
+        schema:
+          type: integer
+        description: Minimum number of answers required
+      - name: body
+        in: query
+        schema:
+          type: string
+        description: Text that must appear in the question body
+      - name: closed
+        in: query
+        schema:
+          type: boolean
+        description: Filter for closed or open questions
+      - $ref: '#/components/parameters/tagged'
+      - name: title
+        in: query
+        schema:
+          type: string
+        description: Text that must appear in the question title
+      - name: user
+        in: query
+        schema:
+          type: integer
+        description: Filter by user ID
+      - name: views
+        in: query
+        schema:
+          type: integer
+        description: Minimum number of views required
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions matching the advanced search criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+  /similar:
+    get:
+      operationId: findSimilarQuestions
+      summary: Find Similar Questions
+      description: Returns questions similar to a given title. Useful for finding existing answers before posting a new question.
+      tags:
+      - Search
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - name: title
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Question title to find similar questions for
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/tagged'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Questions similar to the provided title
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+components:
+  schemas:
+    Question:
+      type: object
+      properties:
+        question_id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        score:
+          type: integer
+        view_count:
+          type: integer
+        answer_count:
+          type: integer
+        accepted_answer_id:
+          type: integer
+        is_answered:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        tags:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+        bounty_amount:
+          type: integer
+        bounty_closes_date:
+          type: integer
+    QuestionsResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Question'
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+  parameters:
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    tagged:
+      name: tagged
+      in: query
+      schema:
+        type: string
+      description: Semicolon-delimited list of tags to filter by
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs

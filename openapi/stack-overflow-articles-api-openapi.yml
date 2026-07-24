@@ -1,0 +1,270 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers Articles API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: Articles
+  description: Operations for managing knowledge articles in a Teams workspace.
+paths:
+  /teams/{team}/articles:
+    get:
+      operationId: getTeamArticles
+      summary: Get Team Articles
+      description: Returns a list of knowledge articles in the specified Stack Overflow for Teams workspace. Articles are long-form content pieces for documentation and knowledge sharing.
+      tags:
+      - Articles
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of articles in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticlesResponse'
+    post:
+      operationId: createTeamArticle
+      summary: Create a Team Article
+      description: Creates a new knowledge article in a Stack Overflow for Teams workspace. Requires write access (Business tier).
+      tags:
+      - Articles
+      parameters:
+      - $ref: '#/components/parameters/team'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequest'
+      responses:
+        '201':
+          description: Article created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /teams/{team}/articles/{id}:
+    get:
+      operationId: getTeamArticle
+      summary: Get a Team Article
+      description: Returns a specific knowledge article from a Stack Overflow for Teams workspace by its ID.
+      tags:
+      - Articles
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: The requested article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateTeamArticle
+      summary: Update a Team Article
+      description: Updates an existing knowledge article in a Stack Overflow for Teams workspace. Requires write access.
+      tags:
+      - Articles
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArticleRequest'
+      responses:
+        '200':
+          description: Article updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+  schemas:
+    UpdateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the article
+        title:
+          type: string
+          description: Article title
+        body:
+          type: string
+          description: HTML body of the article
+        creation_date:
+          type: string
+          format: date-time
+        last_edit_date:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/UserRef'
+        tags:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+    CreateArticleRequest:
+      type: object
+      required:
+      - title
+      - body
+      properties:
+        title:
+          type: string
+          description: Article title
+        body:
+          type: string
+          description: Article body in Markdown
+        tags:
+          type: array
+          items:
+            type: string
+    ArticlesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+  responses:
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs

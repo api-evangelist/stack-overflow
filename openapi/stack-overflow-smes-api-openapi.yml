@@ -1,0 +1,171 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers SMEs API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: SMEs
+  description: Operations for managing Subject Matter Experts (SMEs) for tags in a Teams workspace.
+paths:
+  /teams/{team}/tags/{tag}/smes:
+    get:
+      operationId: getTagSMEs
+      summary: Get Tag SMEs
+      description: Returns the Subject Matter Experts (SMEs) assigned to a specific tag in a Stack Overflow for Teams workspace.
+      tags:
+      - SMEs
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - name: tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The tag name
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: SMEs assigned to the specified tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SMEsResponse'
+    post:
+      operationId: addTagSME
+      summary: Add an SME for a Tag
+      description: Assigns a user or user group as a Subject Matter Expert for a specific tag in a Teams workspace. Requires write access.
+      tags:
+      - SMEs
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - name: tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The tag name
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSMERequest'
+      responses:
+        '201':
+          description: SME added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SME'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  parameters:
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+    SMEsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SME'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    UserGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the user group
+        name:
+          type: string
+          description: Name of the user group
+        description:
+          type: string
+          description: Description of the user group
+        member_count:
+          type: integer
+          description: Number of members in the group
+        creation_date:
+          type: string
+          format: date-time
+    SME:
+      type: object
+      properties:
+        id:
+          type: integer
+        tag:
+          type: string
+          description: The tag this SME is assigned to
+        user:
+          $ref: '#/components/schemas/UserRef'
+        user_group:
+          $ref: '#/components/schemas/UserGroup'
+    AddSMERequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: User ID to add as SME (mutually exclusive with user_group_id)
+        user_group_id:
+          type: integer
+          description: User group ID to add as SME (mutually exclusive with user_id)
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs

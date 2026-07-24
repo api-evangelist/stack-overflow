@@ -1,0 +1,382 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: Answers
+  description: Operations for managing answers to questions in a Teams workspace.
+paths:
+  /teams/{team}/questions/{id}/answers:
+    get:
+      operationId: getTeamAnswers
+      summary: Get Answers for a Team Question
+      description: Returns all answers to a specific question in a Stack Overflow for Teams workspace.
+      tags:
+      - Answers
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers for the specified question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+    post:
+      operationId: createTeamAnswer
+      summary: Create an Answer for a Team Question
+      description: Creates a new answer to a question in a Stack Overflow for Teams workspace. Requires write access.
+      tags:
+      - Answers
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnswerRequest'
+      responses:
+        '201':
+          description: Answer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Answer'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /questions/{ids}/answers:
+    get:
+      operationId: getAnswersForQuestion
+      summary: Get Answers for Questions
+      description: Returns the answers for the questions identified by a semicolon- delimited list of question IDs.
+      tags:
+      - Answers
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of question IDs
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers for the specified questions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse_2'
+  /answers:
+    get:
+      operationId: getAnswers
+      summary: Get All Answers
+      description: Returns all answers on Stack Overflow sorted by creation date, activity, or vote score.
+      tags:
+      - Answers
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/fromdate'
+      - $ref: '#/components/parameters/todate'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of answers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse_2'
+  /answers/{ids}:
+    get:
+      operationId: getAnswersByIds
+      summary: Get Answers by IDs
+      description: Returns the answers identified by a semicolon-delimited list of answer IDs.
+      tags:
+      - Answers
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of answer IDs
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers matching the provided IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse_2'
+  /users/{ids}/answers:
+    get:
+      operationId: getAnswersByUser
+      summary: Get Answers by User
+      description: Returns answers posted by users identified by a semicolon-delimited list of user IDs.
+      tags:
+      - Answers
+      parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of user IDs
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers posted by the specified users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse_2'
+components:
+  parameters:
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+  schemas:
+    CreateAnswerRequest:
+      type: object
+      required:
+      - body
+      properties:
+        body:
+          type: string
+          description: Answer body in Markdown
+    AnswersResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    Answer_2:
+      type: object
+      properties:
+        answer_id:
+          type: integer
+        question_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        is_accepted:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the answer
+        question_id:
+          type: integer
+          description: ID of the question this answer belongs to
+        body:
+          type: string
+          description: The HTML body of the answer
+        score:
+          type: integer
+          description: Net vote score
+        is_accepted:
+          type: boolean
+          description: Whether this is the accepted answer
+        creation_date:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/UserRef'
+    AnswersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Answer_2'
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs

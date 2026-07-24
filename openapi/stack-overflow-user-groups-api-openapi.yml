@@ -1,0 +1,160 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers User Groups API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: User Groups
+  description: Operations for managing user groups in a Teams workspace.
+paths:
+  /teams/{team}/user-groups:
+    get:
+      operationId: getTeamUserGroups
+      summary: Get Team User Groups
+      description: Returns a list of user groups in the specified Stack Overflow for Teams workspace. User groups can be assigned as SMEs for tags.
+      tags:
+      - User Groups
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of user groups in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupsResponse'
+    post:
+      operationId: createTeamUserGroup
+      summary: Create a Team User Group
+      description: Creates a new user group in a Stack Overflow for Teams workspace. Requires write access.
+      tags:
+      - User Groups
+      parameters:
+      - $ref: '#/components/parameters/team'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserGroupRequest'
+      responses:
+        '201':
+          description: User group created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroup'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  parameters:
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+  schemas:
+    CreateUserGroupRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        member_ids:
+          type: array
+          items:
+            type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    UserGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the user group
+        name:
+          type: string
+          description: Name of the user group
+        description:
+          type: string
+          description: Description of the user group
+        member_count:
+          type: integer
+          description: Number of members in the group
+        creation_date:
+          type: string
+          format: date-time
+    UserGroupsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroup'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs

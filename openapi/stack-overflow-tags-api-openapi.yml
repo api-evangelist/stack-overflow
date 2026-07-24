@@ -1,0 +1,346 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams Answers Tags API
+  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+  version: v3
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+servers:
+- url: https://api.stackoverflowteams.com/v3
+  description: Stack Overflow for Teams API v3
+security:
+- bearerAuth: []
+tags:
+- name: Tags
+  description: Operations for managing tags in a Teams workspace.
+paths:
+  /teams/{team}/tags:
+    get:
+      operationId: getTeamTags
+      summary: Get Team Tags
+      description: Returns a list of tags used in the specified Stack Overflow for Teams workspace.
+      tags:
+      - Tags
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of tags in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse'
+    post:
+      operationId: createTeamTag
+      summary: Create a Team Tag
+      description: Creates a new tag in a Stack Overflow for Teams workspace. Requires write access.
+      tags:
+      - Tags
+      parameters:
+      - $ref: '#/components/parameters/team'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+      responses:
+        '201':
+          description: Tag created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /teams/{team}/tags/{tag}/smes:
+    get:
+      operationId: getTagSMEs
+      summary: Get Tag SMEs
+      description: Returns the Subject Matter Experts (SMEs) assigned to a specific tag in a Stack Overflow for Teams workspace.
+      tags:
+      - Tags
+      parameters:
+      - $ref: '#/components/parameters/team'
+      - name: tag
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The tag name
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: SMEs assigned to the specified tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SMEsResponse'
+  /tags:
+    get:
+      operationId: getTags
+      summary: Get All Tags
+      description: Returns all tags on Stack Overflow. Use inname to filter by tag name. Results include usage counts and synonym information.
+      tags:
+      - Tags
+      parameters:
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pagesize_2'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/sort'
+      - name: inname
+        in: query
+        schema:
+          type: string
+        description: Filter tags whose name contains this string
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of tags
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse_2'
+  /tags/{tags}/info:
+    get:
+      operationId: getTagInfo
+      summary: Get Tag Info
+      description: Returns detailed information about the tags specified by a semicolon- delimited list of tag names.
+      tags:
+      - Tags
+      parameters:
+      - name: tags
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Semicolon-delimited list of tag names
+        example: javascript;python
+      - $ref: '#/components/parameters/site'
+      - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Tag information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse_2'
+components:
+  parameters:
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    pagesize_2:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+  schemas:
+    Tag:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tag name
+        count:
+          type: integer
+          description: Number of questions with this tag
+        description:
+          type: string
+          description: Tag description
+    CreateTagRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    TagsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    TagsResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Tag_2'
+    SMEsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SME'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    SME:
+      type: object
+      properties:
+        id:
+          type: integer
+        tag:
+          type: string
+          description: The tag this SME is assigned to
+        user:
+          $ref: '#/components/schemas/UserRef'
+        user_group:
+          $ref: '#/components/schemas/UserGroup'
+    Tag_2:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+        is_moderator_only:
+          type: boolean
+        is_required:
+          type: boolean
+        has_synonyms:
+          type: boolean
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+    UserGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the user group
+        name:
+          type: string
+          description: Name of the user group
+        description:
+          type: string
+          description: Description of the user group
+        member_count:
+          type: integer
+          description: Number of members in the group
+        creation_date:
+          type: string
+          format: date-time
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs
