@@ -1,4 +1,18 @@
 aid: stack-overflow
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/stack-overflow.png
 name: Stack Overflow
 description: >-
   Stack Overflow is the world's largest question-and-answer community for developers, with over 23 million questions on
@@ -20,60 +34,226 @@ tags:
 created: '2026-05-02'
 modified: '2026-05-19'
 apis:
-  - aid: stack-overflow:stack-overflow-api
-    name: Stack Overflow API
-    tags:
-      - Answers
-      - Badges
-      - Comments
-      - Developer Community
-      - Q&A
-      - Questions
-      - Stack Overflow
-      - Users
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.stackexchange.com/2.3
-    humanURL: https://api.stackexchange.com/
-    description: >-
-      The Stack Overflow public API (v2.3) provides programmatic access to questions, answers, comments, users, tags,
-      and badges on the Stack Overflow site. Developers can read and write content with OAuth 2.0 authentication. The
-      API returns JSON responses with a standard wrapper envelope that includes pagination, quota, and backoff metadata.
-      Register an application at StackApps to obtain OAuth credentials.
-    properties:
-      - url: https://api.stackexchange.com/docs
-        type: Documentation
-      - url: https://stackexchange.com/legal/api-terms-of-use
-        type: TermsOfService
-      - url: https://api.stackexchange.com/docs/throttle
-        type: RateLimits
-      - url: http://stackapps.com/apps/oauth/register
-        type: Signup
-      - url: openapi/stack-overflow-openapi.yml
-        type: OpenAPI
-  - aid: stack-overflow:stack-overflow-for-teams-api
-    name: Stack Overflow for Teams API v3
-    tags:
-      - Articles
-      - Enterprise
-      - Knowledge Management
-      - Q&A
-      - Stack Overflow
-      - Teams
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.stackoverflowteams.com/v3
-    humanURL: https://api.stackoverflowteams.com/docs
-    description: >-
-      The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases. It supports
-      managing questions, answers, articles, user groups, subject matter experts (SMEs), and tags within a Stack
-      Overflow for Teams instance. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer
-      header. Business tier subscriptions have read/write access; Basic tier has read-only access.
-    properties:
-      - url: https://api.stackoverflowteams.com/docs
-        type: Documentation
-      - url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
-        type: Blog
-      - url: openapi/stack-overflow-for-teams-openapi.yml
-        type: OpenAPI
+- aid: stack-overflow:stack-overflow-answers-api
+  name: Stack Overflow Answers API
+  description: Operations for managing answers to questions in a Teams workspace.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - Answers
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-answers-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-articles-api
+  name: Stack Overflow Articles API
+  description: Operations for managing knowledge articles in a Teams workspace.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - Articles
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-articles-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-badges-api
+  name: Stack Overflow Badges API
+  description: Operations for retrieving badge information on Stack Overflow.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - Badges
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-badges-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-comments-api
+  name: Stack Overflow Comments API
+  description: Operations for retrieving and writing comments on Stack Overflow posts.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - Comments
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-comments-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-questions-api
+  name: Stack Overflow Questions API
+  description: Operations for managing questions in a Stack Overflow for Teams workspace.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - Questions
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-questions-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-search-api
+  name: Stack Overflow Search API
+  description: Operations for searching Stack Overflow questions and content.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-search-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-smes-api
+  name: Stack Overflow SMEs API
+  description: Operations for managing Subject Matter Experts (SMEs) for tags in a Teams workspace.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - SMEs
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-smes-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-tags-api
+  name: Stack Overflow Tags API
+  description: Operations for managing tags in a Teams workspace.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-tags-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-user-groups-api
+  name: Stack Overflow User Groups API
+  description: Operations for managing user groups in a Teams workspace.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - User Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-user-groups-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
+- aid: stack-overflow:stack-overflow-users-api
+  name: Stack Overflow Users API
+  description: Operations for managing users in a Teams workspace.
+  humanURL: https://api.stackexchange.com/
+  baseURL: https://api.stackexchange.com/2.3
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/stack-overflow-users-api-openapi.yml
+  - type: Documentation
+    url: https://api.stackexchange.com/docs
+  - type: TermsOfService
+    url: https://stackexchange.com/legal/api-terms-of-use
+  - type: RateLimits
+    url: https://api.stackexchange.com/docs/throttle
+  - type: Signup
+    url: http://stackapps.com/apps/oauth/register
+  - type: Documentation
+    url: https://api.stackoverflowteams.com/docs
+  - type: Blog
+    url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
 common:
   - type: AgenticAccess
     url: agentic-access/stack-overflow-agentic-access.yml
