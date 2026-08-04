@@ -1,0 +1,934 @@
+openapi: 3.1.0
+info:
+  title: Stack Overflow for Teams API
+  description: >-
+    The Stack Overflow for Teams API v3 provides read and write access to private
+    team knowledge bases hosted on Stack Overflow for Teams. It supports managing
+    questions, answers, articles, user groups, subject matter experts (SMEs), tags,
+    and team members. The API uses Personal Access Token (PAT) authentication via
+    the Authorization Bearer header. Business tier subscriptions have read/write
+    access; Basic tier has read-only access.
+  version: 'v3'
+  contact:
+    name: Stack Overflow for Teams Support
+    url: https://stackoverflow.com/teams
+  termsOfService: https://stackoverflow.com/legal/terms-of-service
+externalDocs:
+  description: Stack Overflow for Teams API Documentation
+  url: https://api.stackoverflowteams.com/docs
+servers:
+  - url: https://api.stackoverflowteams.com/v3
+    description: Stack Overflow for Teams API v3
+tags:
+  - name: Questions
+    description: >-
+      Operations for managing questions in a Stack Overflow for Teams workspace.
+  - name: Answers
+    description: >-
+      Operations for managing answers to questions in a Teams workspace.
+  - name: Articles
+    description: >-
+      Operations for managing knowledge articles in a Teams workspace.
+  - name: Comments
+    description: >-
+      Operations for managing comments on questions, answers, and articles.
+  - name: Users
+    description: >-
+      Operations for managing users in a Teams workspace.
+  - name: User Groups
+    description: >-
+      Operations for managing user groups in a Teams workspace.
+  - name: Tags
+    description: >-
+      Operations for managing tags in a Teams workspace.
+  - name: SMEs
+    description: >-
+      Operations for managing Subject Matter Experts (SMEs) for tags in a
+      Teams workspace.
+security:
+  - bearerAuth: []
+paths:
+  /teams/{team}/questions:
+    get:
+      operationId: getTeamQuestions
+      summary: Get Team Questions
+      description: >-
+        Returns a list of questions in the specified Stack Overflow for Teams
+        workspace. Supports filtering by tags, status, and date ranges.
+      tags:
+        - Questions
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of questions in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      operationId: createTeamQuestion
+      summary: Create a Team Question
+      description: >-
+        Creates a new question in the specified Stack Overflow for Teams
+        workspace. Requires write access (Business tier).
+      tags:
+        - Questions
+      parameters:
+        - $ref: '#/components/parameters/team'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuestionRequest'
+      responses:
+        '201':
+          description: Question created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /teams/{team}/questions/{id}:
+    get:
+      operationId: getTeamQuestion
+      summary: Get a Team Question
+      description: >-
+        Returns a specific question from a Stack Overflow for Teams workspace
+        by its ID.
+      tags:
+        - Questions
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: The requested question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateTeamQuestion
+      summary: Update a Team Question
+      description: >-
+        Updates an existing question in a Stack Overflow for Teams workspace.
+        Requires write access.
+      tags:
+        - Questions
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuestionRequest'
+      responses:
+        '200':
+          description: Question updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /teams/{team}/questions/{id}/answers:
+    get:
+      operationId: getTeamAnswers
+      summary: Get Answers for a Team Question
+      description: >-
+        Returns all answers to a specific question in a Stack Overflow for
+        Teams workspace.
+      tags:
+        - Questions
+        - Answers
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: Answers for the specified question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+    post:
+      operationId: createTeamAnswer
+      summary: Create an Answer for a Team Question
+      description: >-
+        Creates a new answer to a question in a Stack Overflow for Teams
+        workspace. Requires write access.
+      tags:
+        - Answers
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnswerRequest'
+      responses:
+        '201':
+          description: Answer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Answer'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /teams/{team}/articles:
+    get:
+      operationId: getTeamArticles
+      summary: Get Team Articles
+      description: >-
+        Returns a list of knowledge articles in the specified Stack Overflow for
+        Teams workspace. Articles are long-form content pieces for documentation
+        and knowledge sharing.
+      tags:
+        - Articles
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of articles in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticlesResponse'
+    post:
+      operationId: createTeamArticle
+      summary: Create a Team Article
+      description: >-
+        Creates a new knowledge article in a Stack Overflow for Teams workspace.
+        Requires write access (Business tier).
+      tags:
+        - Articles
+      parameters:
+        - $ref: '#/components/parameters/team'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequest'
+      responses:
+        '201':
+          description: Article created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /teams/{team}/articles/{id}:
+    get:
+      operationId: getTeamArticle
+      summary: Get a Team Article
+      description: >-
+        Returns a specific knowledge article from a Stack Overflow for Teams
+        workspace by its ID.
+      tags:
+        - Articles
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: The requested article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateTeamArticle
+      summary: Update a Team Article
+      description: >-
+        Updates an existing knowledge article in a Stack Overflow for Teams
+        workspace. Requires write access.
+      tags:
+        - Articles
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArticleRequest'
+      responses:
+        '200':
+          description: Article updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /teams/{team}/users:
+    get:
+      operationId: getTeamUsers
+      summary: Get Team Users
+      description: >-
+        Returns a list of users in the specified Stack Overflow for Teams
+        workspace.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of users in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+  /teams/{team}/users/{id}:
+    get:
+      operationId: getTeamUser
+      summary: Get a Team User
+      description: >-
+        Returns a specific user from a Stack Overflow for Teams workspace.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: The requested user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /teams/{team}/user-groups:
+    get:
+      operationId: getTeamUserGroups
+      summary: Get Team User Groups
+      description: >-
+        Returns a list of user groups in the specified Stack Overflow for Teams
+        workspace. User groups can be assigned as SMEs for tags.
+      tags:
+        - User Groups
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of user groups in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupsResponse'
+    post:
+      operationId: createTeamUserGroup
+      summary: Create a Team User Group
+      description: >-
+        Creates a new user group in a Stack Overflow for Teams workspace.
+        Requires write access.
+      tags:
+        - User Groups
+      parameters:
+        - $ref: '#/components/parameters/team'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserGroupRequest'
+      responses:
+        '201':
+          description: User group created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroup'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /teams/{team}/tags:
+    get:
+      operationId: getTeamTags
+      summary: Get Team Tags
+      description: >-
+        Returns a list of tags used in the specified Stack Overflow for Teams
+        workspace.
+      tags:
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pagesize'
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: A list of tags in the team workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse'
+    post:
+      operationId: createTeamTag
+      summary: Create a Team Tag
+      description: >-
+        Creates a new tag in a Stack Overflow for Teams workspace. Requires
+        write access.
+      tags:
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/team'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+      responses:
+        '201':
+          description: Tag created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /teams/{team}/tags/{tag}/smes:
+    get:
+      operationId: getTagSMEs
+      summary: Get Tag SMEs
+      description: >-
+        Returns the Subject Matter Experts (SMEs) assigned to a specific tag in
+        a Stack Overflow for Teams workspace.
+      tags:
+        - SMEs
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - name: tag
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The tag name
+        - $ref: '#/components/parameters/filter'
+      responses:
+        '200':
+          description: SMEs assigned to the specified tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SMEsResponse'
+    post:
+      operationId: addTagSME
+      summary: Add an SME for a Tag
+      description: >-
+        Assigns a user or user group as a Subject Matter Expert for a specific
+        tag in a Teams workspace. Requires write access.
+      tags:
+        - SMEs
+      parameters:
+        - $ref: '#/components/parameters/team'
+        - name: tag
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The tag name
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSMERequest'
+      responses:
+        '201':
+          description: SME added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SME'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Personal Access Token (PAT) authentication. Pass your PAT as a Bearer
+        token in the Authorization header. Generate tokens from your Stack
+        Overflow for Teams account settings.
+  parameters:
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: >-
+        The slug of the Stack Overflow for Teams workspace. If your team lives
+        at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+      description: Sort order
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+  responses:
+    BadRequest:
+      description: Bad request due to invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required or PAT is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the question
+        title:
+          type: string
+          description: The title of the question
+        body:
+          type: string
+          description: The HTML body of the question
+        score:
+          type: integer
+          description: Net vote score
+        answer_count:
+          type: integer
+          description: Number of answers
+        view_count:
+          type: integer
+          description: Number of views
+        creation_date:
+          type: string
+          format: date-time
+          description: When the question was created
+        last_activity_date:
+          type: string
+          format: date-time
+          description: When the question last had activity
+        owner:
+          $ref: '#/components/schemas/UserRef'
+        tags:
+          type: array
+          items:
+            type: string
+        is_answered:
+          type: boolean
+        link:
+          type: string
+          format: uri
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the answer
+        question_id:
+          type: integer
+          description: ID of the question this answer belongs to
+        body:
+          type: string
+          description: The HTML body of the answer
+        score:
+          type: integer
+          description: Net vote score
+        is_accepted:
+          type: boolean
+          description: Whether this is the accepted answer
+        creation_date:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/UserRef'
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the article
+        title:
+          type: string
+          description: Article title
+        body:
+          type: string
+          description: HTML body of the article
+        creation_date:
+          type: string
+          format: date-time
+        last_edit_date:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/UserRef'
+        tags:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the user
+        display_name:
+          type: string
+          description: User's display name
+        reputation:
+          type: integer
+          description: User's reputation score
+        email:
+          type: string
+          format: email
+          description: User's email address
+        profile_image:
+          type: string
+          format: uri
+        last_access_date:
+          type: string
+          format: date-time
+        is_admin:
+          type: boolean
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+    UserGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the user group
+        name:
+          type: string
+          description: Name of the user group
+        description:
+          type: string
+          description: Description of the user group
+        member_count:
+          type: integer
+          description: Number of members in the group
+        creation_date:
+          type: string
+          format: date-time
+    Tag:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tag name
+        count:
+          type: integer
+          description: Number of questions with this tag
+        description:
+          type: string
+          description: Tag description
+    SME:
+      type: object
+      properties:
+        id:
+          type: integer
+        tag:
+          type: string
+          description: The tag this SME is assigned to
+        user:
+          $ref: '#/components/schemas/UserRef'
+        user_group:
+          $ref: '#/components/schemas/UserGroup'
+    CreateQuestionRequest:
+      type: object
+      required:
+        - title
+        - body
+        - tags
+      properties:
+        title:
+          type: string
+          description: Question title
+        body:
+          type: string
+          description: Question body in Markdown
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags for the question
+    UpdateQuestionRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    CreateAnswerRequest:
+      type: object
+      required:
+        - body
+      properties:
+        body:
+          type: string
+          description: Answer body in Markdown
+    CreateArticleRequest:
+      type: object
+      required:
+        - title
+        - body
+      properties:
+        title:
+          type: string
+          description: Article title
+        body:
+          type: string
+          description: Article body in Markdown
+        tags:
+          type: array
+          items:
+            type: string
+    UpdateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    CreateUserGroupRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        member_ids:
+          type: array
+          items:
+            type: integer
+    CreateTagRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    AddSMERequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: User ID to add as SME (mutually exclusive with user_group_id)
+        user_group_id:
+          type: integer
+          description: User group ID to add as SME (mutually exclusive with user_id)
+    QuestionsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    AnswersResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    ArticlesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    UsersResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    UserGroupsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGroup'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    TagsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    SMEsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SME'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string

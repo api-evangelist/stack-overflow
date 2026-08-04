@@ -1,0 +1,32 @@
+{
+  "provider": "stack-overflow",
+  "sources": [
+    "stack-overflow-answers-api-openapi.yml",
+    "stack-overflow-articles-api-openapi.yml",
+    "stack-overflow-badges-api-openapi.yml",
+    "stack-overflow-comments-api-openapi.yml",
+    "stack-overflow-questions-api-openapi.yml",
+    "stack-overflow-search-api-openapi.yml",
+    "stack-overflow-smes-api-openapi.yml",
+    "stack-overflow-tags-api-openapi.yml",
+    "stack-overflow-user-groups-api-openapi.yml",
+    "stack-overflow-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "stack-overflow-answers-api-openapi.yml",
+    "stack-overflow-articles-api-openapi.yml",
+    "stack-overflow-badges-api-openapi.yml",
+    "stack-overflow-comments-api-openapi.yml",
+    "stack-overflow-questions-api-openapi.yml",
+    "stack-overflow-search-api-openapi.yml",
+    "stack-overflow-smes-api-openapi.yml",
+    "stack-overflow-tags-api-openapi.yml",
+    "stack-overflow-user-groups-api-openapi.yml",
+    "stack-overflow-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

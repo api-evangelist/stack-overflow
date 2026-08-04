@@ -16,11 +16,11 @@
       "method": "feed"
     },
     {
-      "source": "https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/",
-      "feed_url": "https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/feed/",
+      "source": "https://api.stackoverflowteams.com/docs",
+      "feed_url": "https://api.stackoverflowteams.com/docs",
       "title": "",
       "saved": 0,
-      "method": "discovered"
+      "method": "none"
     },
     {
       "source": "https://stackoverflow.blog/",
@@ -30,6 +30,6 @@
       "method": "discovered"
     }
   ],
-  "post_count": 84,
-  "fetched": "2026-07-11T11:50:51Z"
+  "post_count": 94,
+  "fetched": "2026-08-01T15:49:00Z"
 }
