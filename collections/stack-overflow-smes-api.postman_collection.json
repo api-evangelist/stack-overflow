@@ -1,0 +1,376 @@
+{
+  "item": [
+    {
+      "id": "d0b36ecf-8a91-4b65-8d4c-929d0b6a8d87",
+      "name": "SMEs",
+      "description": {
+        "content": "Operations for managing Subject Matter Experts (SMEs) for tags in a Teams workspace.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "861d1d55-ec1e-4578-8d56-34b941b33c8e",
+          "name": "Get Tag SMEs",
+          "request": {
+            "name": "Get Tag SMEs",
+            "description": {
+              "content": "Returns the Subject Matter Experts (SMEs) assigned to a specific tag in a Stack Overflow for Teams workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "tags",
+                ":tag",
+                "smes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag",
+                  "description": "(Required) The tag name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3c65c8ab-8aaf-46fe-8aef-58432d6069fa",
+              "name": "SMEs assigned to the specified tag",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "tags",
+                    ":tag",
+                    "smes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag",
+                      "description": "(Required) The tag name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": 4502,\n      \"tag\": \"string\",\n      \"user\": {\n        \"id\": 8836,\n        \"display_name\": \"string\",\n        \"profile_image\": \"http://qkUUbbK.hyrDF7I-HeU9wrjUoR3HF9ZhoTCwXUb\"\n      },\n      \"user_group\": {\n        \"id\": 6888,\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"member_count\": 4196,\n        \"creation_date\": \"1994-05-25T12:07:40.141Z\"\n      }\n    },\n    {\n      \"id\": 8358,\n      \"tag\": \"string\",\n      \"user\": {\n        \"id\": 7442,\n        \"display_name\": \"string\",\n        \"profile_image\": \"http://vkYTAkKbufGmjqnzerzFAFWpgOIOf.opywK+PQpM6hiXHZ8afYBP5nwZF89DcvKXP5HY02s93oJ1bHIpoAx56hEGl+is\"\n      },\n      \"user_group\": {\n        \"id\": 976,\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"member_count\": 6030,\n        \"creation_date\": \"2012-04-22T04:24:22.990Z\"\n      }\n    }\n  ],\n  \"has_more\": true,\n  \"total\": 314\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "773f4301-8ed7-4067-8272-5bd82cce0b5c",
+          "name": "Add an SME for a Tag",
+          "request": {
+            "name": "Add an SME for a Tag",
+            "description": {
+              "content": "Assigns a user or user group as a Subject Matter Expert for a specific tag in a Teams workspace. Requires write access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "tags",
+                ":tag",
+                "smes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag",
+                  "description": "(Required) The tag name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"<integer>\",\n  \"user_group_id\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "beddfe91-6f48-43d0-9430-200cf4cebe89",
+              "name": "SME added successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "tags",
+                    ":tag",
+                    "smes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag",
+                      "description": "(Required) The tag name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_id\": \"<integer>\",\n  \"user_group_id\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 354,\n  \"tag\": \"string\",\n  \"user\": {\n    \"id\": 7198,\n    \"display_name\": \"string\",\n    \"profile_image\": \"https://JAzwkXQRPSwtFwy.rmlhLuT1bHaoVePLfn9FpNUbK0C0PE3ihEC6jvvxswsS3ZV6wF.S\"\n  },\n  \"user_group\": {\n    \"id\": 3475,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"member_count\": 1598,\n    \"creation_date\": \"1956-11-05T06:37:38.917Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8c94595-1525-4a17-bafb-8abeb922d1a0",
+              "name": "Insufficient permissions (requires write access or Business tier)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "tags",
+                    ":tag",
+                    "smes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag",
+                      "description": "(Required) The tag name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_id\": \"<integer>\",\n  \"user_group_id\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 9912,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stackoverflowteams.com/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "975d9795-30ee-425a-94ab-ef8392cd3ca4",
+    "name": "Stack Overflow for Teams Answers SMEs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.\n\nContact Support:\n Name: Stack Overflow for Teams Support",
+      "type": "text/plain"
+    }
+  }
+}

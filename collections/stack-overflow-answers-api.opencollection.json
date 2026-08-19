@@ -1,0 +1,286 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stack Overflow for Teams Answers API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Answers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Answers for a Team Question",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/questions/:id/answers",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns all answers to a specific question in a Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Create an Answer for a Team Question",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/questions/:id/answers",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new answer to a question in a Stack Overflow for Teams workspace. Requires write access."
+        },
+        {
+          "info": {
+            "name": "Get Answers for Questions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/questions/:ids/answers",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "path",
+                "description": "Semicolon-delimited list of question IDs"
+              },
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns the answers for the questions identified by a semicolon- delimited list of question IDs."
+        },
+        {
+          "info": {
+            "name": "Get All Answers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/answers",
+            "params": [
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "fromdate",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp for minimum creation date"
+              },
+              {
+                "name": "todate",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp for maximum creation date"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns all answers on Stack Overflow sorted by creation date, activity, or vote score."
+        },
+        {
+          "info": {
+            "name": "Get Answers by IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/answers/:ids",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "path",
+                "description": "Semicolon-delimited list of answer IDs"
+              },
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns the answers identified by a semicolon-delimited list of answer IDs."
+        },
+        {
+          "info": {
+            "name": "Get Answers by User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/users/:ids/answers",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "path",
+                "description": "Semicolon-delimited list of user IDs"
+              },
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns answers posted by users identified by a semicolon-delimited list of user IDs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

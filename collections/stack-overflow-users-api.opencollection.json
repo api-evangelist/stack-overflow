@@ -1,0 +1,325 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stack Overflow for Teams Answers Users API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Team Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/users",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a list of users in the specified Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Get a Team User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/users/:id",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a specific user from a Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Get All Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/users",
+            "params": [
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "fromdate",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp for minimum creation date"
+              },
+              {
+                "name": "todate",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp for maximum creation date"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "inname",
+                "value": "",
+                "type": "query",
+                "description": "Filter users whose display name contains this string"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns Stack Overflow user profiles. Use inname to filter by display name. Results can be sorted by reputation, creation date, or name."
+        },
+        {
+          "info": {
+            "name": "Get Users by IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/users/:ids",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "path",
+                "description": "Semicolon-delimited list of user IDs"
+              },
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns the user profiles identified by a semicolon-delimited list of user IDs."
+        },
+        {
+          "info": {
+            "name": "Get Authenticated User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/users/me",
+            "params": [
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns the profile of the authenticated user based on the provided OAuth access token."
+        },
+        {
+          "info": {
+            "name": "Get Questions by User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/users/:ids/questions",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "path",
+                "description": "Semicolon-delimited list of user IDs"
+              },
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns questions asked by users identified by a semicolon-delimited list of user IDs."
+        },
+        {
+          "info": {
+            "name": "Get Answers by User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/users/:ids/answers",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "path",
+                "description": "Semicolon-delimited list of user IDs"
+              },
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns answers posted by users identified by a semicolon-delimited list of user IDs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

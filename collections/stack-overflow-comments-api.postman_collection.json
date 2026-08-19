@@ -1,0 +1,201 @@
+{
+  "item": [
+    {
+      "id": "b42a353b-b229-4ff1-a663-542eda6f6824",
+      "name": "Comments",
+      "description": {
+        "content": "Operations for retrieving and writing comments on Stack Overflow posts.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9e2064c7-df9f-48b4-993f-fed79260f4b6",
+          "name": "Get All Comments",
+          "request": {
+            "name": "Get All Comments",
+            "description": {
+              "content": "Returns comments on Stack Overflow posts sorted by creation date or vote score.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "comments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "fromdate",
+                  "value": "<integer>",
+                  "description": "Unix timestamp for minimum creation date"
+                },
+                {
+                  "disabled": false,
+                  "key": "todate",
+                  "value": "<integer>",
+                  "description": "Unix timestamp for maximum creation date"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "43e61635-218e-4505-92fb-2da175dbbb34",
+              "name": "A list of comments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "fromdate",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "todate",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"comment_id\": 2545,\n      \"post_id\": 5089,\n      \"body\": \"string\",\n      \"score\": 9897,\n      \"creation_date\": 1089,\n      \"owner\": {\n        \"user_id\": 6143,\n        \"display_name\": \"string\",\n        \"reputation\": 4431,\n        \"user_type\": \"registered\",\n        \"profile_image\": \"https://kq.claYjjXD5zXgkZBUM,GZDPjK-yp6x5UuqUNVk3.iJ79lsX9mrNEodlFzDf2cIC90aelt8,4eSis0Lnak\",\n        \"link\": \"https://QaOZqspCFCCqXcReDmsPdGIZfACgyds.gjuB+E\"\n      },\n      \"link\": \"http://YVBRtmbZIOYtrZR.jxRoOjXAvd1UkkXEyJlSHvJh,yIRB2KMi7QL\"\n    },\n    {\n      \"comment_id\": 2992,\n      \"post_id\": 4797,\n      \"body\": \"string\",\n      \"score\": 2231,\n      \"creation_date\": 310,\n      \"owner\": {\n        \"user_id\": 9786,\n        \"display_name\": \"string\",\n        \"reputation\": 836,\n        \"user_type\": \"moderator\",\n        \"profile_image\": \"https://DPRYE.gdlkHhk,.K4GEPon\",\n        \"link\": \"https://QtsVjJE.dbehXNhPKi0.w9TmbCxFE3aF2M92cWnJZP\"\n      },\n      \"link\": \"https://rTLoOYWhFUJPVirgXcAa.ropcFJ,pGwdkEYI3vpH,mm14\"\n    }\n  ],\n  \"has_more\": true,\n  \"quota_max\": 8572,\n  \"quota_remaining\": 1382,\n  \"backoff\": 479,\n  \"total\": 2943\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stackoverflowteams.com/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9c5c3caf-5d32-46ce-b384-a5aceeed0481",
+    "name": "Stack Overflow for Teams Answers Comments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.\n\nContact Support:\n Name: Stack Overflow for Teams Support",
+      "type": "text/plain"
+    }
+  }
+}

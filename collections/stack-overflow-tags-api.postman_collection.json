@@ -1,0 +1,749 @@
+{
+  "item": [
+    {
+      "id": "07ab17da-72eb-4044-a284-0f689c38c703",
+      "name": "Tags",
+      "description": {
+        "content": "Operations for managing tags in a Teams workspace.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "458eb5ee-ec11-4b22-8535-519750844193",
+          "name": "Get Team Tags",
+          "request": {
+            "name": "Get Team Tags",
+            "description": {
+              "content": "Returns a list of tags used in the specified Stack Overflow for Teams workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "tags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4815caf7-c32b-49dd-be55-4604b2790240",
+              "name": "A list of tags in the team workspace",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"name\": \"string\",\n      \"count\": 2212,\n      \"description\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"count\": 5418,\n      \"description\": \"string\"\n    }\n  ],\n  \"has_more\": true,\n  \"total\": 869\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "94857a25-38e6-4e7e-b694-b5c68a9600b9",
+          "name": "Create a Team Tag",
+          "request": {
+            "name": "Create a Team Tag",
+            "description": {
+              "content": "Creates a new tag in a Stack Overflow for Teams workspace. Requires write access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "tags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a81eeddd-61c3-4d1f-ac0d-e25535caa166",
+              "name": "Tag created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"count\": 6085,\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1aa466b9-a195-4113-8c6f-a07dcf4b6f3d",
+              "name": "Insufficient permissions (requires write access or Business tier)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 1667,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "40b3707c-d6c6-46d2-b611-59d41e2447d2",
+          "name": "Get Tag SMEs",
+          "request": {
+            "name": "Get Tag SMEs",
+            "description": {
+              "content": "Returns the Subject Matter Experts (SMEs) assigned to a specific tag in a Stack Overflow for Teams workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "tags",
+                ":tag",
+                "smes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag",
+                  "description": "(Required) The tag name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3cfdb8b8-a41d-41a6-969f-b88b130a3f00",
+              "name": "SMEs assigned to the specified tag",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "tags",
+                    ":tag",
+                    "smes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag",
+                      "description": "(Required) The tag name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": 1867,\n      \"tag\": \"string\",\n      \"user\": {\n        \"id\": 2812,\n        \"display_name\": \"string\",\n        \"profile_image\": \"http://JcMaDgpGTf.oxzDYcuESsfKP3J3+5YpiYz-wPmB,25QJUZKsZ8gkK9HznsQJdDJ6BM9qKv\"\n      },\n      \"user_group\": {\n        \"id\": 1448,\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"member_count\": 6115,\n        \"creation_date\": \"2023-08-15T19:17:36.272Z\"\n      }\n    },\n    {\n      \"id\": 1150,\n      \"tag\": \"string\",\n      \"user\": {\n        \"id\": 3477,\n        \"display_name\": \"string\",\n        \"profile_image\": \"https://sxZG.jkrcIh8kP00\"\n      },\n      \"user_group\": {\n        \"id\": 3813,\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"member_count\": 6463,\n        \"creation_date\": \"1984-05-09T02:29:01.306Z\"\n      }\n    }\n  ],\n  \"has_more\": true,\n  \"total\": 2796\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6a54269a-b86d-4ad5-81e1-9991e9f580c8",
+          "name": "Get All Tags",
+          "request": {
+            "name": "Get All Tags",
+            "description": {
+              "content": "Returns all tags on Stack Overflow. Use inname to filter by tag name. Results include usage counts and synonym information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "inname",
+                  "value": "<string>",
+                  "description": "Filter tags whose name contains this string"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9ec86769-22cc-4365-8b23-bac2539ae166",
+              "name": "A list of tags",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "inname",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"name\": \"string\",\n      \"count\": 3246,\n      \"is_moderator_only\": true,\n      \"is_required\": true,\n      \"has_synonyms\": false\n    },\n    {\n      \"name\": \"string\",\n      \"count\": 3936,\n      \"is_moderator_only\": false,\n      \"is_required\": true,\n      \"has_synonyms\": false\n    }\n  ],\n  \"has_more\": true,\n  \"quota_max\": 2267,\n  \"quota_remaining\": 8874,\n  \"backoff\": 1990,\n  \"total\": 974\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16de1976-1799-45b3-bad2-b41b9bf7dc5d",
+          "name": "Get Tag Info",
+          "request": {
+            "name": "Get Tag Info",
+            "description": {
+              "content": "Returns detailed information about the tags specified by a semicolon- delimited list of tag names.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tags",
+                ":tags",
+                "info"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tags",
+                  "description": "(Required) Semicolon-delimited list of tag names"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6e5a7d00-7f18-4ba7-a565-dbae8b301374",
+              "name": "Tag information",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tags",
+                    "info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tags",
+                      "description": "(Required) Semicolon-delimited list of tag names"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"name\": \"string\",\n      \"count\": 3246,\n      \"is_moderator_only\": true,\n      \"is_required\": true,\n      \"has_synonyms\": false\n    },\n    {\n      \"name\": \"string\",\n      \"count\": 3936,\n      \"is_moderator_only\": false,\n      \"is_required\": true,\n      \"has_synonyms\": false\n    }\n  ],\n  \"has_more\": true,\n  \"quota_max\": 2267,\n  \"quota_remaining\": 8874,\n  \"backoff\": 1990,\n  \"total\": 974\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stackoverflowteams.com/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ffb0dbfd-6309-4dc1-8945-a10c587728b0",
+    "name": "Stack Overflow for Teams Answers Tags API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.\n\nContact Support:\n Name: Stack Overflow for Teams Support",
+      "type": "text/plain"
+    }
+  }
+}

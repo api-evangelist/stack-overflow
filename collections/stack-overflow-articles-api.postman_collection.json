@@ -1,0 +1,836 @@
+{
+  "item": [
+    {
+      "id": "7c2f3044-ef6d-41b9-bf0c-7611735ff67a",
+      "name": "Articles",
+      "description": {
+        "content": "Operations for managing knowledge articles in a Teams workspace.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f14b4108-8842-4d54-91d2-9de79ee2eadd",
+          "name": "Get Team Articles",
+          "request": {
+            "name": "Get Team Articles",
+            "description": {
+              "content": "Returns a list of knowledge articles in the specified Stack Overflow for Teams workspace. Articles are long-form content pieces for documentation and knowledge sharing.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "articles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0325dcd7-2716-4ce9-9da1-dae371c7cb00",
+              "name": "A list of articles in the team workspace",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": 9792,\n      \"title\": \"string\",\n      \"body\": \"string\",\n      \"creation_date\": \"1988-07-13T16:34:19.661Z\",\n      \"last_edit_date\": \"1993-06-25T00:29:38.697Z\",\n      \"owner\": {\n        \"id\": 7791,\n        \"display_name\": \"string\",\n        \"profile_image\": \"https://EzeXHYJXUGoeMhGZTPsIPaDtYyRglYRh.uskwMJhidYj8wwLws+tTbXakQcXmFVFSqgzRAqzFL,q7IabbTxr4YE.\"\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"link\": \"https://bbdvWpKO.gffZo,Tn9+QD\"\n    },\n    {\n      \"id\": 3218,\n      \"title\": \"string\",\n      \"body\": \"string\",\n      \"creation_date\": \"1955-05-12T07:40:16.848Z\",\n      \"last_edit_date\": \"1993-08-04T10:43:20.278Z\",\n      \"owner\": {\n        \"id\": 129,\n        \"display_name\": \"string\",\n        \"profile_image\": \"http://eeXxa.vqsew-HPAcTvgkkDBHDRj+YApjfbcP8bEVS9j83gV0oarw9ngiPk\"\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"link\": \"https://DsIaqxiNYXfsVALhzJqeyNEtIjbjJrDXD.hprnyadpgtyStt9qZMlhcVtu-jkHHtBptEYCeCWTh\"\n    }\n  ],\n  \"has_more\": true,\n  \"total\": 6868\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ae8223cd-3499-4eb0-b23e-fa4fcf922bc3",
+          "name": "Create a Team Article",
+          "request": {
+            "name": "Create a Team Article",
+            "description": {
+              "content": "Creates a new knowledge article in a Stack Overflow for Teams workspace. Requires write access (Business tier).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "articles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"<string>\",\n  \"body\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "37b5b094-7dab-40a1-b874-4464a7a06ba4",
+              "name": "Article created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"body\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 9991,\n  \"title\": \"string\",\n  \"body\": \"string\",\n  \"creation_date\": \"1965-10-14T02:29:19.768Z\",\n  \"last_edit_date\": \"2019-09-30T04:24:25.913Z\",\n  \"owner\": {\n    \"id\": 6503,\n    \"display_name\": \"string\",\n    \"profile_image\": \"https://mFikNoJTohDvanFIAbYSm.caDKpDWNeWpVW9tRanrCvhH9C80YAert8Gj.8naH6jdFyMVQGhxE5XhePl\"\n  },\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"link\": \"https://MRShxoUcdcxwwOYRaEwWrG.hiuyKlsGNIzTt6l1gUpVnDRHiP,WDz23nsCtlI,3cYod5ftFLtikBVzdb\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f723c17-bf3b-4c8a-a80a-70e22930b53a",
+              "name": "Insufficient permissions (requires write access or Business tier)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "articles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"body\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 8694,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b45b8678-935b-4f73-b928-359402ec546d",
+          "name": "Get a Team Article",
+          "request": {
+            "name": "Get a Team Article",
+            "description": {
+              "content": "Returns a specific knowledge article from a Stack Overflow for Teams workspace by its ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "articles",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the resource"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "30e21df3-c843-4ea5-a7a6-f7b1aed345aa",
+              "name": "The requested article",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 9991,\n  \"title\": \"string\",\n  \"body\": \"string\",\n  \"creation_date\": \"1965-10-14T02:29:19.768Z\",\n  \"last_edit_date\": \"2019-09-30T04:24:25.913Z\",\n  \"owner\": {\n    \"id\": 6503,\n    \"display_name\": \"string\",\n    \"profile_image\": \"https://mFikNoJTohDvanFIAbYSm.caDKpDWNeWpVW9tRanrCvhH9C80YAert8Gj.8naH6jdFyMVQGhxE5XhePl\"\n  },\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"link\": \"https://MRShxoUcdcxwwOYRaEwWrG.hiuyKlsGNIzTt6l1gUpVnDRHiP,WDz23nsCtlI,3cYod5ftFLtikBVzdb\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32b1d9b1-f3c8-4ae0-9e67-b17ed66985a3",
+              "name": "The requested resource was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 8694,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6d8a4c6f-6a49-4eb3-88d4-f2c771314163",
+          "name": "Update a Team Article",
+          "request": {
+            "name": "Update a Team Article",
+            "description": {
+              "content": "Updates an existing knowledge article in a Stack Overflow for Teams workspace. Requires write access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "articles",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the resource"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"<string>\",\n  \"body\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e794eda9-209c-4cab-9853-dbee345934c5",
+              "name": "Article updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"body\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 9991,\n  \"title\": \"string\",\n  \"body\": \"string\",\n  \"creation_date\": \"1965-10-14T02:29:19.768Z\",\n  \"last_edit_date\": \"2019-09-30T04:24:25.913Z\",\n  \"owner\": {\n    \"id\": 6503,\n    \"display_name\": \"string\",\n    \"profile_image\": \"https://mFikNoJTohDvanFIAbYSm.caDKpDWNeWpVW9tRanrCvhH9C80YAert8Gj.8naH6jdFyMVQGhxE5XhePl\"\n  },\n  \"tags\": [\n    \"string\",\n    \"string\"\n  ],\n  \"link\": \"https://MRShxoUcdcxwwOYRaEwWrG.hiuyKlsGNIzTt6l1gUpVnDRHiP,WDz23nsCtlI,3cYod5ftFLtikBVzdb\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f00dcec-d40c-4608-8c90-02ea9582e3dc",
+              "name": "Insufficient permissions (requires write access or Business tier)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"body\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 8694,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "080037b7-567f-46b6-94c0-c537204e6170",
+              "name": "The requested resource was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "articles",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"<string>\",\n  \"body\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 8694,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stackoverflowteams.com/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a8c42a29-4a5b-458d-a542-316960e959a5",
+    "name": "Stack Overflow for Teams Answers Articles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.\n\nContact Support:\n Name: Stack Overflow for Teams Support",
+      "type": "text/plain"
+    }
+  }
+}

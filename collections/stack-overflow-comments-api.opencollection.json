@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stack Overflow for Teams Answers Comments API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Comments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get All Comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/comments",
+            "params": [
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "fromdate",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp for minimum creation date"
+              },
+              {
+                "name": "todate",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp for maximum creation date"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns comments on Stack Overflow posts sorted by creation date or vote score."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

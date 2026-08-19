@@ -1,0 +1,191 @@
+{
+  "item": [
+    {
+      "id": "c8e11d85-0878-4362-8735-cc94446e4766",
+      "name": "Badges",
+      "description": {
+        "content": "Operations for retrieving badge information on Stack Overflow.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "28d4c445-c19e-49e7-83be-597096091730",
+          "name": "Get All Badges",
+          "request": {
+            "name": "Get All Badges",
+            "description": {
+              "content": "Returns all badges available on Stack Overflow, including bronze, silver, and gold badges for various achievements.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "badges"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "inname",
+                  "value": "<string>",
+                  "description": "Filter badges whose name contains this string"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "00354c05-b48f-43a5-b098-4b068578c954",
+              "name": "A list of badges",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "badges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "inname",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"badge_id\": 4693,\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"award_count\": 1402,\n      \"rank\": \"bronze\",\n      \"badge_type\": \"named\"\n    },\n    {\n      \"badge_id\": 34,\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"award_count\": 8484,\n      \"rank\": \"silver\",\n      \"badge_type\": \"tag_based\"\n    }\n  ],\n  \"has_more\": true,\n  \"quota_max\": 2670,\n  \"quota_remaining\": 6532,\n  \"backoff\": 9566,\n  \"total\": 6398\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stackoverflowteams.com/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "fffcae96-10f9-48b3-b979-29b6951044ef",
+    "name": "Stack Overflow for Teams Answers Badges API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.\n\nContact Support:\n Name: Stack Overflow for Teams Support",
+      "type": "text/plain"
+    }
+  }
+}

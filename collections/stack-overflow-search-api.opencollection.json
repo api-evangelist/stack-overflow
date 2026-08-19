@@ -1,0 +1,243 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stack Overflow for Teams Answers Search API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Questions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/search",
+            "params": [
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "intitle",
+                "value": "",
+                "type": "query",
+                "description": "Text that must appear in question titles"
+              },
+              {
+                "name": "tagged",
+                "value": "",
+                "type": "query",
+                "description": "Semicolon-delimited list of tags to filter by"
+              },
+              {
+                "name": "nottagged",
+                "value": "",
+                "type": "query",
+                "description": "Semicolon-delimited tags to exclude from results"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Searches Stack Overflow questions by title text, tags, and exclusion tags. At least one of intitle, tagged, or nottagged must be specified."
+        },
+        {
+          "info": {
+            "name": "Advanced Search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/search/advanced",
+            "params": [
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Full-text search query"
+              },
+              {
+                "name": "accepted",
+                "value": "",
+                "type": "query",
+                "description": "Filter for questions with accepted answers"
+              },
+              {
+                "name": "answers",
+                "value": "",
+                "type": "query",
+                "description": "Minimum number of answers required"
+              },
+              {
+                "name": "body",
+                "value": "",
+                "type": "query",
+                "description": "Text that must appear in the question body"
+              },
+              {
+                "name": "closed",
+                "value": "",
+                "type": "query",
+                "description": "Filter for closed or open questions"
+              },
+              {
+                "name": "tagged",
+                "value": "",
+                "type": "query",
+                "description": "Semicolon-delimited list of tags to filter by"
+              },
+              {
+                "name": "title",
+                "value": "",
+                "type": "query",
+                "description": "Text that must appear in the question title"
+              },
+              {
+                "name": "user",
+                "value": "",
+                "type": "query",
+                "description": "Filter by user ID"
+              },
+              {
+                "name": "views",
+                "value": "",
+                "type": "query",
+                "description": "Minimum number of views required"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Performs an advanced search of Stack Overflow questions with filters for acceptance status, answer count, body text, closure status, tags, user, view count, and wiki status."
+        },
+        {
+          "info": {
+            "name": "Find Similar Questions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/similar",
+            "params": [
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "title",
+                "value": "",
+                "type": "query",
+                "description": "Question title to find similar questions for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "tagged",
+                "value": "",
+                "type": "query",
+                "description": "Semicolon-delimited list of tags to filter by"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns questions similar to a given title. Useful for finding existing answers before posting a new question."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

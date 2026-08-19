@@ -1,0 +1,201 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stack Overflow for Teams Answers Tags API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Team Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns a list of tags used in the specified Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Create a Team Tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new tag in a Stack Overflow for Teams workspace. Requires write access."
+        },
+        {
+          "info": {
+            "name": "Get Tag SMEs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags/:tag/smes",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "path",
+                "description": "The tag name"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns the Subject Matter Experts (SMEs) assigned to a specific tag in a Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Get All Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/tags",
+            "params": [
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pagesize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (max 100)"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by"
+              },
+              {
+                "name": "inname",
+                "value": "",
+                "type": "query",
+                "description": "Filter tags whose name contains this string"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns all tags on Stack Overflow. Use inname to filter by tag name. Results include usage counts and synonym information."
+        },
+        {
+          "info": {
+            "name": "Get Tag Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/tags/:tags/info",
+            "params": [
+              {
+                "name": "tags",
+                "value": "javascript;python",
+                "type": "path",
+                "description": "Semicolon-delimited list of tag names"
+              },
+              {
+                "name": "site",
+                "value": "",
+                "type": "query",
+                "description": "Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns detailed information about the tags specified by a semicolon- delimited list of tag names."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

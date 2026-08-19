@@ -1,0 +1,974 @@
+{
+  "item": [
+    {
+      "id": "ce3fac4f-988b-42cd-80cf-f0a7def3f3c8",
+      "name": "Answers",
+      "description": {
+        "content": "Operations for managing answers to questions in a Teams workspace.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d1d59c2f-6147-43bf-a1c7-bb3a3f65b261",
+          "name": "Get Answers for a Team Question",
+          "request": {
+            "name": "Get Answers for a Team Question",
+            "description": {
+              "content": "Returns all answers to a specific question in a Stack Overflow for Teams workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "questions",
+                ":id",
+                "answers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the resource"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "eaf4954f-5456-43ec-bf86-78baa240e2b8",
+              "name": "Answers for the specified question",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "questions",
+                    ":id",
+                    "answers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": 2638,\n      \"question_id\": 8332,\n      \"body\": \"string\",\n      \"score\": 8747,\n      \"is_accepted\": true,\n      \"creation_date\": \"1968-04-18T08:19:15.072Z\",\n      \"owner\": {\n        \"id\": 6300,\n        \"display_name\": \"string\",\n        \"profile_image\": \"https://FhpbEniQJGKxWSdpJtucpxLSAlZ.pyskKyono2ZTqKKVxAcQ+aXV0CJwL-oAqN8d8xl1KXw90X\"\n      }\n    },\n    {\n      \"id\": 9316,\n      \"question_id\": 4701,\n      \"body\": \"string\",\n      \"score\": 3873,\n      \"is_accepted\": true,\n      \"creation_date\": \"1983-05-05T16:30:45.286Z\",\n      \"owner\": {\n        \"id\": 8615,\n        \"display_name\": \"string\",\n        \"profile_image\": \"https://k.jlsqk87ExQDZ9kK+Sw5-D1VvQzGHj2vEqX1jn.2l7JONX.cGezedldC-RjUN7\"\n      }\n    }\n  ],\n  \"has_more\": true,\n  \"total\": 7362\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ba9b90d0-2f2f-4e68-9823-54ce263da95f",
+          "name": "Create an Answer for a Team Question",
+          "request": {
+            "name": "Create an Answer for a Team Question",
+            "description": {
+              "content": "Creates a new answer to a question in a Stack Overflow for Teams workspace. Requires write access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "questions",
+                ":id",
+                "answers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the resource"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "86863d86-5ac3-4986-84d2-9c4a0a799973",
+              "name": "Answer created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "questions",
+                    ":id",
+                    "answers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 4684,\n  \"question_id\": 1339,\n  \"body\": \"string\",\n  \"score\": 6924,\n  \"is_accepted\": true,\n  \"creation_date\": \"1947-02-09T16:47:00.769Z\",\n  \"owner\": {\n    \"id\": 513,\n    \"display_name\": \"string\",\n    \"profile_image\": \"https://vvYmPoQL.ahlcnddLvR2XN43pYonpHUbyarYgpHxfWFfo7An\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "105ab2df-1b8b-469d-9254-e7ecb4624be2",
+              "name": "Insufficient permissions (requires write access or Business tier)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "questions",
+                    ":id",
+                    "answers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"body\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 1569,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "30ac40f9-ae21-48bb-994f-567d752bc3c8",
+          "name": "Get Answers for Questions",
+          "request": {
+            "name": "Get Answers for Questions",
+            "description": {
+              "content": "Returns the answers for the questions identified by a semicolon- delimited list of question IDs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "questions",
+                ":ids",
+                "answers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ids",
+                  "description": "(Required) Semicolon-delimited list of question IDs"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bece7b03-3fea-4fc9-90a5-dc14dd0716bc",
+              "name": "Answers for the specified questions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "questions",
+                    ":ids",
+                    "answers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ids",
+                      "description": "(Required) Semicolon-delimited list of question IDs"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"answer_id\": 7175,\n      \"question_id\": 9104,\n      \"body\": \"string\",\n      \"score\": 7844,\n      \"is_accepted\": true,\n      \"creation_date\": 3231,\n      \"last_activity_date\": 492,\n      \"owner\": {\n        \"user_id\": 5389,\n        \"display_name\": \"string\",\n        \"reputation\": 9721,\n        \"user_type\": \"unregistered\",\n        \"profile_image\": \"http://RKAfDurSnWZHFgcAH.parQ4.1zc6nkzHeMqa5Vt\",\n        \"link\": \"https://IaASBEcfQbQWNIsoQnLhVTQgNeod.lqmuU2fYbJt-EpF,kk3wKWJXqeoZcJkIUhdwZW6BKscyVb2fkHZjtV4ogq\"\n      },\n      \"link\": \"http://hfrSWsJ.fngrkuV0xhgMuYPHsGkDHPyA0CzqGBKMdPNShZOam76WVe\"\n    },\n    {\n      \"answer_id\": 714,\n      \"question_id\": 4028,\n      \"body\": \"string\",\n      \"score\": 3447,\n      \"is_accepted\": true,\n      \"creation_date\": 8466,\n      \"last_activity_date\": 4797,\n      \"owner\": {\n        \"user_id\": 4406,\n        \"display_name\": \"string\",\n        \"reputation\": 9729,\n        \"user_type\": \"registered\",\n        \"profile_image\": \"https://qVjGeAfFkgCGeyEOdCEkMCgKTobMIBQ.hamsfvkAm5yYT2NIaI-EnRgtxv\",\n        \"link\": \"http://KcsNNmrbm.fbBqauPQl3-9o-XAyr-JneA503uogtjzlif-BtM7T9KrKgbvzH4UvtaRJAF4fg1qvZ7dV6eAsF\"\n      },\n      \"link\": \"http://OPH.miKEXV\"\n    }\n  ],\n  \"has_more\": false,\n  \"quota_max\": 3537,\n  \"quota_remaining\": 2663,\n  \"backoff\": 3994,\n  \"total\": 8355\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11680c92-4857-4aa7-8f8e-aed12f13a107",
+          "name": "Get All Answers",
+          "request": {
+            "name": "Get All Answers",
+            "description": {
+              "content": "Returns all answers on Stack Overflow sorted by creation date, activity, or vote score.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "answers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "fromdate",
+                  "value": "<integer>",
+                  "description": "Unix timestamp for minimum creation date"
+                },
+                {
+                  "disabled": false,
+                  "key": "todate",
+                  "value": "<integer>",
+                  "description": "Unix timestamp for maximum creation date"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2b2d00cd-04ad-40e8-b664-bcd764143eb3",
+              "name": "A list of answers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "answers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "fromdate",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "todate",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"answer_id\": 7175,\n      \"question_id\": 9104,\n      \"body\": \"string\",\n      \"score\": 7844,\n      \"is_accepted\": true,\n      \"creation_date\": 3231,\n      \"last_activity_date\": 492,\n      \"owner\": {\n        \"user_id\": 5389,\n        \"display_name\": \"string\",\n        \"reputation\": 9721,\n        \"user_type\": \"unregistered\",\n        \"profile_image\": \"http://RKAfDurSnWZHFgcAH.parQ4.1zc6nkzHeMqa5Vt\",\n        \"link\": \"https://IaASBEcfQbQWNIsoQnLhVTQgNeod.lqmuU2fYbJt-EpF,kk3wKWJXqeoZcJkIUhdwZW6BKscyVb2fkHZjtV4ogq\"\n      },\n      \"link\": \"http://hfrSWsJ.fngrkuV0xhgMuYPHsGkDHPyA0CzqGBKMdPNShZOam76WVe\"\n    },\n    {\n      \"answer_id\": 714,\n      \"question_id\": 4028,\n      \"body\": \"string\",\n      \"score\": 3447,\n      \"is_accepted\": true,\n      \"creation_date\": 8466,\n      \"last_activity_date\": 4797,\n      \"owner\": {\n        \"user_id\": 4406,\n        \"display_name\": \"string\",\n        \"reputation\": 9729,\n        \"user_type\": \"registered\",\n        \"profile_image\": \"https://qVjGeAfFkgCGeyEOdCEkMCgKTobMIBQ.hamsfvkAm5yYT2NIaI-EnRgtxv\",\n        \"link\": \"http://KcsNNmrbm.fbBqauPQl3-9o-XAyr-JneA503uogtjzlif-BtM7T9KrKgbvzH4UvtaRJAF4fg1qvZ7dV6eAsF\"\n      },\n      \"link\": \"http://OPH.miKEXV\"\n    }\n  ],\n  \"has_more\": false,\n  \"quota_max\": 3537,\n  \"quota_remaining\": 2663,\n  \"backoff\": 3994,\n  \"total\": 8355\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c4801b62-b101-463b-8954-c61b1229583e",
+          "name": "Get Answers by IDs",
+          "request": {
+            "name": "Get Answers by IDs",
+            "description": {
+              "content": "Returns the answers identified by a semicolon-delimited list of answer IDs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "answers",
+                ":ids"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ids",
+                  "description": "(Required) Semicolon-delimited list of answer IDs"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4086c30b-ac19-421e-b8dd-27f941d53841",
+              "name": "Answers matching the provided IDs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "answers",
+                    ":ids"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ids",
+                      "description": "(Required) Semicolon-delimited list of answer IDs"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"answer_id\": 7175,\n      \"question_id\": 9104,\n      \"body\": \"string\",\n      \"score\": 7844,\n      \"is_accepted\": true,\n      \"creation_date\": 3231,\n      \"last_activity_date\": 492,\n      \"owner\": {\n        \"user_id\": 5389,\n        \"display_name\": \"string\",\n        \"reputation\": 9721,\n        \"user_type\": \"unregistered\",\n        \"profile_image\": \"http://RKAfDurSnWZHFgcAH.parQ4.1zc6nkzHeMqa5Vt\",\n        \"link\": \"https://IaASBEcfQbQWNIsoQnLhVTQgNeod.lqmuU2fYbJt-EpF,kk3wKWJXqeoZcJkIUhdwZW6BKscyVb2fkHZjtV4ogq\"\n      },\n      \"link\": \"http://hfrSWsJ.fngrkuV0xhgMuYPHsGkDHPyA0CzqGBKMdPNShZOam76WVe\"\n    },\n    {\n      \"answer_id\": 714,\n      \"question_id\": 4028,\n      \"body\": \"string\",\n      \"score\": 3447,\n      \"is_accepted\": true,\n      \"creation_date\": 8466,\n      \"last_activity_date\": 4797,\n      \"owner\": {\n        \"user_id\": 4406,\n        \"display_name\": \"string\",\n        \"reputation\": 9729,\n        \"user_type\": \"registered\",\n        \"profile_image\": \"https://qVjGeAfFkgCGeyEOdCEkMCgKTobMIBQ.hamsfvkAm5yYT2NIaI-EnRgtxv\",\n        \"link\": \"http://KcsNNmrbm.fbBqauPQl3-9o-XAyr-JneA503uogtjzlif-BtM7T9KrKgbvzH4UvtaRJAF4fg1qvZ7dV6eAsF\"\n      },\n      \"link\": \"http://OPH.miKEXV\"\n    }\n  ],\n  \"has_more\": false,\n  \"quota_max\": 3537,\n  \"quota_remaining\": 2663,\n  \"backoff\": 3994,\n  \"total\": 8355\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e3a1bfc3-e718-44ee-83c1-dc7e9cd37735",
+          "name": "Get Answers by User",
+          "request": {
+            "name": "Get Answers by User",
+            "description": {
+              "content": "Returns answers posted by users identified by a semicolon-delimited list of user IDs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":ids",
+                "answers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ids",
+                  "description": "(Required) Semicolon-delimited list of user IDs"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "31749e24-9bb3-45ec-aa60-ae04c66132e6",
+              "name": "Answers posted by the specified users",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":ids",
+                    "answers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ids",
+                      "description": "(Required) Semicolon-delimited list of user IDs"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"answer_id\": 7175,\n      \"question_id\": 9104,\n      \"body\": \"string\",\n      \"score\": 7844,\n      \"is_accepted\": true,\n      \"creation_date\": 3231,\n      \"last_activity_date\": 492,\n      \"owner\": {\n        \"user_id\": 5389,\n        \"display_name\": \"string\",\n        \"reputation\": 9721,\n        \"user_type\": \"unregistered\",\n        \"profile_image\": \"http://RKAfDurSnWZHFgcAH.parQ4.1zc6nkzHeMqa5Vt\",\n        \"link\": \"https://IaASBEcfQbQWNIsoQnLhVTQgNeod.lqmuU2fYbJt-EpF,kk3wKWJXqeoZcJkIUhdwZW6BKscyVb2fkHZjtV4ogq\"\n      },\n      \"link\": \"http://hfrSWsJ.fngrkuV0xhgMuYPHsGkDHPyA0CzqGBKMdPNShZOam76WVe\"\n    },\n    {\n      \"answer_id\": 714,\n      \"question_id\": 4028,\n      \"body\": \"string\",\n      \"score\": 3447,\n      \"is_accepted\": true,\n      \"creation_date\": 8466,\n      \"last_activity_date\": 4797,\n      \"owner\": {\n        \"user_id\": 4406,\n        \"display_name\": \"string\",\n        \"reputation\": 9729,\n        \"user_type\": \"registered\",\n        \"profile_image\": \"https://qVjGeAfFkgCGeyEOdCEkMCgKTobMIBQ.hamsfvkAm5yYT2NIaI-EnRgtxv\",\n        \"link\": \"http://KcsNNmrbm.fbBqauPQl3-9o-XAyr-JneA503uogtjzlif-BtM7T9KrKgbvzH4UvtaRJAF4fg1qvZ7dV6eAsF\"\n      },\n      \"link\": \"http://OPH.miKEXV\"\n    }\n  ],\n  \"has_more\": false,\n  \"quota_max\": 3537,\n  \"quota_remaining\": 2663,\n  \"backoff\": 3994,\n  \"total\": 8355\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stackoverflowteams.com/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "334f55c1-2e9c-4831-b794-580715a1eeb5",
+    "name": "Stack Overflow for Teams Answers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.\n\nContact Support:\n Name: Stack Overflow for Teams Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,1125 @@
+{
+  "item": [
+    {
+      "id": "941e00b8-50a3-4a64-a7e6-a90cab745001",
+      "name": "Users",
+      "description": {
+        "content": "Operations for managing users in a Teams workspace.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c0855015-c4f4-428f-a5fd-65398c91e51b",
+          "name": "Get Team Users",
+          "request": {
+            "name": "Get Team Users",
+            "description": {
+              "content": "Returns a list of users in the specified Stack Overflow for Teams workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1e48198d-181a-437f-8eaf-4220d0e0b8ee",
+              "name": "A list of users in the team workspace",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": 2374,\n      \"display_name\": \"string\",\n      \"reputation\": 9355,\n      \"email\": \"r53a66Mb@oRMbPerzNebfdyjspxFpXsOErzwt.lpp\",\n      \"profile_image\": \"http://xcbeWoJ.ovT27bL.VptNh5xPbVqCskBzPotS2Wwdv9Km5N9WEP09NaPprst\",\n      \"last_access_date\": \"1989-03-26T02:46:50.064Z\",\n      \"is_admin\": true\n    },\n    {\n      \"id\": 7007,\n      \"display_name\": \"string\",\n      \"reputation\": 4124,\n      \"email\": \"sSh1o6@FSZlFMolbIzkxW.nnl\",\n      \"profile_image\": \"http://DNO.qhekZeXftHh,tKJ8CsigTzTdyRd7ScQkdB,gaFlZV-9aF2muuYbEkRQExvhDFORgL0-dsR\",\n      \"last_access_date\": \"1991-07-29T22:21:15.842Z\",\n      \"is_admin\": true\n    }\n  ],\n  \"has_more\": false,\n  \"total\": 9244\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f1074f82-0797-4cb6-ac7a-e89638a3f3d7",
+          "name": "Get a Team User",
+          "request": {
+            "name": "Get a Team User",
+            "description": {
+              "content": "Returns a specific user from a Stack Overflow for Teams workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "teams",
+                ":team",
+                "users",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "team",
+                  "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the resource"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "11787a77-ffa4-4856-b7f0-252c9a4bb9f1",
+              "name": "The requested user",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "users",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 2528,\n  \"display_name\": \"string\",\n  \"reputation\": 75,\n  \"email\": \"8ADZ7@cwJHGVOLBWDhFl.lh\",\n  \"profile_image\": \"https://NbulFKmNwksLfptB.vziBm9c.+FQ6aeodHEJxEhkC+gBKTm65DqsMkEdR5dpyhTKVskGShp\",\n  \"last_access_date\": \"1995-02-11T19:25:07.838Z\",\n  \"is_admin\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f3e4afff-9d94-45a7-948d-caeb243d7822",
+              "name": "The requested resource was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team",
+                    "users",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team",
+                      "description": "(Required) The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 2290,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "38701462-bff9-4325-8aae-64d01103ca7e",
+          "name": "Get All Users",
+          "request": {
+            "name": "Get All Users",
+            "description": {
+              "content": "Returns Stack Overflow user profiles. Use inname to filter by display name. Results can be sorted by reputation, creation date, or name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "fromdate",
+                  "value": "<integer>",
+                  "description": "Unix timestamp for minimum creation date"
+                },
+                {
+                  "disabled": false,
+                  "key": "todate",
+                  "value": "<integer>",
+                  "description": "Unix timestamp for maximum creation date"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "inname",
+                  "value": "<string>",
+                  "description": "Filter users whose display name contains this string"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e6538b6c-4a47-4246-a4ec-680dc3ed71bb",
+              "name": "A list of user profiles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "fromdate",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "todate",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "inname",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"user_id\": 9238,\n      \"display_name\": \"string\",\n      \"reputation\": 3359,\n      \"user_type\": \"string\",\n      \"profile_image\": \"https://dPj.dgG5mLXhS-JNPiuJfyiYNKDv5x+rrfFpYKKfC2\",\n      \"website_url\": \"https://WPkHeOZeY.hiyuDL1dpxs1fszk9Tv24dezj2kmb\",\n      \"location\": \"string\",\n      \"about_me\": \"string\",\n      \"creation_date\": 4893,\n      \"last_access_date\": 7063,\n      \"question_count\": 3536,\n      \"answer_count\": 1334,\n      \"link\": \"https://BCsymhyeyofJkoXRlIZZCbNYTwYXuR.llvifIAMdIyWJmY,jrymg\"\n    },\n    {\n      \"user_id\": 7216,\n      \"display_name\": \"string\",\n      \"reputation\": 2918,\n      \"user_type\": \"string\",\n      \"profile_image\": \"https://eDvbY.ixvW-tckVgW0ggG5Ce3GPLRq4pJI4XzML1VcjkfZ2cTyG88-5Obeye\",\n      \"website_url\": \"https://ZQqFtdgiGBQaipgVrNGNImk.jgnzZMK+Q3qSm+pdbeyj01UVGbCHwZrJttqERjReagP14So4mVn0YzHYiee\",\n      \"location\": \"string\",\n      \"about_me\": \"string\",\n      \"creation_date\": 6646,\n      \"last_access_date\": 2880,\n      \"question_count\": 2304,\n      \"answer_count\": 6998,\n      \"link\": \"http://xNIYe.aekvGUBIilpoVqa347jQ6RVvFrJVF.xh-DLPjyKI+zBl8Y\"\n    }\n  ],\n  \"has_more\": true,\n  \"quota_max\": 2816,\n  \"quota_remaining\": 9723,\n  \"backoff\": 8077,\n  \"total\": 8620\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f0f1baa9-9ca3-4428-b4a3-28aa5f9b8ebc",
+          "name": "Get Users by IDs",
+          "request": {
+            "name": "Get Users by IDs",
+            "description": {
+              "content": "Returns the user profiles identified by a semicolon-delimited list of user IDs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":ids"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ids",
+                  "description": "(Required) Semicolon-delimited list of user IDs"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "216590ae-ccb3-448e-ba85-55e87afd029d",
+              "name": "User profiles matching the provided IDs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":ids"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ids",
+                      "description": "(Required) Semicolon-delimited list of user IDs"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"user_id\": 9238,\n      \"display_name\": \"string\",\n      \"reputation\": 3359,\n      \"user_type\": \"string\",\n      \"profile_image\": \"https://dPj.dgG5mLXhS-JNPiuJfyiYNKDv5x+rrfFpYKKfC2\",\n      \"website_url\": \"https://WPkHeOZeY.hiyuDL1dpxs1fszk9Tv24dezj2kmb\",\n      \"location\": \"string\",\n      \"about_me\": \"string\",\n      \"creation_date\": 4893,\n      \"last_access_date\": 7063,\n      \"question_count\": 3536,\n      \"answer_count\": 1334,\n      \"link\": \"https://BCsymhyeyofJkoXRlIZZCbNYTwYXuR.llvifIAMdIyWJmY,jrymg\"\n    },\n    {\n      \"user_id\": 7216,\n      \"display_name\": \"string\",\n      \"reputation\": 2918,\n      \"user_type\": \"string\",\n      \"profile_image\": \"https://eDvbY.ixvW-tckVgW0ggG5Ce3GPLRq4pJI4XzML1VcjkfZ2cTyG88-5Obeye\",\n      \"website_url\": \"https://ZQqFtdgiGBQaipgVrNGNImk.jgnzZMK+Q3qSm+pdbeyj01UVGbCHwZrJttqERjReagP14So4mVn0YzHYiee\",\n      \"location\": \"string\",\n      \"about_me\": \"string\",\n      \"creation_date\": 6646,\n      \"last_access_date\": 2880,\n      \"question_count\": 2304,\n      \"answer_count\": 6998,\n      \"link\": \"http://xNIYe.aekvGUBIilpoVqa347jQ6RVvFrJVF.xh-DLPjyKI+zBl8Y\"\n    }\n  ],\n  \"has_more\": true,\n  \"quota_max\": 2816,\n  \"quota_remaining\": 9723,\n  \"backoff\": 8077,\n  \"total\": 8620\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e31f8796-44ce-4151-b6a5-f78f1a26417c",
+          "name": "Get Authenticated User",
+          "request": {
+            "name": "Get Authenticated User",
+            "description": {
+              "content": "Returns the profile of the authenticated user based on the provided OAuth access token.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                "me"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "9137f968-e9a3-457c-87a7-8a28365c86d2",
+              "name": "The authenticated user profile",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"user_id\": 9238,\n      \"display_name\": \"string\",\n      \"reputation\": 3359,\n      \"user_type\": \"string\",\n      \"profile_image\": \"https://dPj.dgG5mLXhS-JNPiuJfyiYNKDv5x+rrfFpYKKfC2\",\n      \"website_url\": \"https://WPkHeOZeY.hiyuDL1dpxs1fszk9Tv24dezj2kmb\",\n      \"location\": \"string\",\n      \"about_me\": \"string\",\n      \"creation_date\": 4893,\n      \"last_access_date\": 7063,\n      \"question_count\": 3536,\n      \"answer_count\": 1334,\n      \"link\": \"https://BCsymhyeyofJkoXRlIZZCbNYTwYXuR.llvifIAMdIyWJmY,jrymg\"\n    },\n    {\n      \"user_id\": 7216,\n      \"display_name\": \"string\",\n      \"reputation\": 2918,\n      \"user_type\": \"string\",\n      \"profile_image\": \"https://eDvbY.ixvW-tckVgW0ggG5Ce3GPLRq4pJI4XzML1VcjkfZ2cTyG88-5Obeye\",\n      \"website_url\": \"https://ZQqFtdgiGBQaipgVrNGNImk.jgnzZMK+Q3qSm+pdbeyj01UVGbCHwZrJttqERjReagP14So4mVn0YzHYiee\",\n      \"location\": \"string\",\n      \"about_me\": \"string\",\n      \"creation_date\": 6646,\n      \"last_access_date\": 2880,\n      \"question_count\": 2304,\n      \"answer_count\": 6998,\n      \"link\": \"http://xNIYe.aekvGUBIilpoVqa347jQ6RVvFrJVF.xh-DLPjyKI+zBl8Y\"\n    }\n  ],\n  \"has_more\": true,\n  \"quota_max\": 2816,\n  \"quota_remaining\": 9723,\n  \"backoff\": 8077,\n  \"total\": 8620\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06e9acd9-d0bd-46b1-8564-38420e08da86",
+              "name": "Authentication required or token is invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_id\": 2290,\n  \"error_message\": \"string\",\n  \"error_name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1e0235d-664f-4b11-9110-be0f21121b1f",
+          "name": "Get Questions by User",
+          "request": {
+            "name": "Get Questions by User",
+            "description": {
+              "content": "Returns questions asked by users identified by a semicolon-delimited list of user IDs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":ids",
+                "questions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ids",
+                  "description": "(Required) Semicolon-delimited list of user IDs"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "07b42df8-bb20-4fe4-9d58-ca31eeccde41",
+              "name": "Questions asked by the specified users",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":ids",
+                    "questions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ids",
+                      "description": "(Required) Semicolon-delimited list of user IDs"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"question_id\": 9940,\n      \"title\": \"string\",\n      \"body\": \"string\",\n      \"score\": 7937,\n      \"view_count\": 1964,\n      \"answer_count\": 4748,\n      \"accepted_answer_id\": 9790,\n      \"is_answered\": true,\n      \"creation_date\": 4279,\n      \"last_activity_date\": 2428,\n      \"owner\": {\n        \"user_id\": 9856,\n        \"display_name\": \"string\",\n        \"reputation\": 9875,\n        \"user_type\": \"moderator\",\n        \"profile_image\": \"https://lUSUmshHsBVJBf.bvmefvKAIHq-+HDsVr4N6Z,ZfutZsaAti+GuYWlX0UYqBJNK7kAxTZZv0onliDKDA\",\n        \"link\": \"https://RWwohSOdBVErDZaHFyCXFxdMNzz.oxnMLhTLYnjHIKvA\"\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"link\": \"https://flxHKCXlqxbdhvgXCATsRANQgGteLur.mxhaPHvLVThrIwc+bCtRhH3Flk,Khk9oVsGz\",\n      \"bounty_amount\": 718,\n      \"bounty_closes_date\": 7471\n    },\n    {\n      \"question_id\": 7567,\n      \"title\": \"string\",\n      \"body\": \"string\",\n      \"score\": 5121,\n      \"view_count\": 7454,\n      \"answer_count\": 6946,\n      \"accepted_answer_id\": 9479,\n      \"is_answered\": false,\n      \"creation_date\": 5837,\n      \"last_activity_date\": 6330,\n      \"owner\": {\n        \"user_id\": 2130,\n        \"display_name\": \"string\",\n        \"reputation\": 3177,\n        \"user_type\": \"moderator\",\n        \"profile_image\": \"http://uPJcInJ.cfaycUvv9uO1a5iSE6b8WCo5l4CApq7xsVi8GUaNWx0Ms+Vd6qvlMyIyT8vIrYJ\",\n        \"link\": \"https://g.qudnYM0alqnMVaAQ6EEZuUue1O2ufKc+fbY-Ma,+UnqQH45JXcTuJJ,owrUVbtWNsvgVi\"\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"link\": \"https://UsnElUNwnAdJcumOEnoTDlBbVJJDlDxGU.jnsfEK-0uUZgXWZKX5-dloaKfLqMI1mlNqfmP8-YwB12CXQKUbVs\",\n      \"bounty_amount\": 1137,\n      \"bounty_closes_date\": 1044\n    }\n  ],\n  \"has_more\": false,\n  \"quota_max\": 5260,\n  \"quota_remaining\": 4497,\n  \"backoff\": 298,\n  \"total\": 7921\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0faebe3f-4044-49d1-934e-804e1a656b52",
+          "name": "Get Answers by User",
+          "request": {
+            "name": "Get Answers by User",
+            "description": {
+              "content": "Returns answers posted by users identified by a semicolon-delimited list of user IDs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":ids",
+                "answers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "site",
+                  "value": "stackoverflow",
+                  "description": "(Required) Stack Exchange site identifier (use stackoverflow for Stack Overflow)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-indexed)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pagesize",
+                  "value": "30",
+                  "description": "Number of results per page (max 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter to control which fields are returned"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ids",
+                  "description": "(Required) Semicolon-delimited list of user IDs"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "db7bac0b-6ead-4028-a1b7-3b81b4ab33eb",
+              "name": "Answers posted by the specified users",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":ids",
+                    "answers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "site",
+                      "value": "stackoverflow"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pagesize",
+                      "value": "30"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ids",
+                      "description": "(Required) Semicolon-delimited list of user IDs"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"answer_id\": 7191,\n      \"question_id\": 609,\n      \"body\": \"string\",\n      \"score\": 6866,\n      \"is_accepted\": true,\n      \"creation_date\": 3849,\n      \"last_activity_date\": 7798,\n      \"owner\": {\n        \"user_id\": 7270,\n        \"display_name\": \"string\",\n        \"reputation\": 2258,\n        \"user_type\": \"registered\",\n        \"profile_image\": \"http://sNdlCGctSigDDcEPbjb.eodqlYfb\",\n        \"link\": \"https://VOgdhUpVCiyAZybBYhSmk.xcfMaYCcaLtc0NWQY-b4.xsjHztzu0nSJL2SNmHz6mYLvd77LnqNG4\"\n      },\n      \"link\": \"https://PFGJSbfDBcDMBouwnFa.gjhyOlWFY4uOZg9I4oJLSYQm\"\n    },\n    {\n      \"answer_id\": 1797,\n      \"question_id\": 916,\n      \"body\": \"string\",\n      \"score\": 3514,\n      \"is_accepted\": false,\n      \"creation_date\": 3145,\n      \"last_activity_date\": 2601,\n      \"owner\": {\n        \"user_id\": 2465,\n        \"display_name\": \"string\",\n        \"reputation\": 3069,\n        \"user_type\": \"unregistered\",\n        \"profile_image\": \"https://OBpsdYFmJAYkKhkvzVTxTAreYZe.oaIxqrXYTNYJW8UI+R8dqYV45Ap\",\n        \"link\": \"https://wQkFRtwCNxHtsIhOpHZAqrvhtuzSN.rttoCcig-BMiiKECMuicSzfQzhbsN9ZTDwPi97BaGyOU\"\n      },\n      \"link\": \"https://PCFSId.ifaZGl6vx4twHdLFpeAUVLa5g0D-CJbkLfSkgg\"\n    }\n  ],\n  \"has_more\": false,\n  \"quota_max\": 2815,\n  \"quota_remaining\": 6393,\n  \"backoff\": 7314,\n  \"total\": 6806\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stackoverflowteams.com/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3f7ad8c0-9678-407d-877c-d710242f7824",
+    "name": "Stack Overflow for Teams Answers Users API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.\n\nContact Support:\n Name: Stack Overflow for Teams Support",
+      "type": "text/plain"
+    }
+  }
+}

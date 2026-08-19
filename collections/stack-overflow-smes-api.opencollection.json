@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stack Overflow for Teams Answers SMEs API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SMEs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Tag SMEs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags/:tag/smes",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "path",
+                "description": "The tag name"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to control which fields are returned"
+              }
+            ]
+          },
+          "docs": "Returns the Subject Matter Experts (SMEs) assigned to a specific tag in a Stack Overflow for Teams workspace."
+        },
+        {
+          "info": {
+            "name": "Add an SME for a Tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stackoverflowteams.com/v3/teams/:team/tags/:tag/smes",
+            "params": [
+              {
+                "name": "team",
+                "value": "my-team",
+                "type": "path",
+                "description": "The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team."
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "path",
+                "description": "The tag name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assigns a user or user group as a Subject Matter Expert for a specific tag in a Teams workspace. Requires write access."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
