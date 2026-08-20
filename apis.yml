@@ -239,6 +239,8 @@ apis:
   humanURL: https://api.stackexchange.com/
   baseURL: https://api.stackexchange.com/2.3
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
