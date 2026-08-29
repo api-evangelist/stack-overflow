@@ -1,32 +1,43 @@
 {
   "provider": "stack-overflow",
   "sources": [
-    "stack-overflow-answers-api-openapi.yml",
-    "stack-overflow-articles-api-openapi.yml",
-    "stack-overflow-badges-api-openapi.yml",
-    "stack-overflow-comments-api-openapi.yml",
-    "stack-overflow-questions-api-openapi.yml",
-    "stack-overflow-search-api-openapi.yml",
-    "stack-overflow-smes-api-openapi.yml",
-    "stack-overflow-tags-api-openapi.yml",
-    "stack-overflow-user-groups-api-openapi.yml",
-    "stack-overflow-users-api-openapi.yml"
+    "_original/stack-overflow-for-teams-openapi.yml",
+    "_original/stack-overflow-openapi.yml"
   ],
   "outputs": [
     "stack-overflow-answers-api-openapi.yml",
     "stack-overflow-articles-api-openapi.yml",
-    "stack-overflow-badges-api-openapi.yml",
-    "stack-overflow-comments-api-openapi.yml",
     "stack-overflow-questions-api-openapi.yml",
-    "stack-overflow-search-api-openapi.yml",
     "stack-overflow-smes-api-openapi.yml",
     "stack-overflow-tags-api-openapi.yml",
     "stack-overflow-user-groups-api-openapi.yml",
-    "stack-overflow-users-api-openapi.yml"
+    "stack-overflow-users-api-openapi.yml",
+    "stack-overflow-badges-api-openapi.yml",
+    "stack-overflow-comments-api-openapi.yml",
+    "stack-overflow-search-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "stack-overflow-for-teams-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "stack-overflow-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "tag 'Answers' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied",
+    "tag 'Questions' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied",
+    "tag 'Tags' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied",
+    "tag 'Users' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied"
+  ],
+  "skipped": [
+    "stack-overflow-answers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-articles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-badges-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-comments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-questions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-smes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-user-groups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "stack-overflow-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

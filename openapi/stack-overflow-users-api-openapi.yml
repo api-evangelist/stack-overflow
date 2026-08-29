@@ -1,17 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Stack Overflow for Teams Answers Users API
-  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
-  version: v3
-  contact:
-    name: Stack Overflow for Teams Support
-    url: https://stackoverflow.com/teams
-  termsOfService: https://stackoverflow.com/legal/terms-of-service
+  title: Stack Overflow Users API
+  version: '1.0'
+  description: 'Operations tagged Users across 2 of this provider''s published API definitions: stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.stackoverflowteams.com/v3
   description: Stack Overflow for Teams API v3
-security:
-- bearerAuth: []
+- url: https://api.stackexchange.com/2.3
+  description: Stack Exchange API v2.3
 tags:
 - name: Users
   description: Operations for managing users in a Teams workspace.
@@ -35,6 +31,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsersResponse'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.stackoverflowteams.com/v3
+      description: Stack Overflow for Teams API v3
   /teams/{team}/users/{id}:
     get:
       operationId: getTeamUser
@@ -55,6 +56,11 @@ paths:
                 $ref: '#/components/schemas/User'
         '404':
           $ref: '#/components/responses/NotFound'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.stackoverflowteams.com/v3
+      description: Stack Overflow for Teams API v3
   /users:
     get:
       operationId: getUsers
@@ -83,6 +89,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsersResponse_2'
+      security:
+      - oauth2: []
+      - {}
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
   /users/{ids}:
     get:
       operationId: getUsersByIds
@@ -106,6 +118,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsersResponse_2'
+      security:
+      - oauth2: []
+      - {}
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
   /users/me:
     get:
       operationId: getAuthenticatedUser
@@ -127,6 +145,9 @@ paths:
                 $ref: '#/components/schemas/UsersResponse_2'
         '401':
           $ref: '#/components/responses/Unauthorized'
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
   /users/{ids}/questions:
     get:
       operationId: getQuestionsByUser
@@ -154,6 +175,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuestionsResponse'
+      security:
+      - oauth2: []
+      - {}
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
   /users/{ids}/answers:
     get:
       operationId: getAnswersByUser
@@ -181,79 +208,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AnswersResponse'
+      security:
+      - oauth2: []
+      - {}
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
 components:
   schemas:
-    Question:
+    User:
       type: object
       properties:
-        question_id:
+        id:
           type: integer
-        title:
+          description: Unique identifier of the user
+        display_name:
           type: string
-        body:
+          description: User's display name
+        reputation:
+          type: integer
+          description: User's reputation score
+        email:
           type: string
-        score:
-          type: integer
-        view_count:
-          type: integer
-        answer_count:
-          type: integer
-        accepted_answer_id:
-          type: integer
-        is_answered:
-          type: boolean
-        creation_date:
-          type: integer
-        last_activity_date:
-          type: integer
-        owner:
-          $ref: '#/components/schemas/ShallowUser'
-        tags:
-          type: array
-          items:
-            type: string
-        link:
+          format: email
+          description: User's email address
+        profile_image:
           type: string
           format: uri
-        bounty_amount:
-          type: integer
-        bounty_closes_date:
-          type: integer
-    QuestionsResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Question'
-    AnswersResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Answer'
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
+        last_access_date:
+          type: string
+          format: date-time
+        is_admin:
           type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
     ErrorResponse:
       type: object
       properties:
@@ -263,6 +249,17 @@ components:
           type: string
         error_name:
           type: string
+    UsersResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        has_more:
+          type: boolean
+        total:
+          type: integer
     User_2:
       type: object
       properties:
@@ -317,39 +314,6 @@ components:
         link:
           type: string
           format: uri
-    UsersResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/User_2'
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique identifier of the user
-        display_name:
-          type: string
-          description: User's display name
-        reputation:
-          type: integer
-          description: User's reputation score
-        email:
-          type: string
-          format: email
-          description: User's email address
-        profile_image:
-          type: string
-          format: uri
-        last_access_date:
-          type: string
-          format: date-time
-        is_admin:
-          type: boolean
     ShallowUser:
       type: object
       properties:
@@ -371,18 +335,138 @@ components:
         link:
           type: string
           format: uri
-    UsersResponse:
+    Wrapper:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            type: object
         has_more:
           type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
         total:
           type: integer
+    Question:
+      type: object
+      properties:
+        question_id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        score:
+          type: integer
+        view_count:
+          type: integer
+        answer_count:
+          type: integer
+        accepted_answer_id:
+          type: integer
+        is_answered:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        tags:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+        bounty_amount:
+          type: integer
+        bounty_closes_date:
+          type: integer
+    UsersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/User_2'
+    QuestionsResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Question'
+    AnswersResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Answer'
+  responses:
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required or token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
     order:
       name: order
       in: query
@@ -393,23 +477,21 @@ components:
         - desc
         default: desc
       description: Sort order
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-    pagesize:
+    pagesize_2:
       name: pagesize
       in: query
       schema:
         type: integer
-        minimum: 1
+        minimum: 0
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
     sort:
       name: sort
       in: query
@@ -430,60 +512,22 @@ components:
       schema:
         type: integer
       description: Unix timestamp for minimum creation date
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: The unique identifier of the resource
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    todate:
-      name: todate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for maximum creation date
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    pagesize_2:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-  responses:
-    NotFound:
-      description: The requested resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Authentication required or token is invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
-externalDocs:
-  description: Stack Overflow for Teams API Documentation
-  url: https://api.stackoverflowteams.com/docs
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication. Register an application at http://stackapps.com/apps/oauth to obtain credentials.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://stackoverflow.com/oauth
+          tokenUrl: https://stackoverflow.com/oauth/access_token/json
+          scopes:
+            no_expiry: Issues an access token that does not expire
+            write_access: Allows write access to a user's data
+            private_info: Access a user's private information
+x-refined-from:
+- stack-overflow-for-teams-openapi.yml
+- stack-overflow-openapi.yml

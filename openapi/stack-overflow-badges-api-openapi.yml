@@ -1,17 +1,18 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Stack Overflow for Teams Answers Badges API
-  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
-  version: v3
+  title: Stack Overflow Badges API
+  description: The Stack Overflow API v2.3 provides programmatic read and write access to Stack Overflow questions, answers, comments, users, tags, and badges. Authentication is via OAuth 2.0. Register an application at http://stackapps.com/apps/oauth to obtain OAuth credentials. All responses are JSON-encoded and support GZIP compression with field-level filtering.
+  version: '2.3'
   contact:
-    name: Stack Overflow for Teams Support
-    url: https://stackoverflow.com/teams
-  termsOfService: https://stackoverflow.com/legal/terms-of-service
+    name: Stack Overflow API Support
+    url: http://stackapps.com/
+  termsOfService: https://stackexchange.com/legal/api-terms-of-use
 servers:
-- url: https://api.stackoverflowteams.com/v3
-  description: Stack Overflow for Teams API v3
+- url: https://api.stackexchange.com/2.3
+  description: Stack Exchange API v2.3
 security:
-- bearerAuth: []
+- oauth2: []
+- {}
 tags:
 - name: Badges
   description: Operations for retrieving badge information on Stack Overflow.
@@ -44,6 +45,12 @@ paths:
                 $ref: '#/components/schemas/BadgesResponse'
 components:
   parameters:
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
     order:
       name: order
       in: query
@@ -54,28 +61,6 @@ components:
         - desc
         default: desc
       description: Sort order
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -85,6 +70,22 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
     sort:
       name: sort
       in: query
@@ -92,15 +93,6 @@ components:
         type: string
       description: Field to sort results by
   schemas:
-    BadgesResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Badge'
     Wrapper:
       type: object
       properties:
@@ -118,6 +110,15 @@ components:
           type: integer
         total:
           type: integer
+    BadgesResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Badge'
     Badge:
       type: object
       properties:
@@ -141,10 +142,17 @@ components:
           - named
           - tag_based
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication. Register an application at http://stackapps.com/apps/oauth to obtain credentials.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://stackoverflow.com/oauth
+          tokenUrl: https://stackoverflow.com/oauth/access_token/json
+          scopes:
+            no_expiry: Issues an access token that does not expire
+            write_access: Allows write access to a user's data
+            private_info: Access a user's private information
 externalDocs:
-  description: Stack Overflow for Teams API Documentation
-  url: https://api.stackoverflowteams.com/docs
+  description: Stack Exchange API Documentation
+  url: https://api.stackexchange.com/docs

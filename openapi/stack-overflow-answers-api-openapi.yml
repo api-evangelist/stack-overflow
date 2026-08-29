@@ -1,17 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Stack Overflow for Teams Answers API
-  description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
-  version: v3
-  contact:
-    name: Stack Overflow for Teams Support
-    url: https://stackoverflow.com/teams
-  termsOfService: https://stackoverflow.com/legal/terms-of-service
+  title: Stack Overflow Answers API
+  version: '1.0'
+  description: 'Operations tagged Answers across 2 of this provider''s published API definitions: stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.stackoverflowteams.com/v3
   description: Stack Overflow for Teams API v3
-security:
-- bearerAuth: []
+- url: https://api.stackexchange.com/2.3
+  description: Stack Exchange API v2.3
 tags:
 - name: Answers
   description: Operations for managing answers to questions in a Teams workspace.
@@ -34,6 +30,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AnswersResponse'
+      security:
+      - bearerAuth: []
     post:
       operationId: createTeamAnswer
       summary: Create an Answer for a Team Question
@@ -58,6 +56,11 @@ paths:
                 $ref: '#/components/schemas/Answer'
         '403':
           $ref: '#/components/responses/Forbidden'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.stackoverflowteams.com/v3
+      description: Stack Overflow for Teams API v3
   /questions/{ids}/answers:
     get:
       operationId: getAnswersForQuestion
@@ -85,6 +88,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AnswersResponse_2'
+      security:
+      - oauth2: []
+      - {}
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
   /answers:
     get:
       operationId: getAnswers
@@ -108,6 +117,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AnswersResponse_2'
+      security:
+      - oauth2: []
+      - {}
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
   /answers/{ids}:
     get:
       operationId: getAnswersByIds
@@ -131,6 +146,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AnswersResponse_2'
+      security:
+      - oauth2: []
+      - {}
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
   /users/{ids}/answers:
     get:
       operationId: getAnswersByUser
@@ -158,83 +179,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AnswersResponse_2'
+      security:
+      - oauth2: []
+      - {}
+    servers:
+    - url: https://api.stackexchange.com/2.3
+      description: Stack Exchange API v2.3
 components:
-  parameters:
-    order:
-      name: order
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-      description: Sort order
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-    pagesize:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    fromdate:
-      name: fromdate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for minimum creation date
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: The unique identifier of the resource
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    todate:
-      name: todate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for maximum creation date
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
   schemas:
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the answer
+        question_id:
+          type: integer
+          description: ID of the question this answer belongs to
+        body:
+          type: string
+          description: The HTML body of the answer
+        score:
+          type: integer
+          description: Net vote score
+        is_accepted:
+          type: boolean
+          description: Whether this is the accepted answer
+        creation_date:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/UserRef'
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
     CreateAnswerRequest:
       type: object
       required:
@@ -276,64 +270,6 @@ components:
         link:
           type: string
           format: uri
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
-    Answer:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique identifier of the answer
-        question_id:
-          type: integer
-          description: ID of the question this answer belongs to
-        body:
-          type: string
-          description: The HTML body of the answer
-        score:
-          type: integer
-          description: Net vote score
-        is_accepted:
-          type: boolean
-          description: Whether this is the accepted answer
-        creation_date:
-          type: string
-          format: date-time
-        owner:
-          $ref: '#/components/schemas/UserRef'
-    AnswersResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Answer_2'
     ShallowUser:
       type: object
       properties:
@@ -355,16 +291,107 @@ components:
         link:
           type: string
           format: uri
-    UserRef:
+    Wrapper:
       type: object
       properties:
-        id:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
           type: integer
-        display_name:
-          type: string
-        profile_image:
-          type: string
-          format: uri
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+    AnswersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Answer_2'
+  parameters:
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
   responses:
     Forbidden:
       description: Insufficient permissions (requires write access or Business tier)
@@ -377,6 +404,17 @@ components:
       type: http
       scheme: bearer
       description: Personal Access Token (PAT) authentication. Pass your PAT as a Bearer token in the Authorization header. Generate tokens from your Stack Overflow for Teams account settings.
-externalDocs:
-  description: Stack Overflow for Teams API Documentation
-  url: https://api.stackoverflowteams.com/docs
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication. Register an application at http://stackapps.com/apps/oauth to obtain credentials.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://stackoverflow.com/oauth
+          tokenUrl: https://stackoverflow.com/oauth/access_token/json
+          scopes:
+            no_expiry: Issues an access token that does not expire
+            write_access: Allows write access to a user's data
+            private_info: Access a user's private information
+x-refined-from:
+- stack-overflow-for-teams-openapi.yml
+- stack-overflow-openapi.yml
