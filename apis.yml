@@ -185,6 +185,8 @@ apis:
   humanURL: https://api.stackexchange.com/
   baseURL: https://api.stackexchange.com/2.3
   tags:
+  - SME
+  tags_raw:
   - SMEs
   properties:
   - type: OpenAPI
