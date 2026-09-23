@@ -215,6 +215,19 @@ paths:
     - url: https://api.stackexchange.com/2.3
       description: Stack Exchange API v2.3
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required or token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
     User:
       type: object
@@ -240,15 +253,6 @@ components:
           format: date-time
         is_admin:
           type: boolean
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
     UsersResponse:
       type: object
       properties:
@@ -260,6 +264,37 @@ components:
           type: boolean
         total:
           type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    Answer:
+      type: object
+      properties:
+        answer_id:
+          type: integer
+        question_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        is_accepted:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
     User_2:
       type: object
       properties:
@@ -292,28 +327,24 @@ components:
         link:
           type: string
           format: uri
-    Answer:
-      type: object
-      properties:
-        answer_id:
-          type: integer
-        question_id:
-          type: integer
-        body:
-          type: string
-        score:
-          type: integer
-        is_accepted:
-          type: boolean
-        creation_date:
-          type: integer
-        last_activity_date:
-          type: integer
-        owner:
-          $ref: '#/components/schemas/ShallowUser'
-        link:
-          type: string
-          format: uri
+    QuestionsResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Question'
+    UsersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/User_2'
     ShallowUser:
       type: object
       properties:
@@ -388,24 +419,6 @@ components:
           type: integer
         bounty_closes_date:
           type: integer
-    UsersResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/User_2'
-    QuestionsResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Question'
     AnswersResponse:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
@@ -415,26 +428,36 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Answer'
-  responses:
-    NotFound:
-      description: The requested resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Authentication required or token is invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
     filter:
       name: filter
       in: query
       schema:
         type: string
       description: Filter to control which fields are returned
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -444,39 +467,18 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: The unique identifier of the resource
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    order:
-      name: order
+    sort:
+      name: sort
       in: query
       schema:
         type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-      description: Sort order
+      description: Field to sort results by
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
     pagesize_2:
       name: pagesize
       in: query
@@ -492,12 +494,6 @@ components:
       schema:
         type: integer
       description: Unix timestamp for maximum creation date
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
     site:
       name: site
       in: query
@@ -506,12 +502,16 @@ components:
         type: string
         default: stackoverflow
       description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    fromdate:
-      name: fromdate
+    order:
+      name: order
       in: query
       schema:
-        type: integer
-      description: Unix timestamp for minimum creation date
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
   securitySchemes:
     bearerAuth:
       type: http

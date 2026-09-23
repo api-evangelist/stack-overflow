@@ -42,24 +42,15 @@ paths:
                 $ref: '#/components/schemas/CommentsResponse'
 components:
   schemas:
-    Comment:
-      type: object
-      properties:
-        comment_id:
-          type: integer
-        post_id:
-          type: integer
-        body:
-          type: string
-        score:
-          type: integer
-        creation_date:
-          type: integer
-        owner:
-          $ref: '#/components/schemas/ShallowUser'
-        link:
-          type: string
-          format: uri
+    CommentsResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Comment'
     ShallowUser:
       type: object
       properties:
@@ -98,22 +89,74 @@ components:
           type: integer
         total:
           type: integer
-    CommentsResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Comment'
+    Comment:
+      type: object
+      properties:
+        comment_id:
+          type: integer
+        post_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        creation_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
   parameters:
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
     filter:
       name: filter
       in: query
       schema:
         type: string
       description: Filter to control which fields are returned
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
     order:
       name: order
       in: query
@@ -124,49 +167,6 @@ components:
         - desc
         default: desc
       description: Sort order
-    pagesize:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    fromdate:
-      name: fromdate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for minimum creation date
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-    todate:
-      name: todate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for maximum creation date
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
   securitySchemes:
     oauth2:
       type: oauth2

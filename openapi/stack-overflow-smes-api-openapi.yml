@@ -70,24 +70,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
-    AddSMERequest:
-      type: object
-      properties:
-        user_id:
-          type: integer
-          description: User ID to add as SME (mutually exclusive with user_group_id)
-        user_group_id:
-          type: integer
-          description: User group ID to add as SME (mutually exclusive with user_id)
     UserRef:
       type: object
       properties:
@@ -109,6 +91,24 @@ components:
           type: boolean
         total:
           type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    AddSMERequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: User ID to add as SME (mutually exclusive with user_group_id)
+        user_group_id:
+          type: integer
+          description: User group ID to add as SME (mutually exclusive with user_id)
     UserGroup:
       type: object
       properties:
@@ -140,12 +140,6 @@ components:
         user_group:
           $ref: '#/components/schemas/UserGroup'
   parameters:
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
     team:
       name: team
       in: path
@@ -154,6 +148,12 @@ components:
         type: string
       description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
       example: my-team
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
   responses:
     Forbidden:
       description: Insufficient permissions (requires write access or Business tier)

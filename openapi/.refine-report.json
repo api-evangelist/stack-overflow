@@ -26,7 +26,8 @@
     "tag 'Answers' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied",
     "tag 'Questions' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied",
     "tag 'Tags' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied",
-    "tag 'Users' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied"
+    "tag 'Users' spans 2 source specs (stack-overflow-for-teams-openapi.yml, stack-overflow-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "stack-overflow-answers-api-openapi.yml: previously refined output, superseded by openapi/_original/",

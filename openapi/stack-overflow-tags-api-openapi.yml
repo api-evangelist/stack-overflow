@@ -153,26 +153,6 @@ paths:
       description: Stack Exchange API v2.3
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
-    TagsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        has_more:
-          type: boolean
-        total:
-          type: integer
     Tag:
       type: object
       properties:
@@ -195,15 +175,6 @@ components:
         profile_image:
           type: string
           format: uri
-    CreateTagRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        description:
-          type: string
     SMEsResponse:
       type: object
       properties:
@@ -211,6 +182,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SME'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    TagsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
         has_more:
           type: boolean
         total:
@@ -233,6 +215,24 @@ components:
         creation_date:
           type: string
           format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    CreateTagRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
     SME:
       type: object
       properties:
@@ -245,6 +245,28 @@ components:
           $ref: '#/components/schemas/UserRef'
         user_group:
           $ref: '#/components/schemas/UserGroup'
+    Tag_2:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+        is_moderator_only:
+          type: boolean
+        is_required:
+          type: boolean
+        has_synonyms:
+          type: boolean
+    TagsResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Tag_2'
     Wrapper:
       type: object
       properties:
@@ -262,35 +284,29 @@ components:
           type: integer
         total:
           type: integer
-    TagsResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Tag_2'
-    Tag_2:
-      type: object
-      properties:
-        name:
-          type: string
-        count:
-          type: integer
-        is_moderator_only:
-          type: boolean
-        is_required:
-          type: boolean
-        has_synonyms:
-          type: boolean
   parameters:
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
     filter:
       name: filter
       in: query
       schema:
         type: string
       description: Filter to control which fields are returned
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -300,32 +316,12 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    order:
-      name: order
+    sort:
+      name: sort
       in: query
       schema:
         type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-      description: Sort order
+      description: Field to sort results by
     pagesize_2:
       name: pagesize
       in: query
@@ -343,12 +339,16 @@ components:
         type: string
         default: stackoverflow
       description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    sort:
-      name: sort
+    order:
+      name: order
       in: query
       schema:
         type: string
-      description: Field to sort results by
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
   responses:
     Forbidden:
       description: Insufficient permissions (requires write access or Business tier)
