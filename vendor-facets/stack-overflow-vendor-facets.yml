@@ -1,0 +1,124 @@
+# Vendor facets — Stack Overflow, as a provider's developer community (a tag, or a Collective).
+# One check, support_channel (2 pts), half of it when declared as Community. The tag lives on
+# Stack Overflow's domain and is run by Stack Overflow's community, not the provider.
+vendor: stack-overflow
+name: Stack Overflow
+website: https://stackoverflow.com
+areas:
+- community
+registry_keys: []
+rubric_schema_version: 0.22.0
+generated: '2026-09-25'
+features_refreshed: '2026-09-25'
+basis: capability
+summary: >-
+  A Stack Overflow tag earns a provider one check, support_channel (2 points): half when declared as Community,
+  which the pointer probe does not read, and full when declared as Support, where stackoverflow.com's
+  bot challenge grades as live. The tag and any Collective sit on Stack Overflow's domain and are run
+  by its community: new users cannot create tags, and the listed Collectives say they are "organized and
+  managed by the Stack Overflow community". Nothing else on the rubric moves. Stack Overflow is also undetectable,
+  since no registry key reads it.
+features:
+- id: tagged-questions
+  name: Technology tag and tag wiki
+  description: >-
+    Questions about a provider's API gathered under a tag with a community-edited wiki; creating a new
+    tag needs reputation.
+  source: https://stackoverflow.com/help/tagging
+  tier: all
+- id: collectives
+  name: Collectives
+  description: >-
+    Communities for a technology or provider organization inside Stack Overflow, now described as organized
+    and managed by the Stack Overflow community.
+  source: https://stackoverflow.com/collectives
+  tier: unknown
+maps:
+- feature: tagged-questions
+  check: support_channel
+  layer: composite
+  credit: 0.5
+  provider_must: >-
+    Point apis.yml common[] at the tag page and answer there. As Community it grades "unverified" (0.5)
+    because probe-pointers.py does not probe Community; as Support it is probed, and the one Stack Overflow
+    tag probed (2026-09-22) graded js_challenge, which scores live (1.0).
+  note: >-
+    195 providers whose only support-class pointer is Community all score support_channel partial ("pointer
+    liveness 0.5"), measured 2026-09-25.
+  catalog_pass_rate: 0.45
+  facet: developer_ergonomics
+  points: 2
+  baseline_pass_rate: 0.69
+earns_nothing:
+- feature: collectives
+  check: blog_present
+  why: >-
+    Articles in a Collective or on stackoverflow.com are posts on Stack Overflow's site, not a provider
+    blog; a Blog pointer to them would misname what they are.
+out_of_reach:
+  checks:
+  - roadmap_present
+  - change_log_present
+  - documentation_present
+  - contract_present
+  note: A Q&A tag on someone else's site hosts no provider documents a pointer check could read.
+surface:
+  developer_ergonomics:
+    reachable: 1.0
+    total: 42
+  agent_readiness:
+    reachable: 0
+    total: 139
+hard_rule: >-
+  A model, not a score. Adopting this vendor changes a provider's Kin Score only when the provider publishes
+  the resulting artifacts on its own surface; nothing here writes a score, and no sponsorship or partnership
+  can.
+method: searched
+source:
+- https://stackoverflow.com/collectives
+- https://stackoverflow.com/help/tagging
+measured:
+  cohort:
+    method: vendors-catalog.json detections (CNAME / header / URL shape / markup), never a name match
+    detected: 0
+    in_baseline: 0
+  control:
+    basis: providers earning contract_present + documentation_present + api_reference_present, minus the
+      cohort
+    n: 5216
+  metric: >-
+    cohort_pct / control_pct = mean share of the check's points earned (derived and platform credit weighted),
+    x100
+  measured_on: '2026-09-25'
+  status: 'not measurable: 0 detected customers clear the baseline (need 20)'
+simulation:
+  simulated_on: '2026-09-25'
+  rubric: 0.23.0
+  population: providers publishing a contract (contract_present earned), replayable exactly
+  providers: 8977
+  providers_unreplayable: 987
+  providers_moved: 3701
+  conditional_rows: excluded (they depend on what the API already does)
+  composite_lift:
+    median: 0.0
+    p75: 0.5
+    p90: 0.5
+    max: 0.5
+    mean_among_movers: 0.5
+  agent_readiness_lift:
+    median: 0.0
+    p75: 0.0
+    p90: 0.0
+    max: 0.0
+    mean_among_movers: 0.0
+  facet_lift_median_among_movers:
+    developer_ergonomics: 2.4
+  composite_band_moves:
+    thin -> developing: 101
+    emerging -> thin: 30
+    developing -> strong: 21
+    strong -> exemplar: 6
+  agent_readiness_band_moves: {}
+  method: >-
+    each provider's own kin/checks file, the vendor's maps at their stated credit, the scorer's composite
+    formula; from -> to, nothing written

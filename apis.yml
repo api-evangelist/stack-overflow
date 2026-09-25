@@ -272,6 +272,8 @@ apis:
   - type: Blog
     url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
 common:
+  - type: VendorFacets
+    url: vendor-facets/stack-overflow-vendor-facets.yml
   - type: AgenticAccess
     url: agentic-access/stack-overflow-agentic-access.yml
   - type: DomainSecurity
