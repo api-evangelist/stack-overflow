@@ -185,9 +185,10 @@ apis:
   humanURL: https://api.stackexchange.com/
   baseURL: https://api.stackexchange.com/2.3
   tags:
-  - SME
+  - Small Business
   tags_raw:
   - SMEs
+  - SME
   properties:
   - type: OpenAPI
     url: openapi/stack-overflow-smes-api-openapi.yml

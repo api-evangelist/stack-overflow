@@ -152,7 +152,34 @@ paths:
     - url: https://api.stackexchange.com/2.3
       description: Stack Exchange API v2.3
 components:
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    SMEsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SME'
+        has_more:
+          type: boolean
+        total:
+          type: integer
     Tag:
       type: object
       properties:
@@ -165,38 +192,6 @@ components:
         description:
           type: string
           description: Tag description
-    UserRef:
-      type: object
-      properties:
-        id:
-          type: integer
-        display_name:
-          type: string
-        profile_image:
-          type: string
-          format: uri
-    SMEsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SME'
-        has_more:
-          type: boolean
-        total:
-          type: integer
-    TagsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        has_more:
-          type: boolean
-        total:
-          type: integer
     UserGroup:
       type: object
       properties:
@@ -215,15 +210,6 @@ components:
         creation_date:
           type: string
           format: date-time
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
     CreateTagRequest:
       type: object
       required:
@@ -233,6 +219,27 @@ components:
           type: string
         description:
           type: string
+    TagsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
     SME:
       type: object
       properties:
@@ -245,6 +252,23 @@ components:
           $ref: '#/components/schemas/UserRef'
         user_group:
           $ref: '#/components/schemas/UserGroup'
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
     Tag_2:
       type: object
       properties:
@@ -267,23 +291,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Tag_2'
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
   parameters:
     team:
       name: team
@@ -299,14 +306,6 @@ components:
       schema:
         type: string
       description: Filter to control which fields are returned
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -316,12 +315,14 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
-    sort:
-      name: sort
+    page:
+      name: page
       in: query
       schema:
-        type: string
-      description: Field to sort results by
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
     pagesize_2:
       name: pagesize
       in: query
@@ -349,13 +350,12 @@ components:
         - desc
         default: desc
       description: Sort order
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
   securitySchemes:
     bearerAuth:
       type: http

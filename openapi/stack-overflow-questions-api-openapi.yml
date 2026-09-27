@@ -335,8 +335,8 @@ paths:
       description: Stack Exchange API v2.3
 components:
   responses:
-    NotFound:
-      description: The requested resource was not found
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
       content:
         application/json:
           schema:
@@ -347,20 +347,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     Unauthorized:
       description: Authentication required or PAT is invalid
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest_2:
-      description: Bad request due to missing or invalid parameters
+    NotFound:
+      description: The requested resource was not found
       content:
         application/json:
           schema:
@@ -371,58 +365,103 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    BadRequest_2:
+      description: Bad request due to missing or invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
+    pagesize_2:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    tagged:
+      name: tagged
+      in: query
+      schema:
+        type: string
+      description: Semicolon-delimited list of tags to filter by
   schemas:
-    CreateQuestionRequest:
-      type: object
-      required:
-      - title
-      - body
-      - tags
-      properties:
-        title:
-          type: string
-          description: Question title
-        body:
-          type: string
-          description: Question body in Markdown
-        tags:
-          type: array
-          items:
-            type: string
-          description: Tags for the question
-    UserRef:
-      type: object
-      properties:
-        id:
-          type: integer
-        display_name:
-          type: string
-        profile_image:
-          type: string
-          format: uri
-    Answer:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique identifier of the answer
-        question_id:
-          type: integer
-          description: ID of the question this answer belongs to
-        body:
-          type: string
-          description: The HTML body of the answer
-        score:
-          type: integer
-          description: Net vote score
-        is_accepted:
-          type: boolean
-          description: Whether this is the accepted answer
-        creation_date:
-          type: string
-          format: date-time
-        owner:
-          $ref: '#/components/schemas/UserRef'
     UpdateQuestionRequest:
       type: object
       properties:
@@ -434,15 +473,6 @@ components:
           type: array
           items:
             type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
     QuestionsResponse:
       type: object
       properties:
@@ -465,6 +495,15 @@ components:
           type: boolean
         total:
           type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
     Question:
       type: object
       properties:
@@ -505,6 +544,66 @@ components:
         link:
           type: string
           format: uri
+    CreateQuestionRequest:
+      type: object
+      required:
+      - title
+      - body
+      - tags
+      properties:
+        title:
+          type: string
+          description: Question title
+        body:
+          type: string
+          description: Question body in Markdown
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags for the question
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the answer
+        question_id:
+          type: integer
+          description: ID of the question this answer belongs to
+        body:
+          type: string
+          description: The HTML body of the answer
+        score:
+          type: integer
+          description: Net vote score
+        is_accepted:
+          type: boolean
+          description: Whether this is the accepted answer
+        creation_date:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/UserRef'
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+    QuestionsResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Question_2'
     Answer_2:
       type: object
       properties:
@@ -527,53 +626,6 @@ components:
         link:
           type: string
           format: uri
-    QuestionsResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Question_2'
-    ShallowUser:
-      type: object
-      properties:
-        user_id:
-          type: integer
-        display_name:
-          type: string
-        reputation:
-          type: integer
-        user_type:
-          type: string
-          enum:
-          - unregistered
-          - registered
-          - moderator
-        profile_image:
-          type: string
-          format: uri
-        link:
-          type: string
-          format: uri
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
     Question_2:
       type: object
       properties:
@@ -610,6 +662,23 @@ components:
           type: integer
         bounty_closes_date:
           type: integer
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
     AnswersResponse_2:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
@@ -619,96 +688,27 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Answer_2'
-  parameters:
-    pagesize:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    order:
-      name: order
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-      description: Sort order
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: The unique identifier of the resource
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    tagged:
-      name: tagged
-      in: query
-      schema:
-        type: string
-      description: Semicolon-delimited list of tags to filter by
-    fromdate:
-      name: fromdate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for minimum creation date
-    todate:
-      name: todate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for maximum creation date
-    pagesize_2:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
   securitySchemes:
     bearerAuth:
       type: http

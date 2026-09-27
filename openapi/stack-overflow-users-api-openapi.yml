@@ -215,20 +215,16 @@ paths:
     - url: https://api.stackexchange.com/2.3
       description: Stack Exchange API v2.3
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Authentication required or token is invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
     User:
       type: object
       properties:
@@ -264,15 +260,15 @@ components:
           type: boolean
         total:
           type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
+    QuestionsResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Question'
     Answer:
       type: object
       properties:
@@ -295,94 +291,6 @@ components:
         link:
           type: string
           format: uri
-    User_2:
-      type: object
-      properties:
-        user_id:
-          type: integer
-        display_name:
-          type: string
-        reputation:
-          type: integer
-        user_type:
-          type: string
-        profile_image:
-          type: string
-          format: uri
-        website_url:
-          type: string
-          format: uri
-        location:
-          type: string
-        about_me:
-          type: string
-        creation_date:
-          type: integer
-        last_access_date:
-          type: integer
-        question_count:
-          type: integer
-        answer_count:
-          type: integer
-        link:
-          type: string
-          format: uri
-    QuestionsResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Question'
-    UsersResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/User_2'
-    ShallowUser:
-      type: object
-      properties:
-        user_id:
-          type: integer
-        display_name:
-          type: string
-        reputation:
-          type: integer
-        user_type:
-          type: string
-          enum:
-          - unregistered
-          - registered
-          - moderator
-        profile_image:
-          type: string
-          format: uri
-        link:
-          type: string
-          format: uri
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
     Question:
       type: object
       properties:
@@ -419,6 +327,23 @@ components:
           type: integer
         bounty_closes_date:
           type: integer
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
     AnswersResponse:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
@@ -428,6 +353,68 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Answer'
+    User_2:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+        website_url:
+          type: string
+          format: uri
+        location:
+          type: string
+        about_me:
+          type: string
+        creation_date:
+          type: integer
+        last_access_date:
+          type: integer
+        question_count:
+          type: integer
+        answer_count:
+          type: integer
+        link:
+          type: string
+          format: uri
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
+    UsersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/User_2'
   parameters:
     id:
       name: id
@@ -436,28 +423,12 @@ components:
       schema:
         type: integer
       description: The unique identifier of the resource
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
     filter:
       name: filter
       in: query
       schema:
         type: string
       description: Filter to control which fields are returned
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -467,12 +438,22 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
-    sort:
-      name: sort
-      in: query
+    team:
+      name: team
+      in: path
+      required: true
       schema:
         type: string
-      description: Field to sort results by
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
     fromdate:
       name: fromdate
       in: query
@@ -488,12 +469,6 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
-    todate:
-      name: todate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for maximum creation date
     site:
       name: site
       in: query
@@ -512,6 +487,31 @@ components:
         - desc
         default: desc
       description: Sort order
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+  responses:
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required or token is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Stack Overflow for Teams SM Es API
+  title: Stack Overflow for Teams SMEs API
   description: The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases hosted on Stack Overflow for Teams. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), tags, and team members. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
   version: v3
   contact:
@@ -69,17 +69,23 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    UserRef:
+    ErrorResponse:
       type: object
       properties:
-        id:
+        error_id:
           type: integer
-        display_name:
+        error_message:
           type: string
-        profile_image:
+        error_name:
           type: string
-          format: uri
     SMEsResponse:
       type: object
       properties:
@@ -91,24 +97,18 @@ components:
           type: boolean
         total:
           type: integer
-    ErrorResponse:
+    SME:
       type: object
       properties:
-        error_id:
+        id:
           type: integer
-        error_message:
+        tag:
           type: string
-        error_name:
-          type: string
-    AddSMERequest:
-      type: object
-      properties:
-        user_id:
-          type: integer
-          description: User ID to add as SME (mutually exclusive with user_group_id)
-        user_group_id:
-          type: integer
-          description: User group ID to add as SME (mutually exclusive with user_id)
+          description: The tag this SME is assigned to
+        user:
+          $ref: '#/components/schemas/UserRef'
+        user_group:
+          $ref: '#/components/schemas/UserGroup'
     UserGroup:
       type: object
       properties:
@@ -127,18 +127,25 @@ components:
         creation_date:
           type: string
           format: date-time
-    SME:
+    UserRef:
       type: object
       properties:
         id:
           type: integer
-        tag:
+        display_name:
           type: string
-          description: The tag this SME is assigned to
-        user:
-          $ref: '#/components/schemas/UserRef'
-        user_group:
-          $ref: '#/components/schemas/UserGroup'
+        profile_image:
+          type: string
+          format: uri
+    AddSMERequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: User ID to add as SME (mutually exclusive with user_group_id)
+        user_group_id:
+          type: integer
+          description: User group ID to add as SME (mutually exclusive with user_id)
   parameters:
     team:
       name: team
@@ -154,13 +161,6 @@ components:
       schema:
         type: string
       description: Filter to control which fields are returned
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http

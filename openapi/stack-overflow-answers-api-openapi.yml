@@ -187,16 +187,6 @@ paths:
       description: Stack Exchange API v2.3
 components:
   schemas:
-    UserRef:
-      type: object
-      properties:
-        id:
-          type: integer
-        display_name:
-          type: string
-        profile_image:
-          type: string
-          format: uri
     Answer:
       type: object
       properties:
@@ -220,14 +210,6 @@ components:
           format: date-time
         owner:
           $ref: '#/components/schemas/UserRef'
-    CreateAnswerRequest:
-      type: object
-      required:
-      - body
-      properties:
-        body:
-          type: string
-          description: Answer body in Markdown
     ErrorResponse:
       type: object
       properties:
@@ -237,6 +219,14 @@ components:
           type: string
         error_name:
           type: string
+    CreateAnswerRequest:
+      type: object
+      required:
+      - body
+      properties:
+        body:
+          type: string
+          description: Answer body in Markdown
     AnswersResponse:
       type: object
       properties:
@@ -248,6 +238,16 @@ components:
           type: boolean
         total:
           type: integer
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
     Answer_2:
       type: object
       properties:
@@ -267,27 +267,6 @@ components:
           type: integer
         owner:
           $ref: '#/components/schemas/ShallowUser'
-        link:
-          type: string
-          format: uri
-    ShallowUser:
-      type: object
-      properties:
-        user_id:
-          type: integer
-        display_name:
-          type: string
-        reputation:
-          type: integer
-        user_type:
-          type: string
-          enum:
-          - unregistered
-          - registered
-          - moderator
-        profile_image:
-          type: string
-          format: uri
         link:
           type: string
           format: uri
@@ -317,6 +296,34 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Answer_2'
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
     id:
       name: id
@@ -325,6 +332,12 @@ components:
       schema:
         type: integer
       description: The unique identifier of the resource
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
     team:
       name: team
       in: path
@@ -333,18 +346,6 @@ components:
         type: string
       description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
       example: my-team
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
     fromdate:
       name: fromdate
       in: query
@@ -360,20 +361,6 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
-    todate:
-      name: todate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for maximum creation date
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
     site:
       name: site
       in: query
@@ -392,13 +379,26 @@ components:
         - desc
         default: desc
       description: Sort order
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
   securitySchemes:
     bearerAuth:
       type: http

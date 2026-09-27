@@ -108,47 +108,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    UserRef:
-      type: object
-      properties:
-        id:
-          type: integer
-        display_name:
-          type: string
-        profile_image:
-          type: string
-          format: uri
-    UpdateArticleRequest:
-      type: object
-      properties:
-        title:
-          type: string
-        body:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-    ArticlesResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Article'
-        has_more:
-          type: boolean
-        total:
-          type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
     Article:
       type: object
       properties:
@@ -176,6 +135,26 @@ components:
         link:
           type: string
           format: uri
+    UpdateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
     CreateArticleRequest:
       type: object
       required:
@@ -192,15 +171,36 @@ components:
           type: array
           items:
             type: string
+    ArticlesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
   responses:
-    NotFound:
-      description: The requested resource was not found
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
+    NotFound:
+      description: The requested resource was not found
       content:
         application/json:
           schema:
@@ -213,34 +213,12 @@ components:
       schema:
         type: integer
       description: The unique identifier of the resource
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
     filter:
       name: filter
       in: query
       schema:
         type: string
       description: Filter to control which fields are returned
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -250,6 +228,14 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
     order:
       name: order
       in: query
@@ -260,6 +246,20 @@ components:
         - desc
         default: desc
       description: Sort order
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
   securitySchemes:
     bearerAuth:
       type: http
