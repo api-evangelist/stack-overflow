@@ -107,7 +107,92 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
   schemas:
+    UpdateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
     Article:
       type: object
       properties:
@@ -135,26 +220,6 @@ components:
         link:
           type: string
           format: uri
-    UpdateArticleRequest:
-      type: object
-      properties:
-        title:
-          type: string
-        body:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
     CreateArticleRequest:
       type: object
       required:
@@ -182,16 +247,6 @@ components:
           type: boolean
         total:
           type: integer
-    UserRef:
-      type: object
-      properties:
-        id:
-          type: integer
-        display_name:
-          type: string
-        profile_image:
-          type: string
-          format: uri
   responses:
     Forbidden:
       description: Insufficient permissions (requires write access or Business tier)
@@ -205,61 +260,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: The unique identifier of the resource
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    pagesize:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    order:
-      name: order
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-      description: Sort order
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
   securitySchemes:
     bearerAuth:
       type: http

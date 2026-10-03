@@ -138,7 +138,82 @@ paths:
               schema:
                 $ref: '#/components/schemas/QuestionsResponse'
 components:
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    tagged:
+      name: tagged
+      in: query
+      schema:
+        type: string
+      description: Semicolon-delimited list of tags to filter by
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
   schemas:
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
     QuestionsResponse:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
@@ -201,81 +276,6 @@ components:
           type: integer
         total:
           type: integer
-    ShallowUser:
-      type: object
-      properties:
-        user_id:
-          type: integer
-        display_name:
-          type: string
-        reputation:
-          type: integer
-        user_type:
-          type: string
-          enum:
-          - unregistered
-          - registered
-          - moderator
-        profile_image:
-          type: string
-          format: uri
-        link:
-          type: string
-          format: uri
-  parameters:
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    pagesize:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    tagged:
-      name: tagged
-      in: query
-      schema:
-        type: string
-      description: Semicolon-delimited list of tags to filter by
-    order:
-      name: order
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-      description: Sort order
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
   securitySchemes:
     oauth2:
       type: oauth2

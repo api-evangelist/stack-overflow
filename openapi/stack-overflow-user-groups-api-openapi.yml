@@ -59,23 +59,39 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
     UserGroup:
       type: object
       properties:
@@ -94,6 +110,15 @@ components:
         creation_date:
           type: string
           format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
     UserGroupsResponse:
       type: object
       properties:
@@ -118,38 +143,13 @@ components:
           type: array
           items:
             type: integer
-  parameters:
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    pagesize:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http

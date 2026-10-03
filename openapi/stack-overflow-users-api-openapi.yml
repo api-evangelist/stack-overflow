@@ -215,7 +215,102 @@ paths:
     - url: https://api.stackexchange.com/2.3
       description: Stack Exchange API v2.3
 components:
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    pagesize_2:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
   schemas:
+    UsersResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        has_more:
+          type: boolean
+        total:
+          type: integer
     ErrorResponse:
       type: object
       properties:
@@ -249,26 +344,6 @@ components:
           format: date-time
         is_admin:
           type: boolean
-    UsersResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        has_more:
-          type: boolean
-        total:
-          type: integer
-    QuestionsResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Question'
     Answer:
       type: object
       properties:
@@ -291,59 +366,15 @@ components:
         link:
           type: string
           format: uri
-    Question:
-      type: object
-      properties:
-        question_id:
-          type: integer
-        title:
-          type: string
-        body:
-          type: string
-        score:
-          type: integer
-        view_count:
-          type: integer
-        answer_count:
-          type: integer
-        accepted_answer_id:
-          type: integer
-        is_answered:
-          type: boolean
-        creation_date:
-          type: integer
-        last_activity_date:
-          type: integer
-        owner:
-          $ref: '#/components/schemas/ShallowUser'
-        tags:
-          type: array
+    UsersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
           items:
-            type: string
-        link:
-          type: string
-          format: uri
-        bounty_amount:
-          type: integer
-        bounty_closes_date:
-          type: integer
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
+            type: array
+            items:
+              $ref: '#/components/schemas/User_2'
     AnswersResponse:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
@@ -406,7 +437,7 @@ components:
         link:
           type: string
           format: uri
-    UsersResponse_2:
+    QuestionsResponse:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
       - type: object
@@ -414,91 +445,60 @@ components:
           items:
             type: array
             items:
-              $ref: '#/components/schemas/User_2'
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: The unique identifier of the resource
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    pagesize:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-    fromdate:
-      name: fromdate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for minimum creation date
-    pagesize_2:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    order:
-      name: order
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-      description: Sort order
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
-    todate:
-      name: todate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for maximum creation date
+              $ref: '#/components/schemas/Question'
+    Question:
+      type: object
+      properties:
+        question_id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        score:
+          type: integer
+        view_count:
+          type: integer
+        answer_count:
+          type: integer
+        accepted_answer_id:
+          type: integer
+        is_answered:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        tags:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+          format: uri
+        bounty_amount:
+          type: integer
+        bounty_closes_date:
+          type: integer
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
   responses:
     NotFound:
       description: The requested resource was not found

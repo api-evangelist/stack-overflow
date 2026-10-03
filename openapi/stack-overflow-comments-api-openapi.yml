@@ -42,18 +42,14 @@ paths:
                 $ref: '#/components/schemas/CommentsResponse'
 components:
   parameters:
-    fromdate:
-      name: fromdate
+    page:
+      name: page
       in: query
       schema:
         type: integer
-      description: Unix timestamp for minimum creation date
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -63,14 +59,6 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
     order:
       name: order
       in: query
@@ -87,38 +75,33 @@ components:
       schema:
         type: string
       description: Field to sort results by
-    page:
-      name: page
+    filter:
+      name: filter
       in: query
       schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
+        type: string
+      description: Filter to control which fields are returned
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
     todate:
       name: todate
       in: query
       schema:
         type: integer
       description: Unix timestamp for maximum creation date
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
   schemas:
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
     Comment:
       type: object
       properties:
@@ -137,6 +120,15 @@ components:
         link:
           type: string
           format: uri
+    CommentsResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Comment'
     ShallowUser:
       type: object
       properties:
@@ -158,15 +150,23 @@ components:
         link:
           type: string
           format: uri
-    CommentsResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
           items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Comment'
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
   securitySchemes:
     oauth2:
       type: oauth2

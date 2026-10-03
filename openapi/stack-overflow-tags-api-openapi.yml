@@ -152,46 +152,72 @@ paths:
     - url: https://api.stackexchange.com/2.3
       description: Stack Exchange API v2.3
 components:
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+    pagesize:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    team:
+      name: team
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
+      example: my-team
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
+    pagesize_2:
+      name: pagesize
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+        default: 30
+      description: Number of results per page (max 100)
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+      description: Sort order
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Field to sort results by
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
-    SMEsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SME'
-        has_more:
-          type: boolean
-        total:
-          type: integer
-    Tag:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Tag name
-        count:
-          type: integer
-          description: Number of questions with this tag
-        description:
-          type: string
-          description: Tag description
     UserGroup:
       type: object
       properties:
@@ -210,15 +236,17 @@ components:
         creation_date:
           type: string
           format: date-time
-    CreateTagRequest:
+    SMEsResponse:
       type: object
-      required:
-      - name
       properties:
-        name:
-          type: string
-        description:
-          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SME'
+        has_more:
+          type: boolean
+        total:
+          type: integer
     TagsResponse:
       type: object
       properties:
@@ -240,6 +268,36 @@ components:
         profile_image:
           type: string
           format: uri
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    Tag:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tag name
+        count:
+          type: integer
+          description: Number of questions with this tag
+        description:
+          type: string
+          description: Tag description
+    CreateTagRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
     SME:
       type: object
       properties:
@@ -252,6 +310,28 @@ components:
           $ref: '#/components/schemas/UserRef'
         user_group:
           $ref: '#/components/schemas/UserGroup'
+    TagsResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Tag_2'
+    Tag_2:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+        is_moderator_only:
+          type: boolean
+        is_required:
+          type: boolean
+        has_synonyms:
+          type: boolean
     Wrapper:
       type: object
       properties:
@@ -269,93 +349,13 @@ components:
           type: integer
         total:
           type: integer
-    Tag_2:
-      type: object
-      properties:
-        name:
-          type: string
-        count:
-          type: integer
-        is_moderator_only:
-          type: boolean
-        is_required:
-          type: boolean
-        has_synonyms:
-          type: boolean
-    TagsResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Tag_2'
-  parameters:
-    team:
-      name: team
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
-      example: my-team
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    pagesize:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-    pagesize_2:
-      name: pagesize
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 100
-        default: 30
-      description: Number of results per page (max 100)
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    order:
-      name: order
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-      description: Sort order
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-      description: Field to sort results by
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http

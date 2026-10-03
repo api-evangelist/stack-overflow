@@ -210,6 +210,16 @@ components:
           format: date-time
         owner:
           $ref: '#/components/schemas/UserRef'
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
     ErrorResponse:
       type: object
       properties:
@@ -219,14 +229,6 @@ components:
           type: string
         error_name:
           type: string
-    CreateAnswerRequest:
-      type: object
-      required:
-      - body
-      properties:
-        body:
-          type: string
-          description: Answer body in Markdown
     AnswersResponse:
       type: object
       properties:
@@ -238,16 +240,14 @@ components:
           type: boolean
         total:
           type: integer
-    UserRef:
+    CreateAnswerRequest:
       type: object
+      required:
+      - body
       properties:
-        id:
-          type: integer
-        display_name:
+        body:
           type: string
-        profile_image:
-          type: string
-          format: uri
+          description: Answer body in Markdown
     Answer_2:
       type: object
       properties:
@@ -270,23 +270,6 @@ components:
         link:
           type: string
           format: uri
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
     AnswersResponse_2:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
@@ -317,6 +300,23 @@ components:
         link:
           type: string
           format: uri
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
   responses:
     Forbidden:
       description: Insufficient permissions (requires write access or Business tier)
@@ -325,13 +325,6 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: The unique identifier of the resource
     filter:
       name: filter
       in: query
@@ -346,12 +339,21 @@ components:
         type: string
       description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
       example: my-team
-    fromdate:
-      name: fromdate
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    page:
+      name: page
       in: query
       schema:
         type: integer
-      description: Unix timestamp for minimum creation date
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -361,14 +363,6 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
     order:
       name: order
       in: query
@@ -385,20 +379,26 @@ components:
       schema:
         type: string
       description: Field to sort results by
-    page:
-      name: page
+    site:
+      name: site
       in: query
+      required: true
       schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
     todate:
       name: todate
       in: query
       schema:
         type: integer
       description: Unix timestamp for maximum creation date
+    fromdate:
+      name: fromdate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for minimum creation date
   securitySchemes:
     bearerAuth:
       type: http
