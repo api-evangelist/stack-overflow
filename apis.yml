@@ -273,6 +273,9 @@ apis:
   - type: Blog
     url: https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/
 common:
+  - type: CapabilityMap
+    url: capabilities/stack-overflow-capability-edges.yml
+    name: Stack Overflow Business Capability Map
   - type: VendorFacets
     url: vendor-facets/stack-overflow-vendor-facets.yml
   - type: AgenticAccess

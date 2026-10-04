@@ -1,0 +1,70 @@
+slug: stack-overflow
+provider: Stack Overflow
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: Questions
+  spec_file: stack-overflow-questions-api-openapi.yml
+  capability_id: BC-830.30
+  capability_id_l1: BC-830
+  capability_name: Knowledge Sharing & Collaboration Management
+  confidence: 0.8
+  evidence: POST /teams/{team}/questions  createTeamQuestion  Create a Team Question; GET /teams/{team}/questions/{id}/answers  Get
+    Answers for a Team Question; GET /questions/unanswered
+  reason: Operations create and retrieve questions and their answers in both the public community and
+    private team knowledge bases — collaborative capture and sharing of organisational/technical knowledge.
+    Best fits Knowledge Sharing & Collaboration Management (collaboration platforms, communities of practice);
+    some ambiguity versus Knowledge Capture.
+- tag: Articles
+  spec_file: stack-overflow-articles-api-openapi.yml
+  capability_id: BC-830
+  capability_id_l1: BC-830
+  capability_name: Knowledge Management
+  confidence: 0.78
+  evidence: 'POST /teams/{team}/articles  Create a Team Article; description: "read and write access to
+    private team knowledge bases hosted on Stack Overflow for Teams"'
+  reason: Authoring and maintaining knowledge-base articles for a team is organisational knowledge capture
+    and curation. Kept at L1 as the operations do not distinguish capture from curation/taxonomy.
+- tag: Answers
+  spec_file: stack-overflow-answers-api-openapi.yml
+  capability_id: BC-830
+  capability_id_l1: BC-830
+  capability_name: Knowledge Management
+  confidence: 0.72
+  evidence: 'POST /teams/{team}/questions/{id}/answers  Create an Answer for a Team Question; vendor:
+    "a private tea[m]" knowledge base API'
+  reason: Question-and-answer content creation and retrieval, including private team Q&A, is capture and
+    sharing of organisational knowledge. Left at L1 because the surface spans both capture and sharing/collaboration
+    without naming one.
+- tag: SMEs
+  spec_file: stack-overflow-smes-api-openapi.yml
+  capability_id: BC-830
+  capability_id_l1: BC-830
+  capability_name: Knowledge Management
+  confidence: 0.7
+  evidence: 'POST /teams/{team}/tags/{tag}/smes  addTagSME  Add an SME for a Tag; schemas: SME, AddSMERequest,
+    UserGroup'
+  reason: Designating subject matter experts per knowledge topic within a private team knowledge base
+    is knowledge-management practice (expert identification for capture and routing). Which L2 applies
+    (capture vs sharing) is not determinable, so L1 only.
+- tag: Tags
+  spec_file: stack-overflow-tags-api-openapi.yml
+  capability_id: BC-830.20
+  capability_id_l1: BC-830
+  capability_name: Knowledge Curation & Taxonomy Management
+  confidence: 0.7
+  evidence: 'POST /teams/{team}/tags  createTeamTag  Create a Team Tag; GET /tags/{tags}/info  getTagInfo  Get
+    Tag Info; schemas: Tag, CreateTagRequest'
+  reason: Tags are the topical taxonomy used to classify and curate questions/articles in the knowledge
+    base, matching Knowledge Curation & Taxonomy Management. Not the frame's 'Tags' as a technical label
+    store because tags here are created and described as knowledge topics with SMEs attached.
