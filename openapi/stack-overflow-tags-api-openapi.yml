@@ -152,15 +152,146 @@ paths:
     - url: https://api.stackexchange.com/2.3
       description: Stack Exchange API v2.3
 components:
+  schemas:
+    Tag:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tag name
+        count:
+          type: integer
+          description: Number of questions with this tag
+        description:
+          type: string
+          description: Tag description
+    TagsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    SMEsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SME'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    SME:
+      type: object
+      properties:
+        id:
+          type: integer
+        tag:
+          type: string
+          description: The tag this SME is assigned to
+        user:
+          $ref: '#/components/schemas/UserRef'
+        user_group:
+          $ref: '#/components/schemas/UserGroup'
+    UserGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the user group
+        name:
+          type: string
+          description: Name of the user group
+        description:
+          type: string
+          description: Description of the user group
+        member_count:
+          type: integer
+          description: Number of members in the group
+        creation_date:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: integer
+        display_name:
+          type: string
+        profile_image:
+          type: string
+          format: uri
+    CreateTagRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    Tag_2:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+        is_moderator_only:
+          type: boolean
+        is_required:
+          type: boolean
+        has_synonyms:
+          type: boolean
+    TagsResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Tag_2'
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
     pagesize:
       name: pagesize
       in: query
@@ -170,6 +301,12 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
     team:
       name: team
       in: path
@@ -178,12 +315,14 @@ components:
         type: string
       description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
       example: my-team
-    filter:
-      name: filter
+    page:
+      name: page
       in: query
       schema:
-        type: string
-      description: Filter to control which fields are returned
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
     pagesize_2:
       name: pagesize
       in: query
@@ -217,145 +356,6 @@ components:
         type: string
         default: stackoverflow
       description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-  schemas:
-    UserGroup:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique identifier of the user group
-        name:
-          type: string
-          description: Name of the user group
-        description:
-          type: string
-          description: Description of the user group
-        member_count:
-          type: integer
-          description: Number of members in the group
-        creation_date:
-          type: string
-          format: date-time
-    SMEsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SME'
-        has_more:
-          type: boolean
-        total:
-          type: integer
-    TagsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        has_more:
-          type: boolean
-        total:
-          type: integer
-    UserRef:
-      type: object
-      properties:
-        id:
-          type: integer
-        display_name:
-          type: string
-        profile_image:
-          type: string
-          format: uri
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
-    Tag:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Tag name
-        count:
-          type: integer
-          description: Number of questions with this tag
-        description:
-          type: string
-          description: Tag description
-    CreateTagRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-    SME:
-      type: object
-      properties:
-        id:
-          type: integer
-        tag:
-          type: string
-          description: The tag this SME is assigned to
-        user:
-          $ref: '#/components/schemas/UserRef'
-        user_group:
-          $ref: '#/components/schemas/UserGroup'
-    TagsResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Tag_2'
-    Tag_2:
-      type: object
-      properties:
-        name:
-          type: string
-        count:
-          type: integer
-        is_moderator_only:
-          type: boolean
-        is_required:
-          type: boolean
-        has_synonyms:
-          type: boolean
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http

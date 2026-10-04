@@ -69,7 +69,37 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    SMEsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SME'
+        has_more:
+          type: boolean
+        total:
+          type: integer
+    SME:
+      type: object
+      properties:
+        id:
+          type: integer
+        tag:
+          type: string
+          description: The tag this SME is assigned to
+        user:
+          $ref: '#/components/schemas/UserRef'
+        user_group:
+          $ref: '#/components/schemas/UserGroup'
     UserGroup:
       type: object
       properties:
@@ -88,17 +118,24 @@ components:
         creation_date:
           type: string
           format: date-time
-    SMEsResponse:
+    AddSMERequest:
       type: object
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SME'
-        has_more:
-          type: boolean
-        total:
+        user_id:
           type: integer
+          description: User ID to add as SME (mutually exclusive with user_group_id)
+        user_group_id:
+          type: integer
+          description: User group ID to add as SME (mutually exclusive with user_id)
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
     UserRef:
       type: object
       properties:
@@ -109,50 +146,7 @@ components:
         profile_image:
           type: string
           format: uri
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
-    SME:
-      type: object
-      properties:
-        id:
-          type: integer
-        tag:
-          type: string
-          description: The tag this SME is assigned to
-        user:
-          $ref: '#/components/schemas/UserRef'
-        user_group:
-          $ref: '#/components/schemas/UserGroup'
-    AddSMERequest:
-      type: object
-      properties:
-        user_id:
-          type: integer
-          description: User ID to add as SME (mutually exclusive with user_group_id)
-        user_group_id:
-          type: integer
-          description: User group ID to add as SME (mutually exclusive with user_id)
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
     team:
       name: team
       in: path
@@ -161,6 +155,12 @@ components:
         type: string
       description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
       example: my-team
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
   securitySchemes:
     bearerAuth:
       type: http

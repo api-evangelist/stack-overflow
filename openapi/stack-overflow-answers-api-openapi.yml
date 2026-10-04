@@ -187,6 +187,17 @@ paths:
       description: Stack Exchange API v2.3
 components:
   schemas:
+    AnswersResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        has_more:
+          type: boolean
+        total:
+          type: integer
     Answer:
       type: object
       properties:
@@ -210,6 +221,15 @@ components:
           format: date-time
         owner:
           $ref: '#/components/schemas/UserRef'
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
     UserRef:
       type: object
       properties:
@@ -220,26 +240,6 @@ components:
         profile_image:
           type: string
           format: uri
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
-    AnswersResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Answer'
-        has_more:
-          type: boolean
-        total:
-          type: integer
     CreateAnswerRequest:
       type: object
       required:
@@ -248,28 +248,6 @@ components:
         body:
           type: string
           description: Answer body in Markdown
-    Answer_2:
-      type: object
-      properties:
-        answer_id:
-          type: integer
-        question_id:
-          type: integer
-        body:
-          type: string
-        score:
-          type: integer
-        is_accepted:
-          type: boolean
-        creation_date:
-          type: integer
-        last_activity_date:
-          type: integer
-        owner:
-          $ref: '#/components/schemas/ShallowUser'
-        link:
-          type: string
-          format: uri
     AnswersResponse_2:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
@@ -300,6 +278,28 @@ components:
         link:
           type: string
           format: uri
+    Answer_2:
+      type: object
+      properties:
+        answer_id:
+          type: integer
+        question_id:
+          type: integer
+        body:
+          type: string
+        score:
+          type: integer
+        is_accepted:
+          type: boolean
+        creation_date:
+          type: integer
+        last_activity_date:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/ShallowUser'
+        link:
+          type: string
+          format: uri
     Wrapper:
       type: object
       properties:
@@ -317,20 +317,14 @@ components:
           type: integer
         total:
           type: integer
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    filter:
-      name: filter
-      in: query
+    id:
+      name: id
+      in: path
+      required: true
       schema:
-        type: string
-      description: Filter to control which fields are returned
+        type: integer
+      description: The unique identifier of the resource
     team:
       name: team
       in: path
@@ -339,21 +333,18 @@ components:
         type: string
       description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
       example: my-team
-    id:
-      name: id
-      in: path
-      required: true
+    filter:
+      name: filter
+      in: query
       schema:
-        type: integer
-      description: The unique identifier of the resource
-    page:
-      name: page
+        type: string
+      description: Filter to control which fields are returned
+    fromdate:
+      name: fromdate
       in: query
       schema:
         type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
+      description: Unix timestamp for minimum creation date
     pagesize:
       name: pagesize
       in: query
@@ -379,6 +370,12 @@ components:
       schema:
         type: string
       description: Field to sort results by
+    todate:
+      name: todate
+      in: query
+      schema:
+        type: integer
+      description: Unix timestamp for maximum creation date
     site:
       name: site
       in: query
@@ -387,18 +384,21 @@ components:
         type: string
         default: stackoverflow
       description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    todate:
-      name: todate
+    page:
+      name: page
       in: query
       schema:
         type: integer
-      description: Unix timestamp for maximum creation date
-    fromdate:
-      name: fromdate
-      in: query
-      schema:
-        type: integer
-      description: Unix timestamp for minimum creation date
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
+  responses:
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http
