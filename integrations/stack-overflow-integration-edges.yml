@@ -1,0 +1,43 @@
+generated: '2026-10-14'
+method: searched
+checked:
+- https://marketplace.atlassian.com/
+- https://marketplace.visualstudio.com/vscode
+marketplace_apps: []
+edges:
+- partner_name: Atlassian Marketplace
+  partner: atlassian
+  partner_match: aggregator
+  type: marketplace
+  marketplace: atlassian
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://marketplace.atlassian.com/vendors/1217869/stack-overflow
+  listing_count: 1
+  apps:
+  - Stack Overflow for Teams and Jira
+  publisher_name: Stack Overflow
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
+- partner_name: Visual Studio Code Marketplace
+  partner: vs-code-marketplace
+  partner_match: aggregator
+  type: marketplace
+  marketplace: vscode
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://marketplace.visualstudio.com/publishers/stack-overflow
+  listing_count: 1
+  apps:
+  - Stack Overflow for Visual Studio Code
+  publisher_name: Stack Overflow
+  badges:
+  - Verified publisher
+  - Verified domain
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
+source:
+- https://marketplace.atlassian.com/
+- https://marketplace.visualstudio.com/vscode
