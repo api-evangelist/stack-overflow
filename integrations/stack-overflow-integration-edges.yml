@@ -54,7 +54,7 @@ edges:
     registered_name: com.stackoverflow.mcp/mcp
     register_id: com.stackoverflow.mcp/mcp
     detected_by: sweep-agent-tools.py
-    detected: '2026-10-14'
+    detected: '2026-10-15'
   mcp_registry:
     servers:
     - com.stackoverflow.mcp/mcp
