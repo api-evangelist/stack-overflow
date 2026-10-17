@@ -187,17 +187,6 @@ paths:
       description: Stack Exchange API v2.3
 components:
   schemas:
-    AnswersResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Answer'
-        has_more:
-          type: boolean
-        total:
-          type: integer
     Answer:
       type: object
       properties:
@@ -221,15 +210,14 @@ components:
           format: date-time
         owner:
           $ref: '#/components/schemas/UserRef'
-    ErrorResponse:
+    CreateAnswerRequest:
       type: object
+      required:
+      - body
       properties:
-        error_id:
-          type: integer
-        error_message:
+        body:
           type: string
-        error_name:
-          type: string
+          description: Answer body in Markdown
     UserRef:
       type: object
       properties:
@@ -240,44 +228,26 @@ components:
         profile_image:
           type: string
           format: uri
-    CreateAnswerRequest:
+    ErrorResponse:
       type: object
-      required:
-      - body
       properties:
-        body:
+        error_id:
+          type: integer
+        error_message:
           type: string
-          description: Answer body in Markdown
-    AnswersResponse_2:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
+        error_name:
+          type: string
+    AnswersResponse:
+      type: object
+      properties:
+        items:
+          type: array
           items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Answer_2'
-    ShallowUser:
-      type: object
-      properties:
-        user_id:
+            $ref: '#/components/schemas/Answer'
+        has_more:
+          type: boolean
+        total:
           type: integer
-        display_name:
-          type: string
-        reputation:
-          type: integer
-        user_type:
-          type: string
-          enum:
-          - unregistered
-          - registered
-          - moderator
-        profile_image:
-          type: string
-          format: uri
-        link:
-          type: string
-          format: uri
     Answer_2:
       type: object
       properties:
@@ -300,6 +270,15 @@ components:
         link:
           type: string
           format: uri
+    AnswersResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Answer_2'
     Wrapper:
       type: object
       properties:
@@ -317,7 +296,34 @@ components:
           type: integer
         total:
           type: integer
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
   parameters:
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
     id:
       name: id
       in: path
@@ -333,12 +339,6 @@ components:
         type: string
       description: The slug of the Stack Overflow for Teams workspace. If your team lives at stackoverflowteams.com/c/my-team, the slug is my-team.
       example: my-team
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
     fromdate:
       name: fromdate
       in: query

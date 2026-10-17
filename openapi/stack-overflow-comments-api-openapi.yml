@@ -60,27 +60,6 @@ components:
         link:
           type: string
           format: uri
-    ShallowUser:
-      type: object
-      properties:
-        user_id:
-          type: integer
-        display_name:
-          type: string
-        reputation:
-          type: integer
-        user_type:
-          type: string
-          enum:
-          - unregistered
-          - registered
-          - moderator
-        profile_image:
-          type: string
-          format: uri
-        link:
-          type: string
-          format: uri
     CommentsResponse:
       allOf:
       - $ref: '#/components/schemas/Wrapper'
@@ -107,13 +86,34 @@ components:
           type: integer
         total:
           type: integer
+    ShallowUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        display_name:
+          type: string
+        reputation:
+          type: integer
+        user_type:
+          type: string
+          enum:
+          - unregistered
+          - registered
+          - moderator
+        profile_image:
+          type: string
+          format: uri
+        link:
+          type: string
+          format: uri
   parameters:
-    fromdate:
-      name: fromdate
+    filter:
+      name: filter
       in: query
       schema:
-        type: integer
-      description: Unix timestamp for minimum creation date
+        type: string
+      description: Filter to control which fields are returned
     pagesize:
       name: pagesize
       in: query
@@ -123,6 +123,14 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
+    site:
+      name: site
+      in: query
+      required: true
+      schema:
+        type: string
+        default: stackoverflow
+      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
     order:
       name: order
       in: query
@@ -145,20 +153,12 @@ components:
       schema:
         type: integer
       description: Unix timestamp for maximum creation date
-    site:
-      name: site
-      in: query
-      required: true
-      schema:
-        type: string
-        default: stackoverflow
-      description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    filter:
-      name: filter
+    fromdate:
+      name: fromdate
       in: query
       schema:
-        type: string
-      description: Filter to control which fields are returned
+        type: integer
+      description: Unix timestamp for minimum creation date
     page:
       name: page
       in: query

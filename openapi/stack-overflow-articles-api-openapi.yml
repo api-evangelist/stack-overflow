@@ -108,13 +108,12 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    id:
-      name: id
-      in: path
-      required: true
+    filter:
+      name: filter
+      in: query
       schema:
-        type: integer
-      description: The unique identifier of the resource
+        type: string
+      description: Filter to control which fields are returned
     pagesize:
       name: pagesize
       in: query
@@ -124,6 +123,21 @@ components:
         maximum: 100
         default: 30
       description: Number of results per page (max 100)
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The unique identifier of the resource
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-indexed)
     order:
       name: order
       in: query
@@ -148,65 +162,7 @@ components:
       schema:
         type: string
       description: Field to sort results by
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      description: Page number (1-indexed)
-  responses:
-    Forbidden:
-      description: Insufficient permissions (requires write access or Business tier)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: The requested resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    ArticlesResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Article'
-        has_more:
-          type: boolean
-        total:
-          type: integer
-    UpdateArticleRequest:
-      type: object
-      properties:
-        title:
-          type: string
-        body:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error_id:
-          type: integer
-        error_message:
-          type: string
-        error_name:
-          type: string
     CreateArticleRequest:
       type: object
       required:
@@ -233,6 +189,37 @@ components:
         profile_image:
           type: string
           format: uri
+    UpdateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error_id:
+          type: integer
+        error_message:
+          type: string
+        error_name:
+          type: string
+    ArticlesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+        has_more:
+          type: boolean
+        total:
+          type: integer
     Article:
       type: object
       properties:
@@ -260,6 +247,19 @@ components:
         link:
           type: string
           format: uri
+  responses:
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient permissions (requires write access or Business tier)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http

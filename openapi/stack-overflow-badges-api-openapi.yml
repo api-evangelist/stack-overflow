@@ -44,56 +44,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadgesResponse'
 components:
-  schemas:
-    Badge:
-      type: object
-      properties:
-        badge_id:
-          type: integer
-        name:
-          type: string
-        description:
-          type: string
-        award_count:
-          type: integer
-        rank:
-          type: string
-          enum:
-          - bronze
-          - silver
-          - gold
-        badge_type:
-          type: string
-          enum:
-          - named
-          - tag_based
-    BadgesResponse:
-      allOf:
-      - $ref: '#/components/schemas/Wrapper'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Badge'
-    Wrapper:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-        has_more:
-          type: boolean
-        quota_max:
-          type: integer
-        quota_remaining:
-          type: integer
-        backoff:
-          type: integer
-        total:
-          type: integer
   parameters:
+    filter:
+      name: filter
+      in: query
+      schema:
+        type: string
+      description: Filter to control which fields are returned
     pagesize:
       name: pagesize
       in: query
@@ -127,12 +84,6 @@ components:
         type: string
         default: stackoverflow
       description: Stack Exchange site identifier (use stackoverflow for Stack Overflow)
-    filter:
-      name: filter
-      in: query
-      schema:
-        type: string
-      description: Filter to control which fields are returned
     page:
       name: page
       in: query
@@ -141,6 +92,55 @@ components:
         minimum: 1
         default: 1
       description: Page number (1-indexed)
+  schemas:
+    Badge:
+      type: object
+      properties:
+        badge_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        award_count:
+          type: integer
+        rank:
+          type: string
+          enum:
+          - bronze
+          - silver
+          - gold
+        badge_type:
+          type: string
+          enum:
+          - named
+          - tag_based
+    Wrapper:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        has_more:
+          type: boolean
+        quota_max:
+          type: integer
+        quota_remaining:
+          type: integer
+        backoff:
+          type: integer
+        total:
+          type: integer
+    BadgesResponse:
+      allOf:
+      - $ref: '#/components/schemas/Wrapper'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Badge'
   securitySchemes:
     oauth2:
       type: oauth2
