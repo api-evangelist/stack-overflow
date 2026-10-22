@@ -67,6 +67,34 @@
     detected: '2026-10-20'
   status: not-a-workflow
   arazzo: null
+- slug: stack-overflow-index-ventures
+  label: Index Ventures
+  partner: index-ventures
+  partner_name: Index Ventures
+  category: vc portfolio participation
+  type: register
+  channel: standard-directory
+  evidence: https://www.indexventures.com/companies/stack-exchange/
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: Index Ventures companies (indexventures.com/companies/)
+    standard: null
+    spec_file: null
+    role: vc-portfolio-company
+    registered_name: Stack Overflow
+    register_id: https://www.indexventures.com/companies/stack-exchange/
+    register_country: north-america
+    register_website: https://stackoverflow.com
+    matched_domain: stackoverflow.com
+    matched_by: domain
+    signal_note: 'participation only: the venture firm''s own published portfolio lists the company (investment);
+      an ownership and participation record, not conformance or certification'
+    detected_by: sweep-vc-portfolios.py
+    detected: '2026-10-21'
+    sector: business-applications
+  status: not-a-workflow
+  arazzo: null
 - slug: stack-overflow-microsoft-teams-own
   label: Microsoft Teams (own)
   partner: microsoft-teams
@@ -106,31 +134,16 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
-- slug: stack-overflow-index-ventures
-  label: Index Ventures
-  partner: index-ventures
-  partner_name: Index Ventures
-  category: vc portfolio participation
-  type: register
-  channel: standard-directory
-  evidence: https://www.indexventures.com/companies/stack-exchange/
+- slug: stack-overflow-backstage-own
+  label: Backstage (own)
+  partner: backstage
+  partner_name: Backstage (own)
+  category: Discovery
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://github.com/backstage/backstage/tree/d72327203d5d0812bee2eace8688fa5ab22867be/microsite/data/plugins/stackoverflow-teams.yaml
   source: edge
-  relationship: standard-participant
-  contract_reference:
-    register: Index Ventures companies (indexventures.com/companies/)
-    standard: null
-    spec_file: null
-    role: vc-portfolio-company
-    registered_name: Stack Overflow
-    register_id: https://www.indexventures.com/companies/stack-exchange/
-    register_country: north-america
-    register_website: https://stackoverflow.com
-    matched_domain: stackoverflow.com
-    matched_by: domain
-    signal_note: 'participation only: the venture firm''s own published portfolio lists the company (investment);
-      an ownership and participation record, not conformance or certification'
-    detected_by: sweep-vc-portfolios.py
-    detected: '2026-10-21'
-    sector: business-applications
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
