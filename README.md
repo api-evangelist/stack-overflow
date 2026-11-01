@@ -1,4 +1,4 @@
-# Stack Overflow (stack-overflow)
+# Stack Overflow
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,89 +66,178 @@
 
 Stack Overflow is the world's largest question-and-answer community for developers, with over 23 million questions on programming, software development, and technology topics. Stack Overflow offers two API products: the public Stack Exchange API v2.3 for read/write access to Stack Overflow questions, answers, comments, users, tags, and badges; and the Stack Overflow for Teams API v3, a private team knowledge-base API with endpoints for questions, answers, articles, user groups, and SME management.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/stack-overflow/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/stack-overflow/refs/heads/main/apis.yml)
+**Areas:** Answers · Code · Developer Community · Developer Tools · Knowledge Base · Programming · Q&A · Questions · Stack Overflow
 
-## Tags
+## Stack Overflow on APIs.io
 
-- Answers
-- Code
-- Developer Community
-- Developer Tools
-- Knowledge Base
-- Programming
-- Q&A
-- Questions
-- Stack Overflow
+Everything profiled for Stack Overflow is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/stack-overflow/](https://apis.io/providers/stack-overflow/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (10)
 
-- **Created:** 2026-05-02
-- **Modified:** 2026-05-19
+- [Stack Overflow Answers API](https://apis.io/apis/stack-overflow/stack-overflow-answers-api/) — Operations for managing answers to questions in a Teams workspace.
+- [Stack Overflow Articles API](https://apis.io/apis/stack-overflow/stack-overflow-articles-api/) — Operations for managing knowledge articles in a Teams workspace.
+- [Stack Overflow Badges API](https://apis.io/apis/stack-overflow/stack-overflow-badges-api/) — Operations for retrieving badge information on Stack Overflow.
+- [Stack Overflow Comments API](https://apis.io/apis/stack-overflow/stack-overflow-comments-api/) — Operations for retrieving and writing comments on Stack Overflow posts.
+- [Stack Overflow Questions API](https://apis.io/apis/stack-overflow/stack-overflow-questions-api/) — Operations for managing questions in a Stack Overflow for Teams workspace.
+- [Stack Overflow Search API](https://apis.io/apis/stack-overflow/stack-overflow-search-api/) — Operations for searching Stack Overflow questions and content.
+- [Stack Overflow SMEs API](https://apis.io/apis/stack-overflow/stack-overflow-smes-api/) — Operations for managing Subject Matter Experts (SMEs) for tags in a Teams workspace.
+- [Stack Overflow Tags API](https://apis.io/apis/stack-overflow/stack-overflow-tags-api/) — Operations for managing tags in a Teams workspace.
+- [Stack Overflow User Groups API](https://apis.io/apis/stack-overflow/stack-overflow-user-groups-api/) — Operations for managing user groups in a Teams workspace.
+- [Stack Overflow Users API](https://apis.io/apis/stack-overflow/stack-overflow-users-api/) — Operations for managing users in a Teams workspace.
 
-## APIs
+### Published properties
 
-### Stack Overflow API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-The Stack Overflow public API (v2.3) provides programmatic access to questions, answers, comments, users, tags, and badges on the Stack Overflow site. Developers can read and write content with OAuth 2.0 authentication. The API returns JSON responses with a standard wrapper envelope that includes pagination, quota, and backoff metadata. Register an application at StackApps to obtain OAuth credentials.
+#### Agentic access (1)
 
-- **Human URL:** [https://api.stackexchange.com/](https://api.stackexchange.com/)
-- **Base URL:** `https://api.stackexchange.com/2.3`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Stack Overflow Agentic Access](https://apis.io/agentic-access/stack-overflow/stack-overflow-agentic-access/)
 
-- Answers
-- Badges
-- Comments
-- Developer Community
-- Q&A
-- Questions
-- Stack Overflow
-- Users
+#### JSON Schema (1)
 
-#### Properties
+The data models the API reads and writes.
 
-- [Documentation](https://api.stackexchange.com/docs)
-- [Terms of Service](https://stackexchange.com/legal/api-terms-of-use)
-- [Rate Limits](https://api.stackexchange.com/docs/throttle)
-- [Sign Up](http://stackapps.com/apps/oauth/register)
-- [OpenAPI](openapi/stack-overflow-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/stack-overflow.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/stack-overflow.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Stack Overflow Question](https://apis.io/schemas/stack-overflow/stack-overflow-question/)
 
-### Stack Overflow for Teams API v3
+#### JSON Structure (1)
 
-The Stack Overflow for Teams API v3 provides read and write access to private team knowledge bases. It supports managing questions, answers, articles, user groups, subject matter experts (SMEs), and tags within a Stack Overflow for Teams instance. The API uses Personal Access Token (PAT) authentication via the Authorization Bearer header. Business tier subscriptions have read/write access; Basic tier has read-only access.
+Data models expressed in JSON Structure.
 
-- **Human URL:** [https://api.stackoverflowteams.com/docs](https://api.stackoverflowteams.com/docs)
-- **Base URL:** `https://api.stackoverflowteams.com/v3`
+- [Stack Overflow Question Structure](https://apis.io/json-structure/stack-overflow/stack-overflow-question-structure/)
 
-#### Tags
+#### JSON-LD (1)
 
-- Articles
-- Enterprise
-- Knowledge Management
-- Q&A
-- Stack Overflow
-- Teams
+Linked-data contexts for the provider's vocabulary.
 
-#### Properties
+- [Stack Overflow Context](https://apis.io/jsonld/stack-overflow/stack-overflow-context/)
 
-- [Documentation](https://api.stackoverflowteams.com/docs)
-- [Blog](https://stackoverflow.blog/2023/05/17/stack-overflow-for-teams-api-v3/)
-- [OpenAPI](openapi/stack-overflow-for-teams-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/stack-overflow-for-teams.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/stack-overflow-for-teams.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Vocabulary (1)
 
-## Common Properties
+The provider's domain terms, defined.
 
-- [GitHub Organization](https://github.com/stackexchange)
-- [LinkedIn](https://www.linkedin.com/company/stack-overflow)
+- [Stack Overflow Vocabulary](https://apis.io/vocabularies/stack-overflow/stack-overflow-vocabulary/)
+
+#### Examples (1)
+
+Example requests and responses.
+
+- [Stack Overflow Get Questions Example](https://apis.io/examples/stack-overflow/stack-overflow-get-questions-example/)
+
+#### Collections (12)
+
+Postman and Open Collection request collections.
+
+- [Stack Overflow API](https://apis.io/collections/stack-overflow/open-stack-overflow/)
+- [Stack Overflow for Teams Answers API](https://apis.io/collections/stack-overflow/open-stack-overflow-answers-api/)
+- [Stack Overflow for Teams Answers Articles API](https://apis.io/collections/stack-overflow/open-stack-overflow-articles-api/)
+- [Stack Overflow for Teams Answers Badges API](https://apis.io/collections/stack-overflow/open-stack-overflow-badges-api/)
+- [Stack Overflow for Teams Answers Comments API](https://apis.io/collections/stack-overflow/open-stack-overflow-comments-api/)
+- [Stack Overflow for Teams API](https://apis.io/collections/stack-overflow/open-stack-overflow-for-teams/)
+- [Stack Overflow for Teams Answers Questions API](https://apis.io/collections/stack-overflow/open-stack-overflow-questions-api/)
+- [Stack Overflow for Teams Answers Search API](https://apis.io/collections/stack-overflow/open-stack-overflow-search-api/)
+- [Stack Overflow for Teams Answers SMEs API](https://apis.io/collections/stack-overflow/open-stack-overflow-smes-api/)
+- [Stack Overflow for Teams Answers Tags API](https://apis.io/collections/stack-overflow/open-stack-overflow-tags-api/)
+- [Stack Overflow for Teams Answers User Groups API](https://apis.io/collections/stack-overflow/open-stack-overflow-user-groups-api/)
+- [Stack Overflow for Teams Answers Users API](https://apis.io/collections/stack-overflow/open-stack-overflow-users-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Stack Overflow — jsonschema rules](https://apis.io/rules/stack-overflow/stack-overflow-jsonschema-spectral-rules/)
+- [Stack Overflow API Rules](https://apis.io/rules/stack-overflow/stack-overflow-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Stack Overflow Authentication](https://apis.io/security/stack-overflow/stack-overflow-authentication/)
+- [Stack Overflow Domain Security](https://apis.io/security/stack-overflow/stack-overflow-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Stack Overflow Scopes](https://apis.io/scopes/stack-overflow/stack-overflow-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Stack Overflow Plans Pricing](https://apis.io/plans/stack-overflow/stack-overflow-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Stack Overflow Rate Limits](https://apis.io/rate-limits/stack-overflow/stack-overflow-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Stack Overflow Finops](https://apis.io/finops/stack-overflow/stack-overflow-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://stackoverflow.com)
 - [Blog](https://stackoverflow.blog/)
-- [Authentication](https://api.stackexchange.com/docs/authentication)
-- [Sign Up](http://stackapps.com/apps/oauth/register)
-- [Terms of Service](https://stackexchange.com/legal/api-terms-of-use)
-- [JSON-LD](json-ld/stack-overflow-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [JSON Schema](json-schema/stack-overflow-question-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [Vocabulary](vocabulary/stack-overflow-vocabulary.yml)
-- [Spectral Rules](rules/stack-overflow-rules.yml)
+- [Terms of service](https://stackexchange.com/legal/api-terms-of-use)
+- [GitHub](https://github.com/stackexchange)
+
+## API Evangelist rating
+
+**Kin Score 37.2** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 60.7 |
+| Contract quality | 55.4 |
+| Contract governance | 27.3 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 31.6 |
+
+**Agent readiness 24.5** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 30.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/stack-overflow/](https://apis.io/providers/stack-overflow/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Stack Overflow: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/stack-overflow/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
